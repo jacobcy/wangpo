@@ -32,6 +32,24 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
+  '/': '/index.html',
+
+  '/index.html': {
+    view: 'index'
+  },
+
+  '/tables.html': {
+    view: 'tables'
+  },
+
+  '/blank-page.html': {
+    view: 'blank-page'
+  },
+
+  '/bootstrap-elements.html': {
+    view: 'bootstrap-elements'
+  },
+
   /***************************************************************************
   *                                                                          *
   * Custom routes here...                                                    *

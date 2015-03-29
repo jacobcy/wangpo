@@ -13,6 +13,8 @@ module.exports = {
    */
   callback: function (req, res) {
     console.log('Weibo callback: ' + req.url);
+
+    // 验证URL
     if (!verify(req, res)) {
       console.error('[Weibo] Failed to verify.');
       return res.send('check signature error');
@@ -21,6 +23,16 @@ module.exports = {
     if (echostr) {
       return res.send(echostr);
     }
+
+    // 接受消息
+    var type = req.param('type');
+    var receiver_id = req.param('receiver_id');
+    var sender_id = req.param('sender_id');
+    var created_at = req.param('created_at');
+    var text = req.param('text');
+    var data = req.param('data');
+    onReceiveMessage(type, receiver_id, sender_id, created_at, text, data);
+
     return res.json({
       todo: 'callback() is not implemented yet!'
     });
@@ -50,4 +62,13 @@ function verify(req, res) {
   var str = [appsecret, timestamp, nonce].sort().join('');
   var hash = SHA1(str).toString();
   return hash === signature;
+}
+
+// 处理收到的微博消息
+function onReceiveMessage(type, receiver_id, sender_id, created_at, text, data) {
+  switch(type) {
+    case 'text':
+      console.info('Weibo message received: ' + text);
+      break;
+  }
 }

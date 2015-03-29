@@ -26,16 +26,12 @@ module.exports = {
 
     // 接受消息
     var type = req.param('type');
-    var receiver_id = req.param('receiver_id');
-    var sender_id = req.param('sender_id');
+    var receiver_id = req.param('receiver_id') || 0;
+    var sender_id = req.param('sender_id') || 0;
     var created_at = req.param('created_at');
     var text = req.param('text');
     var data = req.param('data');
-    onReceiveMessage(type, receiver_id, sender_id, created_at, text, data);
-
-    return res.json({
-      todo: 'callback() is not implemented yet!'
-    });
+    return onReceiveMessage(type, receiver_id, sender_id, created_at, text, data, res);
   }
 };
 
@@ -64,11 +60,30 @@ function verify(req, res) {
   return hash === signature;
 }
 
+var helpMessage = '您好，您现在使用的是王婆速配交友服务，帮您找到喜欢的人，您可以向对方表示好感，如果对方也向您表示好感，你们将成为好友，获得对方的联系方式。您可以回复date进行速配，回复help进入帮助和设置，回复party了解最新活动您还可以回复me查看个人资料，回复list查看好友，回复“#+内容”给婆婆留言，回复close关闭我的资料，不再进行速配。';
+
 // 处理收到的微博消息
-function onReceiveMessage(type, receiver_id, sender_id, created_at, text, data) {
+function onReceiveMessage(type, receiver_id, sender_id, created_at, text, data, res) {
   switch(type) {
     case 'text':
       console.info('Weibo message received: ' + text);
+      return replay(sender_id, receiver_id, helpMessage, res)
+    default:
+      console.warn('Known message type ' + type);
       break;
   }
+  return res.json({
+    todo: 'callback() is not implemented yet!'
+  });
+}
+
+function replay(receiver_id, sender_id, text, res) {
+  var msg = {
+    result: true,
+    receiver_id: receiver_id.toString(),
+    sender_id: sender_id.toString(),
+    type: 'text',
+    data: encodeURI(JSON.stringify({ text: text }))
+  };
+  return res.send(JSON.stringify(msg));
 }

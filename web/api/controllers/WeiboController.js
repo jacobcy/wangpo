@@ -12,9 +12,14 @@ module.exports = {
    * `WeiboController.callback()`
    */
   callback: function (req, res) {
+    console.log('Weibo callback: ' + req.url);
+    if (!verify(req, res)) {
+      console.error('[Weibo] Failed to verify.');
+      return res.send('check signature error');
+    }
     var echostr = req.param('echostr');
     if (echostr) {
-      return verify(echostr, req, res);
+      return res.send(echostr);
     }
     return res.json({
       todo: 'callback() is not implemented yet!'
@@ -23,7 +28,7 @@ module.exports = {
 };
 
 // 验证消息真实性
-function verify(echostr, req, res) {
+function verify(req, res) {
   // 验证算法如下(http://open.weibo.com/wiki/新手接入指南)：
   // 将开发者的appsecret，timestamp参数，nonce参数进行字典排序后，
   // 将三个参数字符串拼接成一个字符串进行sha1加密 校验参数：
@@ -44,10 +49,5 @@ function verify(echostr, req, res) {
   var appsecret = sails.config.weibo.appsecret;
   var str = [appsecret, timestamp, nonce].sort().join('');
   var hash = SHA1(str).toString();
-  if (hash === signature) {
-    return res.send(echostr);
-  } else {
-    return res.send('check signature error');
-  }
+  return hash === signature;
 }
-

@@ -60,9 +60,11 @@ function verify(req, res) {
   return hash === signature;
 }
 
-var helpMessage = '您好，您现在使用的是王婆速配交友服务，帮您找到喜欢的人，您可以向对方表示好感，如果对方也向您表示好感，你们将成为好友，获得对方的联系方式。您可以回复date进行速配，回复help进入帮助和设置，回复party了解最新活动您还可以回复me查看个人资料，回复list查看好友，回复“#+内容”给婆婆留言，回复close关闭我的资料，不再进行速配。';
-
-var partyMessage = '抱歉暂时没有活动！';
+var ReplyMessages = {
+  help: '您好，您现在使用的是王婆速配交友服务，帮您找到喜欢的人，您可以向对方表示好感，如果对方也向您表示好感，你们将成为好友，获得对方的联系方式。您可以回复date进行速配，回复help进入帮助和设置，回复party了解最新活动您还可以回复me查看个人资料，回复list查看好友，回复“#+内容”给婆婆留言，回复close关闭我的资料，不再进行速配。',
+  party: '抱歉暂时没有活动！',
+  follow: '感谢关注，回复date开始速配，回复party了解最新活动，回复help查看帮助信息'
+};
 
 // 处理收到的微博消息
 function onReceiveMessage(type, receiver_id, sender_id, created_at, text, data, res) {
@@ -70,9 +72,15 @@ function onReceiveMessage(type, receiver_id, sender_id, created_at, text, data, 
     case 'text':
       console.info('Weibo message received: ' + text);
       if (text.indexOf('party') != -1) {
-        return replay(sender_id, receiver_id, partyMessage, res);
+        return replay(sender_id, receiver_id, ReplyMessages.party, res);
       }
-      return replay(sender_id, receiver_id, helpMessage, res);
+      return replay(sender_id, receiver_id, ReplyMessages.help, res);
+    case 'event':
+      // 新用户关注, 接口详见http://open.weibo.com/wiki/接收事件推送
+      if (text == '关注事件消息' && data && data.subtype == 'follow') {
+        return replay(sender_id, receiver_id, ReplyMessages.follow, res);
+      }
+      break;
     default:
       console.warn('Known message type ' + type);
       break;
@@ -82,6 +90,8 @@ function onReceiveMessage(type, receiver_id, sender_id, created_at, text, data, 
   });
 }
 
+// 发送被动响应消息（直接回复用户消息），接口详见
+// http://open.weibo.com/wiki/发送被动响应消息
 function replay(receiver_id, sender_id, text, res) {
   var msg = {
     result: true,

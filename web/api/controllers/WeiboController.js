@@ -29,7 +29,7 @@ module.exports = {
     var receiver_id = req.param('receiver_id') || 0;
     var sender_id = req.param('sender_id') || 0;
     var created_at = req.param('created_at');
-    var text = req.param('text');
+    var text = req.param('text') || '';
     var data = req.param('data');
     return onReceiveMessage(type, receiver_id, sender_id, created_at, text, data, res);
   }
@@ -62,12 +62,17 @@ function verify(req, res) {
 
 var helpMessage = '您好，您现在使用的是王婆速配交友服务，帮您找到喜欢的人，您可以向对方表示好感，如果对方也向您表示好感，你们将成为好友，获得对方的联系方式。您可以回复date进行速配，回复help进入帮助和设置，回复party了解最新活动您还可以回复me查看个人资料，回复list查看好友，回复“#+内容”给婆婆留言，回复close关闭我的资料，不再进行速配。';
 
+var partyMessage = '抱歉暂时没有活动！';
+
 // 处理收到的微博消息
 function onReceiveMessage(type, receiver_id, sender_id, created_at, text, data, res) {
   switch(type) {
     case 'text':
       console.info('Weibo message received: ' + text);
-      return replay(sender_id, receiver_id, helpMessage, res)
+      if (text.indexOf('party') != -1) {
+        return replay(sender_id, receiver_id, partyMessage, res);
+      }
+      return replay(sender_id, receiver_id, helpMessage, res);
     default:
       console.warn('Known message type ' + type);
       break;

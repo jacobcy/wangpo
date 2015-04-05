@@ -49,6 +49,10 @@ module.exports.policies = {
 		// feed : ['isNiceToAnimals', 'hasRabbitFood']
 	// }
 
+ 'main': {
+    '*': ['passport', 'isAuthenticated'],
+ },
+
  'auth': {
     '*': ['passport']
   }

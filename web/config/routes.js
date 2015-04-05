@@ -32,13 +32,9 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
-  '/': {
-    view: 'index'
-  },
+  '/': '/index.html',
 
-  '/index.html': {
-    view: 'index'
-  },
+  '/index.html': 'MainController',
 
   '/tables.html':'WeiboUserController.index',
 

@@ -93,9 +93,15 @@ var AuthController = {
    * @param {Object} res
    */
   register: function (req, res) {
-    res.view({
-      errors: req.flash('error'),
-      layout: 'auth/layout'
+    User.count().exec(function(err, count) {
+      if (count > 0) {
+        res.forbidden('只允许注册一个登录账户！');
+        return;
+      }
+      res.view({
+        errors: req.flash('error'),
+        layout: 'auth/layout'
+      });
     });
   },
 

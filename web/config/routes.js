@@ -40,9 +40,7 @@ module.exports.routes = {
     view: 'index'
   },
 
-  '/tables.html': {
-    view: 'tables'
-  },
+  '/tables.html':'WeiboUserController.index',
 
   '/blank-page.html': {
     view: 'blank-page'

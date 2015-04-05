@@ -31,23 +31,19 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <% for (i = 0; i < weibousers.length; i++){ %>
                                     <tr>
-                                        <td>0001</td>
-                                        <td>李小敏</td>
-                                        <td>1978.03.15</td>
-                                        <td>男</td>
-                                        <td>1.75</td>
-                                        <td>北京</td>
+                                        <td><%= weibousers[i].innerId %></td>
+                                        <td><%= weibousers[i].userName %></td>
+                                        <td><%= weibousers[i].formattedBirthday %></td>
+                                        <td><%= weibousers[i].userSexual %></td>
+                                        <td><%= weibousers[i].userHight %></td>
+                                        <td><%= weibousers[i].userLocation %></td>
                                     </tr>
-                                    <tr>
-                                        <td>0002</td>
-                                        <td>黄鹏</td>
-                                        <td>1987.06.15</td>
-                                        <td>男</td>
-                                        <td>1.79</td>
-                                        <td>广州</td>
-                                    </tr>
+                                    <% } %>
                                 </tbody>
+                                
+                                <li></li>
                             </table>
                         </div>
                     </div>

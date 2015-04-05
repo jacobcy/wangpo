@@ -6,7 +6,8 @@ module.exports = {
         user.formattedBirthday = dateToString(user.userBirthday);
       }
       res.view({
-        weibousers: found
+        weibousers: found,
+        layout: 'main-layout'
       });
     });
   }

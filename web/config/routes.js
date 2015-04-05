@@ -38,13 +38,9 @@ module.exports.routes = {
 
   '/tables.html':'WeiboUserController.index',
 
-  '/blank-page.html': {
-    view: 'blank-page'
-  },
+  '/blank-page.html': 'MainController.blankPage',
 
-  '/bootstrap-elements.html': {
-    view: 'bootstrap-elements'
-  },
+  '/bootstrap-elements.html': 'MainController.bootstrapElements',
 
   /***************************************************************************
   *                                                                          *

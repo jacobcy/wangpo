@@ -7,7 +7,20 @@
 
 module.exports = {
   index: function(req, res) {
-    return res.view('index');
+    return res.view('index', {
+      layout: 'main-layout'
+    });
+  },
+
+  blankPage: function(req, res) {
+    return res.view('blank-page', {
+      layout: 'main-layout'
+    });
+  },
+
+  bootstrapElements: function(req, res) {
+    return res.view('bootstrap-elements', {
+      layout: 'main-layout'
+    });
   }
 };
-

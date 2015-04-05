@@ -13,6 +13,37 @@ module.exports.bootstrap = function(cb) {
 
   // It's very important to trigger this callback method when you are finished
   // with the bootstrap!  (otherwise your server will never lift, since it's waiting on the bootstrap)
+    function createDummyWeiboUserData() {
+      var dummyWeiboUserData = [
+        {
+          "innerId": "0001",
+          "userName": "李小敏",
+          "userBirthday": "1978.03.15",
+          "userSexual":  "男",
+          "userHight": "1.75",
+          "userLocation": "北京"
+        },
+        {
+          "innerId": "0002",
+          "userName": "黄鹏",
+          "userBirthday": "1987.06.15",
+          "userSexual":  "男",
+          "userHight": "1.79",
+          "userLocation": "广州"
+        }
+      ];
+      WeiboUser.count().exec(function(err, count) {
+        if (err) return;
+        if (count > 0) return;
+        WeiboUser.create(dummyWeiboUserData).exec(function(err, created){
+          if (err) {
+            console.error('create failed:' + err);
+            return;
+          }
+        });
+      });
+    }
+  createDummyWeiboUserData();
   sails.services.passport.loadStrategies();
   cb();
 };

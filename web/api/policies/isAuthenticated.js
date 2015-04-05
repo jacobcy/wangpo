@@ -23,6 +23,16 @@ module.exports = function(req, res, next) {
     return res.forbidden('You are not permitted to perform this action.');
   }
 
-  req.flash('error', '请登录后访问。');
-  return res.redirect('/login');
+  // 检查管理员账户是否已经注册，如果没有要求先注册
+  User.count().exec(function(err, count) {
+    if (err) {
+      res.forbidden('Cannot access user info: ' + err);
+      return;
+    }
+    if (count == 0) {
+      res.redirect('/register');
+      return;
+    }
+    res.redirect('/login');
+  });
 };

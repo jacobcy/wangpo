@@ -1,4 +1,5 @@
 var SHA1 = require('crypto-js').SHA1;
+var ChatManager = require('./chat.js').ChatManager;
 
 var WeiboFans = {
   /**
@@ -56,7 +57,6 @@ var WeiboFans = {
 
 module.exports = WeiboFans;
 
-
 var ReplyMessages = {
   help: '您好，您现在使用的是王婆速配交友服务，帮您找到喜欢的人，您可以向对方表示好感，如果对方也向您表示好感，你们将成为好友，获得对方的联系方式。您可以回复date进行速配，回复help进入帮助和设置，回复party了解最新活动您还可以回复me查看个人资料，回复list查看好友，回复“#+内容”给婆婆留言，回复close关闭我的资料，不再进行速配。',
   party: '抱歉暂时没有活动！',
@@ -77,6 +77,14 @@ function handleTextMessage(sender_id, text, cb) {
     case 'help':
       cb(ReplyMessages.help);
       return;
+    case 'date':
+      ChatManager.create(sender_id, cb);
+      return;
+  }
+  var msg = ChatManager.process(sender_id, text);
+  if (msg) {
+    cb(msg);
+    return;
   }
   // 默认情况显示帮助信息
   cb(ReplyMessages.help);

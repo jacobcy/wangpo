@@ -101,7 +101,7 @@ Chat.prototype = {
           cb('没有找到您输入的区号对应的城市，请重新输入');
           return;
         }
-        user.userLocation = text;
+        user.userLocation = city;
         this.save();
         break;
     }

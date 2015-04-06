@@ -33,7 +33,7 @@ var WeiboUser = {
         next();
         return;
       }
-      user.userName = json.nicname;
+      user.userName = json.nickname;
       if (!user.gender && json.sex !== 0) {
         user.gender = json.sex === 1 ? "男" : "女";
       }

@@ -34,7 +34,7 @@
                                     <% for (i = 0; i < weibousers.length; i++){ %>
                                     <tr>
                                         <td><%= weibousers[i].innerId %></td>
-                                        <td><%= weibousers[i].userName %></td>
+                                        <td><a href="http://weibo.com/u/<%= weibousers[i].innerId %>"><%= weibousers[i].userName %></a></td>
                                         <td><%= weibousers[i].formattedBirthday %></td>
                                         <td><%= weibousers[i].gender %></td>
                                         <td><%= weibousers[i].height %></td>

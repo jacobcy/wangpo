@@ -30,7 +30,8 @@
 module.exports = {
   // 微博粉服平台密钥
   weibo: {
-    appsecret: "xyz123xyz"
+    appsecret: "xyz123xyz",
+    access_token: "xxx"
   },
 
   /***************************************************************************

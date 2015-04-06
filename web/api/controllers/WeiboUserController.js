@@ -3,7 +3,8 @@ module.exports = {
     WeiboUser.find({}).exec(function(err,found){
       for (var i = 0; i < found.length; i++) {
         var user = found[i];
-        user.formattedBirthday = dateToString(user.userBirthday);
+        var date = user.userBirthday;
+        user.formattedBirthday = date ? dateToString(date) : '';
       }
       res.view({
         weibousers: found,

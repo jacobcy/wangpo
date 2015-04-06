@@ -8,6 +8,30 @@ var Chat = function(weibo_id) {
 
 Chat.ERROR_MESSAGE = '王婆生病了，正在恢复中，暂时不能为您服务，请原谅。';
 
+Chat.pendingChats = [];
+
+var saving = false;
+// 定时保存缓存中的WeiboUser数据
+setInterval(function() {
+  if (saving) {
+    return;
+  }
+  var n = Chat.pendingChats.length;
+  if (Chat.pendingChats.length === 0) {
+    return;
+  }
+  saving = true;
+  var user = Chat.pendingChats.shift();
+  user.save(function(err, saved){
+    if (err) {
+      console.error('Failed to save WeiboUser: ' + err);
+      return;
+    }
+    ChatSessions[saved.innerId].weiboUser = saved;
+    saving = false;
+  });
+}, 1000);
+
 Chat.prototype = {
   init: function(cb) {
     this.state = 'start';
@@ -18,7 +42,7 @@ Chat.prototype = {
       }
       if (found) {
         this.weiboUser = found;
-        cb(this.handleMessage(null));
+        this.handleMessage(null, cb);
         return;
       }
       WeiboUser.create({ innerId: this.id }).exec(function(err, created) {
@@ -27,56 +51,72 @@ Chat.prototype = {
           return;
         }
         this.weiboUser = created;
-        cb(this.handleMessage(null));
+        this.handleMessage(null, cb);
       }.bind(this));
     }.bind(this));
   },
 
-  handleMessage: function(text) {
+  /**
+   * @param {Function} cb function(replyMessage: String) 通过callback返回回复用户的消息内容。
+   */
+  handleMessage: function(text, cb) {
     var user = this.weiboUser;
     switch (this.state) {
       case 'gender':
         if (text !== '1' && text !== '2') {
-          return '您输入的性别格式有误，请重新输入，男生回复1，女生回复2';
+          cb('您输入的性别格式有误，请重新输入，男生回复1，女生回复2');
+          return;
         }
         user.userSexual = text === '1' ? '男' : '女';
+        this.save();
         break;
       case 'birthday':
         var date = util.parseShortDate(text);
         if (!date) {
-          return '您输入的生日格式有误，请重新输入';
+          cb('您输入的生日格式有误，请重新输入');
+          return;
         }
         user.userBirthday = date;
+        this.save();
         break;
       case 'height':
         var height = parseInt(text);
         if (isNaN(height) || height < 100 || height > 200) {
-          return '您您输入的身高数据有误，请重新输入';
+          cb('您您输入的身高数据有误，请重新输入');
+          return;
         }
         user.userHight = height;
+        this.save();
         break;
       case 'location':
         // 位置信息用区号表示，格式为3位或4位数字
         if (!/^[0-9]{3,4}$/.test(text)) {
-          return '您输入的区号有误，请重新输入';
+          cb('您输入的区号有误，请重新输入');
+          return;
         }
         var city = util.areaCodeToCity(text);
         if (!city) {
-          return '没有找到您输入的区号对应的城市，请重新输入';
+          cb('没有找到您输入的区号对应的城市，请重新输入');
+          return;
         }
         user.userLocation = text;
+        this.save();
         break;
     }
     var msg = this.checkUser(user);
     if (msg) {
-      return msg;
+      cb(msg);
+      return;
     }
     // 所有信息都全的时候开始速配
-    return this.handleMatch();
+    this.handleMatch(cb);
   },
 
-  handleMatch:function() {
-    return '感谢您提供资料，王婆正在线下帮您牵线...';
+  /**
+   * @param {Function} cb function(replyMessage: String) 通过callback返回回复用户的消息内容。
+   */
+  handleMatch:function(cb) {
+    cb('感谢您提供资料，王婆正在线下帮您牵线...');
   },
 
   checkUser: function(user) {
@@ -95,6 +135,12 @@ Chat.prototype = {
     }
     this.state = 'checked';
     return null;
+  },
+
+  save: function() {
+    if (Chat.pendingChats.indexOf(this.weiboUser) === -1) {
+      Chat.pendingChats.push(this.weiboUser);
+    }
   }
 };
 
@@ -104,25 +150,29 @@ var ChatSessions = {
 var ChatManager = {
   /**
    * 创建一个新的对话session.
+   * @param {Function} cb function(replyMessage: String) 通过callback返回回复用户的消息内容。
    */
   create: function(weibo_id, cb) {
     var chat = ChatSessions[weibo_id];
     if (!chat) {
       chat = new Chat(weibo_id);
       ChatSessions[weibo_id] = chat;
+      chat.init(cb);
+      return;
     }
-    chat.init(cb);
+    chat.handleMessage(null, cb);
   },
 
   /**
-   * @return {Boolean}
+   * @param {Function} cb function(replyMessage: String) 通过callback返回回复用户的消息内容。
    */
-  process: function(weibo_id, text) {
+  process: function(weibo_id, text, cb) {
     var chat = ChatSessions[weibo_id];
     if (!chat) {
-      return false;
+      cb('');
+      return;
     }
-    return chat.handleMessage(text);
+    chat.handleMessage(text, cb);
   }
 };
 

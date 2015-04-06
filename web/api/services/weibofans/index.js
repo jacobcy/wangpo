@@ -81,13 +81,13 @@ function handleTextMessage(sender_id, text, cb) {
       ChatManager.create(sender_id, cb);
       return;
   }
-  var msg = ChatManager.process(sender_id, text);
-  if (msg) {
+  ChatManager.process(sender_id, text, function(msg) {
+    if (!msg) {
+      // 默认情况显示帮助信息
+      msg = ReplyMessages.help;
+    }
     cb(msg);
-    return;
-  }
-  // 默认情况显示帮助信息
-  cb(ReplyMessages.help);
+  });
 }
 
 /**

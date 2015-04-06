@@ -8,9 +8,9 @@ var WeiboUser = {
     // e.g. "1978.03.15"
     userBirthday: {type: 'date'},
     // e.g. "男"
-    userSexual: {type: 'string'},
-    // e.g. "1.75"
-    userHight: {type: 'float'},
+    gender: {type: 'string'},
+    // e.g. "175", 单位厘米
+    height: {type: 'integer'},
     // e.g. "北京"
     userLocation: {type: 'string'}  
   }

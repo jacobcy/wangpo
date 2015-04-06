@@ -2,13 +2,15 @@ var util = require('./util');
 
 var Chat = function(weibo_id) {
   this.id = weibo_id;
+  // @type WeiboUser
   this.weiboUser = null;
   this.state = 'start';
 };
 
 Chat.ERROR_MESSAGE = '王婆生病了，正在恢复中，暂时不能为您服务，请原谅。';
 
-Chat.pendingChats = [];
+// 待保存的微博用户信息
+Chat.pendingWeiboUsers = [];
 
 var saving = false;
 // 定时保存缓存中的WeiboUser数据
@@ -16,12 +18,12 @@ setInterval(function() {
   if (saving) {
     return;
   }
-  var n = Chat.pendingChats.length;
-  if (Chat.pendingChats.length === 0) {
+  var n = Chat.pendingWeiboUsers.length;
+  if (Chat.pendingWeiboUsers.length === 0) {
     return;
   }
   saving = true;
-  var user = Chat.pendingChats.shift();
+  var user = Chat.pendingWeiboUsers.shift();
   user.save(function(err, saved){
     if (err) {
       console.error('Failed to save WeiboUser: ' + err);
@@ -67,7 +69,7 @@ Chat.prototype = {
           cb('您输入的性别格式有误，请重新输入，男生回复1，女生回复2');
           return;
         }
-        user.userSexual = text === '1' ? '男' : '女';
+        user.gender = text === '1' ? '男' : '女';
         this.save();
         break;
       case 'birthday':
@@ -85,7 +87,7 @@ Chat.prototype = {
           cb('您您输入的身高数据有误，请重新输入');
           return;
         }
-        user.userHight = height;
+        user.height = height;
         this.save();
         break;
       case 'location':
@@ -120,13 +122,13 @@ Chat.prototype = {
   },
 
   checkUser: function(user) {
-    if (!user.userSexual) {
+    if (!user.gender) {
       this.state = 'gender';
       return '男生回复1，女生回复2';
     } else if (!user.userBirthday) {
       this.state = 'birthday';
       return '请回复您的生日，格式为yymmdd，例如860214';
-    } else if (!user.userHight) {
+    } else if (!user.height) {
       this.state = 'height';
       return '请回复您的身高，如果您的身高为176公分，回复176';
     } else if (!user.userLocation) {
@@ -138,8 +140,8 @@ Chat.prototype = {
   },
 
   save: function() {
-    if (Chat.pendingChats.indexOf(this.weiboUser) === -1) {
-      Chat.pendingChats.push(this.weiboUser);
+    if (Chat.pendingWeiboUsers.indexOf(this.weiboUser) === -1) {
+      Chat.pendingWeiboUsers.push(this.weiboUser);
     }
   }
 };

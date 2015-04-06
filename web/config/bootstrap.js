@@ -19,16 +19,16 @@ module.exports.bootstrap = function(cb) {
           "innerId": "0001",
           "userName": "李小敏",
           "userBirthday": "1978.03.15",
-          "userSexual":  "男",
-          "userHight": "1.75",
+          "gender":  "男",
+          "height": 175,
           "userLocation": "北京"
         },
         {
           "innerId": "0002",
           "userName": "黄鹏",
           "userBirthday": "1987.06.15",
-          "userSexual":  "男",
-          "userHight": "1.79",
+          "gender":  "男",
+          "height": 179,
           "userLocation": "广州"
         }
       ];

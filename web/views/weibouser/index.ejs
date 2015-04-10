@@ -50,7 +50,7 @@
                                         </td>
                                         <td>
                                             <p data-placement="top" data-toggle="tooltip" title="删除">
-                                                <button class="btn btn-danger btn-xs" data-title="删除" data-toggle="modal" data-target="#delete" >
+                                                <button class="btn btn-danger btn-xs" data-id="<%= weibousers[i].id%>" data-title="删除" data-toggle="modal" data-target="#delete" >
                                                     <span class="glyphicon glyphicon-trash"></span>
                                                 </button>
                                             </p>
@@ -130,7 +130,7 @@
             </div>
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger">删除</button>
+                <button id="btnDelete" type="button" class="btn btn-danger" data-loading-text="删除中...">删除</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
             </div>
         </div><!-- /.modal-content -->

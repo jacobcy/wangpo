@@ -1,15 +1,37 @@
+const COUNT_PER_PAGE = 30;
+
 module.exports = {
   index : function(req,res){
-    WeiboUser.find({}).exec(function(err,found){
-      for (var i = 0; i < found.length; i++) {
-        var user = found[i];
-        var date = user.userBirthday;
-        user.formattedBirthday = date ? dateToString(date) : '';
+    WeiboUser.count().exec(function(err, count) {
+      if (err) {
+        res.serverError('Database error: ' + err);
+        return;
       }
-      res.view({
-        weibousers: found,
-        layout: 'main-layout'
+
+      var page = parseInt(req.param('page') || '1');
+      if (isNaN(page)) {
+        page = 1;
+      }
+
+      totalPages = Math.ceil(count / COUNT_PER_PAGE);
+
+      WeiboUser.find({
+        skip: (page - 1) * COUNT_PER_PAGE,
+        limit: COUNT_PER_PAGE
+      }).exec(function(err,found){
+        for (var i = 0; i < found.length; i++) {
+          var user = found[i];
+          var date = user.userBirthday;
+          user.formattedBirthday = date ? dateToString(date) : '';
+        }
+        res.view({
+          weibousers: found,
+          page: page,
+          totalPages: totalPages,
+          layout: 'main-layout'
+        });
       });
+
     });
   }
 };

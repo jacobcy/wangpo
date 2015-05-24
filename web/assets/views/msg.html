@@ -1,0 +1,16 @@
+<h1>This is the msg view.</h1>
+
+<div class="col-xs-12 col-sm-9">
+  <p>show message here</p>
+</div><!--/.col-xs-12.col-sm-9-->
+
+
+<div class="col-xs-6 col-sm-3 sidebar-offcanvas">
+  <div class="list-group">
+      <a ng-repeat="message in messages" ng-href="#/msg-detail/{{message.from}}" class="list-group-item">
+        <span ng-bind="message.from"></span>
+      </a>
+  </div>
+</div><!--/.sidebar-offcanvas-->
+
+

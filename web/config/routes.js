@@ -36,7 +36,9 @@ module.exports.routes = {
 
   '/index.html': 'MainController',
 
-  '/weibouser.html':'WeiboUserController.index',
+  '/weibouser.html':'WeiboUserController.list',
+
+  '/angular.html':'MainController.angular',
 
   '/blank-page.html': 'MainController.blankPage',
 

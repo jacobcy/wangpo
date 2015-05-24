@@ -22,5 +22,11 @@ module.exports = {
     return res.view('bootstrap-elements', {
       layout: 'main-layout'
     });
+  },
+
+  angular: function(req, res) {
+    return res.view('angular', {
+      layout: 'main-layout'
+    });
   }
 };

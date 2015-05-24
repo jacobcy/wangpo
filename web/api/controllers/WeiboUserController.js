@@ -1,7 +1,7 @@
 const COUNT_PER_PAGE = 30;
 
 module.exports = {
-  index : function(req,res){
+  list : function(req,res){
     WeiboUser.count().exec(function(err, count) {
       if (err) {
         res.serverError('Database error: ' + err);

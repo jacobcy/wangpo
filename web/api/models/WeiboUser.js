@@ -24,6 +24,7 @@ var WeiboUser = {
 
   beforeCreate: function(user, next) {
     if (user.userName) {
+      next();
       return;
     }
     // 通过微博uid获取微博用户详细信息

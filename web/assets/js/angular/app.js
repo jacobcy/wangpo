@@ -8,23 +8,25 @@
  *
  * Main module of the application.
  */
-angular
-  .module('angularViqunApp', [])
+angular.module('myApp', [
+  'ngRoute', //angular-route
+  'ngSails', // angular-sails
+  'ngResource',//angular-resource
+  'myApp.filters',
+  'myApp.services',
+  'myApp.directives',
+  'myApp.controllers'
+  ])
   .config(function ($routeProvider) {
     $routeProvider
-      .when('/angular.html', {
+      .when('/', {
         templateUrl: 'views/main.html',
         controller: 'MainCtrl'
-      })
-      .when('/about', {
-        templateUrl: 'views/about.html',
-        controller: 'AboutCtrl'
       })
       .when('/user', {
         templateUrl: 'views/user-list.html',
         controller: 'UserCtrl'
       })
-
     .when('/user-detail/:id', {
         templateUrl: 'views/user-detail.html',
         controller: 'UserDetailCtrl'
@@ -33,14 +35,9 @@ angular
         templateUrl: 'views/user-creation.html',
         controller: 'UserCreationCtrl'
       })
-
       .when('/msg', {
         templateUrl: 'views/msg.html',
         controller: 'MsgCtrl'
-      })
-      .when('/msg-detail/:id', {
-        templateUrl: 'views/msg-detail.html',
-        controller: 'MsgDetailCtrl'
       })
       .when('/post', {
         templateUrl: 'views/post.html',

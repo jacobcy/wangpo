@@ -5,16 +5,13 @@
 var myAppServices = angular.module('myApp.services', []);
 
 myAppServices
-  .factory('userList', function ($resource) {
-    return $resource('http://localhost:1337/weibouser/',{},{
-      query: { method: 'GET', isArray: true },
+  .service('userFactory', function ($resource) {
+
+    this.list = $resource('http://localhost:1337/weibouser/',{},{
       create: { method: 'POST' }
     });
-  });
 
-myAppServices
-  .factory('userFactory', function ($resource) {
-    return $resource('http://localhost:1337/weibouser/:id', {}, {
+    this.user = $resource('http://localhost:1337/weibouser/:id', {}, {
       show: { method: 'GET' },
       update: { method: 'PUT', params: {id: '@id'} },
       delete: { method: 'DELETE', params: {id: '@id'} }

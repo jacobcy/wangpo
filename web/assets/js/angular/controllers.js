@@ -4,6 +4,7 @@
 
 var myAppControllers = angular.module('myApp.controllers', []);
 
+//导航栏当前页高亮效果
 myAppControllers
   .controller('NavCtrl', function ($scope, $location) {
     $scope.isActive = function (route){
@@ -11,74 +12,26 @@ myAppControllers
     };
   });
 
+//欢迎界面
 myAppControllers
   .controller('MainCtrl', function ($scope) {
     $scope.test = '欢迎进入后台管理系统！';
   });
 
+//微博收发界面
 myAppControllers
-  .controller('UserCtrl1', ['$scope', 'userList', 'userFactory', '$location',
-    function($scope, userList, userFactory, $location){
-
-      // callback for ng-click 'editUser':
-      $scope.editUser = function (userId) {
-        $location.path('/user-detail/' + userId);
-      };
-
-      // callback for ng-click 'deleteUser':
-      $scope.deleteUser = function (userId) {
-        userFactory.delete({ id: userId });
-      };
-
-      // callback for ng-click 'createUser':
-      $scope.createNewUser = function () {
-        $location.path('/user-creation');
-      };
-
-      $scope.users = userList.query();
-
+  .controller('PostCtrl',['$scope',
+    function ($scope) {
     }]);
 
-myAppControllers
-  .controller('UserCreationCtrl', ['$scope', 'userList', '$location',
-    function ($scope, userList, $location) {
-
-      // callback for ng-click 'createNewUser':
-      $scope.createNewUser = function () {
-        userList.create($scope.user);
-        $location.path('/user');
-      };
-
-      // callback for ng-click 'cancel':
-      $scope.cancel = function () {
-        $location.path('/user');
-      };
-
-    }]);
-
-myAppControllers
-  .controller('UserDetailCtrl', ['$scope', '$routeParams', 'userFactory', '$location',
-    function ($scope, $routeParams, userFactory, $location) {
-
-      // callback for ng-click 'updateUser':
-      $scope.updateUser = function () {
-        userFactory.update($scope.user);
-        $location.path('/user');
-      };
-
-      // callback for ng-click 'cancel':
-      $scope.cancel = function () {
-        $location.path('/user');
-      };
-
-      $scope.user = userFactory.show({id: $routeParams.id});
-    }]);
-
+//消息界面
 myAppControllers
   .controller('MsgCtrl',['$scope', 'msgList',
     function ($scope, msgList) {
       msgList.success(function(data){
         $scope.msgs = data;
+
+        //获得消息人列表
         var msgers= [];
         for( var i in data){
           var msgFrom = data[i].from;
@@ -100,71 +53,118 @@ myAppControllers
       };
     }]);
 
+//通过socket实现用户列表
 myAppControllers
-  .controller('PostCtrl',['$scope',
-    function ($scope) {
-    }]);
+  .controller('UserCtrl',  ['$scope','$sails', '$location', 'userFactory',
+    function($scope, $sails, $location, userFactory) {
 
+      void function() {
+        var lookup = {};
 
-myAppControllers
-  .controller('UserCtrl',  ['$scope','$sails',
-    function($scope, $sails) {
-      console.log('use sails');
-      $scope.users = [];
-      $scope.lookup ={};
-
-      (function() {
+        //get userlist
         $sails.get("/weibouser")
-          .success(function (response) {
-            $scope.users = response;
-            $scope.lookup = {};
-            for (var i in $scope.users) {
-              $scope.lookup[$scope.users[i].id] = i;
-              console.log(  $scope.lookup[$scope.users[i].id] );
+          .success(function (data) {
+            $scope.users = data.reverse();
+            for (var i in $scope.users){
+              lookup[$scope.users[i].id] = i;
             };
-        })
-          .error(function (response) {
-            console.log('error');});
+          })
+          .error(function (res) {
+            console.log('errors: '+res);});
 
-        $sails.on('users', function ( message ) {
-          console.log('sails published a message for item: '+message.verb);
-          switch (message.verb)
-          {
+        // callback for ng-click 'deleteUser':
+        $scope.deleteUser = function (userId) {
+          var idx = lookup[userId];
+          $sails.delete('/weibouser',{id:userId})
+            .success(function(){
+              $scope.users.splice(idx,1);
+              for (var i in $scope.users){
+                lookup[$scope.users[i].id] = i;
+              };
+            })
+            .error(function(res){
+              console.log('errors: '+res);
+            })
+        };
+
+        //watch userlist change
+        $sails.on('weibouser', function ( message ) {
+          console.log("pushing "+JSON.stringify(message));
+          var idx = lookup[message.id];
+          switch (message.verb){
             case 'created':
-              console.log("pushing "+JSON.stringify(message.data));
-              $scope.users.push(message.data);
-              $scope.lookup = {};
-              for (var i in $scope.users)
-              {
-                $scope.lookup[$scope.users[i].id] = i;
-              }
+              $scope.users.unshift(message.data);
+              for (var i in $scope.users){
+                lookup[$scope.users[i].id] = i;
+              };
               break;
             case 'destroyed':
-              $scope.users = $scope.users.filter(function(item) {
-                return item.id != message.id;
-              });
-              $scope.lookup = {};
-              for (var i in $scope.users)
-              {
-                $scope.lookup[$scope.users[i].id] = i;
-              }
+              $scope.users.splice(idx,1);
+              for (var i in $scope.users){
+                lookup[$scope.users[i].id] = i;
+              };
               break;
-            case 'addedTo':
-              var idx = $scope.lookup[message.id];
-              $sails.get("/task/"+message.addedId).success(function (aTask) {
-                $scope.users[idx].tasks.push(aTask);
-              }).error(function (aTask) { console.log('error');});
+            case 'updated':
+              $scope.users.splice([idx],1,message.data) ;
               break;
-            case 'removedFrom':
-              var idx = $scope.lookup[message.id];
-              $scope.users[idx].tasks = $scope.users[idx].tasks.filter(function(task) {
-                return task.id != message.removedId;
-              });
-              break;
-          }
+          };
         });
 
-      })();
-      ///////////
+      }();
 
+
+
+      // callback for ng-click 'createUser':
+      $scope.createNewUser = function () {
+        $location.path('/user-creation');
+      };
+
+      // callback for ng-click 'editUser':
+      $scope.editUser = function (userId) {
+        $location.path('/user-detail/' + userId);
+      };
+
+
+    }]);
+
+//创建用户页
+myAppControllers
+  .controller('UserCreationCtrl', ['$scope', '$sails','userFactory', '$location',
+    function ($scope, $sails, userFactory, $location) {
+
+      // callback for ng-click 'createNewUser':
+      $scope.createNewUser = function () {
+        $sails.post("/weibouser/", $scope.user)
+          .success( function(){
+            $location.path('/user')
+          })
+          .error( function(res){
+            console.log('create user errors: '+ res);
+          })
+      };
+
+      // callback for ng-click 'cancel':
+      $scope.cancel = function () {
+        $location.path('/user');
+      };
+
+    }]);
+
+//用户详情页
+myAppControllers
+  .controller('UserDetailCtrl', ['$scope', '$routeParams', 'userFactory', '$location',
+    function ($scope, $routeParams, userFactory, $location) {
+
+      // callback for ng-click 'updateUser':
+      $scope.updateUser = function () {
+        userFactory.user.update($scope.user);
+        $location.path('/user');
+      };
+
+      // callback for ng-click 'cancel':
+      $scope.cancel = function () {
+        $location.path('/user');
+      };
+
+      $scope.user = userFactory.user.show({id: $routeParams.id});
     }]);

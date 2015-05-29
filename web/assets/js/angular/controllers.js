@@ -7,7 +7,7 @@ var myAppControllers = angular.module('myApp.controllers', []);
 //导航栏当前页高亮效果
 myAppControllers
   .controller('NavCtrl', function ($scope, $location) {
-    $scope.isActive = function (route){
+    $scope.isActive = function (route) {
       return route === $location.path();
     };
   });
@@ -20,25 +20,25 @@ myAppControllers
 
 //微博收发界面
 myAppControllers
-  .controller('PostCtrl',['$scope',
+  .controller('PostCtrl', ['$scope',
     function ($scope) {
     }]);
 
 //消息界面
 myAppControllers
-  .controller('MsgCtrl',['$scope', 'msgList',
+  .controller('MsgCtrl', ['$scope', 'msgList',
     function ($scope, msgList) {
-      msgList.success(function(data){
+      msgList.success(function (data) {
         $scope.msgs = data;
 
         //获得消息人列表
-        var msgers= [];
-        for( var i in data){
+        var msgers = [];
+        for (var i in data) {
           var msgFrom = data[i].from;
-          if( !inArray( msgers, msgFrom) ){
+          if (!inArray(msgers, msgFrom)) {
             msgers.push(msgFrom);
-          };
-        };
+          }
+        }
         $scope.msgers = msgers;
       });
 
@@ -47,99 +47,25 @@ myAppControllers
         for (var i = 0; i < arr.length; i++) {
           if (arr[i] == item) {
             return true;
-          };
-        };
+          }
+        }
         return false;
-      };
-    }]);
-
-//通过socket实现用户列表
-myAppControllers
-  .controller('UserCtrl',  ['$scope','$sails', '$location', 'userFactory',
-    function($scope, $sails, $location, userFactory) {
-
-      void function() {
-        var lookup = {};
-
-        //get userlist
-        $sails.get("/weibouser")
-          .success(function (data) {
-            $scope.users = data.reverse();
-            for (var i in $scope.users){
-              lookup[$scope.users[i].id] = i;
-            };
-          })
-          .error(function (res) {
-            console.log('errors: '+res);});
-
-        // callback for ng-click 'deleteUser':
-        $scope.deleteUser = function (userId) {
-          var idx = lookup[userId];
-          $sails.delete('/weibouser',{id:userId})
-            .success(function(){
-              $scope.users.splice(idx,1);
-              for (var i in $scope.users){
-                lookup[$scope.users[i].id] = i;
-              };
-            })
-            .error(function(res){
-              console.log('errors: '+res);
-            })
-        };
-
-        //watch userlist change
-        $sails.on('weibouser', function ( message ) {
-          console.log("pushing "+JSON.stringify(message));
-          var idx = lookup[message.id];
-          switch (message.verb){
-            case 'created':
-              $scope.users.unshift(message.data);
-              for (var i in $scope.users){
-                lookup[$scope.users[i].id] = i;
-              };
-              break;
-            case 'destroyed':
-              $scope.users.splice(idx,1);
-              for (var i in $scope.users){
-                lookup[$scope.users[i].id] = i;
-              };
-              break;
-            case 'updated':
-              $scope.users.splice([idx],1,message.data) ;
-              break;
-          };
-        });
-
-      }();
-
-
-
-      // callback for ng-click 'createUser':
-      $scope.createNewUser = function () {
-        $location.path('/user-creation');
-      };
-
-      // callback for ng-click 'editUser':
-      $scope.editUser = function (userId) {
-        $location.path('/user-detail/' + userId);
-      };
-
-
+      }
     }]);
 
 //创建用户页
 myAppControllers
-  .controller('UserCreationCtrl', ['$scope', '$sails','userFactory', '$location',
+  .controller('UserCreationCtrl', ['$scope', '$sails', 'userFactory', '$location',
     function ($scope, $sails, userFactory, $location) {
 
       // callback for ng-click 'createNewUser':
-      $scope.createNewUser = function () {
+      $scope.createUser = function () {
         $sails.post("/weibouser/", $scope.user)
-          .success( function(){
+          .success(function () {
             $location.path('/user')
           })
-          .error( function(res){
-            console.log('create user errors: '+ res);
+          .error(function (res) {
+            console.log('create user errors: ' + res);
           })
       };
 
@@ -147,7 +73,6 @@ myAppControllers
       $scope.cancel = function () {
         $location.path('/user');
       };
-
     }]);
 
 //用户详情页
@@ -168,3 +93,85 @@ myAppControllers
 
       $scope.user = userFactory.user.show({id: $routeParams.id});
     }]);
+
+myAppControllers
+  .controller('UserCtrl', ['$scope', '$location', 'userFactory',
+    function ($scope, $location, userFactory) {
+
+      //Websocket方法
+
+      //获得用户列表
+      userFactory.query(function (data) {
+        $scope.users = data.reverse();
+      });
+
+      // 删除用户数据
+      $scope.deleteUser = function (id) {
+        userFactory.delete(id);
+        console.log(id);
+      };
+
+      /* 通过Websocket返回值监控页面刷新
+       void function () {
+        var lookup = {};
+       $sails.on('weibouser', function (message) {
+       console.log("pushing " + JSON.stringify(message));
+          var idx = lookup[message.id];
+       switch (message.verb) {
+            case 'created':
+              $scope.users.unshift(message.data);
+       for (var i in $scope.users) {
+                lookup[$scope.users[i].id] = i;
+       }
+       ;
+              break;
+            case 'destroyed':
+       $scope.users.splice(idx, 1);
+       for (var i in $scope.users) {
+                lookup[$scope.users[i].id] = i;
+       }
+       ;
+              break;
+            case 'updated':
+       $scope.users.splice([idx], 1, message.data);
+              break;
+          };
+        });
+      }();
+       */
+
+      /* AjAX方法 页面不跳转
+
+       //get user list
+       $scope.users = userFactory.userList.$query();
+
+       // callback for ng-click 'createUser': 未验证
+       $scope.createUser = userFactory.userCreate($scope.user);
+
+
+       // get user detail
+       $scope.editUser = function (userId) {
+       userFactory.userDetail(userId)
+       .then(function(data){
+       $scope.user = data;
+       })
+       };
+       */
+
+      /*
+       /* AJAX方法 通过页面跳转
+
+      // callback for ng-click 'createUser':
+       $scope.createUser = function () {
+        $location.path('/user-creation');
+      };
+
+      // callback for ng-click 'editUser':
+      $scope.editUser = function (userId) {
+        $location.path('/user-detail/' + userId);
+      };
+       */
+
+    }]);
+
+

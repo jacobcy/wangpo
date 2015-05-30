@@ -21,7 +21,7 @@
       <td><span ng-bind="user.height"></span></td>
       <td><span ng-bind="user.userLocation"></span></td>
       <td>
-        <a ng-click="editUser(user.id)" class="btn btn-primary btn-xs">
+        <a ng-click="getUser(user.id)" class="btn btn-primary btn-xs">
           <span class="glyphicon glyphicon-pencil"></span>
         </a>
       </td>
@@ -33,7 +33,7 @@
     </tr>
     </tbody>
   </table>
-  <a ng-click="createNewUser()" class="btn btn-primary">添加</a>
+  <a ng-click="createUser()" class="btn btn-primary">添加</a>
 </div>
 
 <div class="col-xs-4 col-sm-4 sidebar-offcanvas">
@@ -92,7 +92,7 @@
     <div class="control-group">
       <div class="controls">
         <!-- user-detail.html: -->
-        <a ng-click="updateUser(user.innerId)" class="btn btn-small btn-primary">更新</a>
+        <a ng-click="updateUser(user.id)" class="btn btn-small btn-primary">更新</a>
         <a ng-click="cancel()" class="btn btn-small">取消</a>
       </div>
     </div>
@@ -100,5 +100,4 @@
   </form>
 
 </div>
-<p>{{list}}</p>
 

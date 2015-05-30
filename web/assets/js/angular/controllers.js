@@ -100,44 +100,78 @@ myAppControllers
 
       //Websocket方法
 
+      //为用户列表编号
+      var lookup = {};
+      var line = function (arr) {
+        var arr = new Array;
+        var obj = new Object;
+        for (var i in arr) {
+          obj[arr[i].id] = i;
+        };
+        console.log(obj);
+        return obj;
+      };
+
       //获得用户列表
-      userFactory.query(function (data) {
-        $scope.users = data.reverse();
-      });
+        userFactory.query(function (data) {
+          $scope.users = data;
+          //lookup = line($scope.users);
+          for (var i in $scope.users){
+            lookup[$scope.users[i].id] = i}
+          console.log(lookup);
+        });
+
+      //获得用户资料
+      $scope.getUser = function (id) {
+        userFactory.get(id, function (data) {
+          $scope.user = data;
+        });
+      };
 
       // 删除用户数据
       $scope.deleteUser = function (id) {
         userFactory.delete(id);
-        console.log(id);
+      };
+
+      //更新用户数据
+      $scope.updateUser = function(id){
+        userFactory.update(id, $scope.user);
+      };
+
+      //创建用户
+      $scope.createUser = function(id){
+        userFactory.create(id, $scope.user);
+        $scope.users.unshift($scope.user);
+        $scope.user = {};
       };
 
       /* 通过Websocket返回值监控页面刷新
        void function () {
-        var lookup = {};
+       var lookup = {};
        $sails.on('weibouser', function (message) {
        console.log("pushing " + JSON.stringify(message));
-          var idx = lookup[message.id];
+       var idx = lookup[message.id];
        switch (message.verb) {
-            case 'created':
-              $scope.users.unshift(message.data);
+       case 'created':
+       $scope.users.unshift(message.data);
        for (var i in $scope.users) {
-                lookup[$scope.users[i].id] = i;
+       lookup[$scope.users[i].id] = i;
        }
        ;
-              break;
-            case 'destroyed':
+       break;
+       case 'destroyed':
        $scope.users.splice(idx, 1);
        for (var i in $scope.users) {
-                lookup[$scope.users[i].id] = i;
+       lookup[$scope.users[i].id] = i;
        }
        ;
-              break;
-            case 'updated':
+       break;
+       case 'updated':
        $scope.users.splice([idx], 1, message.data);
-              break;
-          };
-        });
-      }();
+       break;
+       };
+       });
+       }();
        */
 
       /* AjAX方法 页面不跳转
@@ -161,15 +195,15 @@ myAppControllers
       /*
        /* AJAX方法 通过页面跳转
 
-      // callback for ng-click 'createUser':
+       // callback for ng-click 'createUser':
        $scope.createUser = function () {
-        $location.path('/user-creation');
-      };
+       $location.path('/user-creation');
+       };
 
-      // callback for ng-click 'editUser':
-      $scope.editUser = function (userId) {
-        $location.path('/user-detail/' + userId);
-      };
+       // callback for ng-click 'editUser':
+       $scope.editUser = function (userId) {
+       $location.path('/user-detail/' + userId);
+       };
        */
 
     }]);

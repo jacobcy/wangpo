@@ -4,6 +4,7 @@
 
 var myAppControllers = angular.module('myApp.controllers', []);
 
+//TODO：需要改写为directive
 //导航栏当前页高亮效果
 myAppControllers
   .controller('NavCtrl', function ($scope, $location) {
@@ -98,8 +99,8 @@ myAppControllers
   .controller('UserCtrl', ['$scope', '$location', 'userFactory',
     function ($scope, $location, userFactory) {
 
-      //Websocket方法
 
+      //Websocket方法
       //为用户列表编号
       var lookup = {};
       var line = function (arr) {

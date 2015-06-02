@@ -49,14 +49,20 @@
     -->
 
     <!--STYLES-->
-    <link rel="stylesheet" href="/styles/importer.css">
+    <link rel="stylesheet" href="/styles/bootstrap-social.css">
+    <link rel="stylesheet" href="/styles/bootstrap.css">
+    <link rel="stylesheet" href="/styles/dataTables.responsive.css">
+    <link rel="stylesheet" href="/styles/font-awesome.css">
+    <link rel="stylesheet" href="/styles/jquery.dataTables.css">
+    <link rel="stylesheet" href="/styles/metisMenu.css">
+    <link rel="stylesheet" href="/styles/morris.css">
+    <link rel="stylesheet" href="/styles/sb-admin-2.css">
     <!--STYLES END-->
 
     <!--SCRIPTS-->
     <script src="js/dependencies/sails.io.js"></script>
     <script src="js/dependencies/angular.js"></script>
     <script src="js/dependencies/jquery.js"></script>
-    <script src="js/bootstrap.min.js"></script>
     <script src="js/angular-resource.js"></script>
     <script src="js/angular-route.js"></script>
     <script src="js/angular-sails.js"></script>
@@ -65,7 +71,19 @@
     <script src="js/angular/directives.js"></script>
     <script src="js/angular/filters.js"></script>
     <script src="js/angular/services.js"></script>
-    <script src="js/bootstrap-paginator.min.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/holder.js"></script>
+    <script src="js/jquery.dataTables.js"></script>
+    <script src="js/jquery.flot.js"></script>
+    <script src="js/jquery.flot.tooltip.js"></script>
+    <script src="js/metisMenu.js"></script>
+    <script src="js/mocha.js"></script>
+    <script src="js/morris.js"></script>
+    <script src="js/raphael.js"></script>
+    <script src="js/sb-admin-2.js"></script>
+    <script src="js/table/dataTables.responsive.js"></script>
+    <script src="js/table/sum().js"></script>
+    <script src="js/weibouser/bootstrap-paginator.min.js"></script>
     <script src="js/weibouser/main.js"></script>
     <!--SCRIPTS END-->
 </head>
@@ -75,7 +93,7 @@
     <div id="wrapper">
 
         <!-- Navigation -->
-        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <nav class="navbar navbar-inverse" role="navigation">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
@@ -108,7 +126,7 @@
                         <a href="index.html"><i class="fa fa-fw fa-dashboard"></i> 消息管理</a>
                     </li>
                     <li>
-                        <a href="angular.html"><i class="fa fa-fw fa-table"></i> Angular</a>
+                        <a href="angular.html"><i class="fa fa-home fa-fw"></i> Angular</a>
                     </li>
                     <li>
                         <a href="weibouser.html"><i class="fa fa-fw fa-table"></i> 用户管理</a>
@@ -176,17 +194,17 @@
       ========================
 
       You can always bring in JS files manually with `script` tags, or asynchronously
-      on the client using a solution like AMD (RequireJS).  Or, if you like, you can 
+      on the client using a solution like AMD (RequireJS).  Or, if you like, you can
       take advantage of Sails' conventional asset pipeline (boilerplate Gruntfile).
 
       By default, files in your `assets/js` folder are included here
       automatically (between SCRIPTS and SCRIPTS END).  Both JavaScript (.js) and
       CoffeeScript (.coffee) are supported. In production, your scripts will be minified
       and concatenated into a single file.
-      
+
       To customize any part of the built-in behavior, just edit `tasks/pipeline.js`.
       For example, here are a few things you could do:
-          
+
           + Change the order of your scripts
           + Import scripts from other directories
           + Use a different preprocessor, like TypeScript

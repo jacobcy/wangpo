@@ -8,18 +8,60 @@
 module.exports = {
   index: function(req, res) {
     return res.view('index', {
+      layout: 'layout'
+    });
+  },
+
+  app: function(req, res) {
+    return res.view('angular', {
       layout: 'main-layout'
     });
   },
 
-  blankPage: function(req, res) {
-    return res.view('blank-page', {
+  messages: function(req, res) {
+    return res.view('messages', {
       layout: 'main-layout'
     });
   },
 
-  bootstrapElements: function(req, res) {
-    return res.view('bootstrap-elements', {
+  posts: function(req, res) {
+    return res.view('posts', {
+      layout: 'main-layout'
+    });
+  },
+
+  panels: function(req, res) {
+    return res.view('panels', {
+      layout: 'main-layout'
+    });
+  },
+
+  buttons: function(req, res) {
+    return res.view('buttons', {
+      layout: 'main-layout'
+    });
+  },
+
+  notifications: function(req, res) {
+    return res.view('notifications', {
+      layout: 'main-layout'
+    });
+  },
+
+  typography: function(req, res) {
+    return res.view('typography', {
+      layout: 'main-layout'
+    });
+  },
+
+  icons: function(req, res) {
+    return res.view('icons', {
+      layout: 'main-layout'
+    });
+  },
+
+  grid: function(req, res) {
+    return res.view('grid', {
       layout: 'main-layout'
     });
   },

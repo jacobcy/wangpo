@@ -34,15 +34,29 @@ module.exports.routes = {
 
   '/': '/index.html',
 
-  '/index.html': 'MainController',
+  '/app':'MainController.app',
+
+  '/index.html':'MainController.index',
 
   '/weibouser.html':'WeiboUserController.list',
 
-  '/angular.html':'MainController.angular',
+  '/messages.html': 'MainController.messages',
 
-  '/blank-page.html': 'MainController.blankPage',
+  '/posts.html': 'MainController.posts',
 
-  '/bootstrap-elements.html': 'MainController.bootstrapElements',
+  // UI ELEMENTS
+
+  '/panels.html': 'MainController.panels',
+
+  '/buttons.html': 'MainController.buttons',
+
+  '/notifications.html': 'MainController.notifications',
+
+  '/typography.html': 'MainController.typography',
+
+  '/icons.html': 'MainController.icons',
+
+  '/grid.html': 'MainController.grid',
 
   /***************************************************************************
   *                                                                          *

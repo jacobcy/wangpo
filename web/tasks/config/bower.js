@@ -7,7 +7,7 @@ module.exports = function(grunt) {
       fonts_dest: '.tmp/public/fonts/',
       options: {
         keepExpandedHierarchy: false,
-        ignorePackages: ['bootstrap-paginator'],
+        ignorePackages: ['datatables-plugins','mocha','raphael'],
         packageSpecific: {
           angular: {
             js_dest: '.tmp/public/js/dependencies'
@@ -19,10 +19,7 @@ module.exports = function(grunt) {
             js_dest: '.tmp/public/js/dependencies'
           },
           'datatables-responsive': {
-            js_dest: '.tmp/public/js/table'
-          },
-          'datatables-plugins': {
-            js_dest: '.tmp/public/js/table'
+            js_dest: '.tmp/public/js/lib'
           }
         }
       }

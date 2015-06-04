@@ -22,11 +22,11 @@ angular.module('myApp', [
       //去掉url中的#，但是导致sails的路由处理错误
       //$locationProvider.html5Mode(true);
       $routeProvider
-        .when('/app', {
+        .when('/', {
           templateUrl: 'views/main.html',
           controller: 'MainCtrl'
         })
-        .when('/app/user', {
+        .when('/user', {
           templateUrl: 'views/user-list.html',
           controller: 'UserCtrl'
         })

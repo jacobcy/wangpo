@@ -7,7 +7,16 @@ module.exports = function(grunt) {
       fonts_dest: '.tmp/public/fonts/',
       options: {
         keepExpandedHierarchy: false,
-        ignorePackages: ['datatables-plugins','mocha','raphael'],
+        ignorePackages: ['bootstrap-social',//社交分享
+          'datatables-plugins',
+          'datatables-responsive',
+          'flot',//图表样式
+          'flot.tooltip',
+          'holderjs',//缩略图占位
+          'mocha',//单元测试
+          'morrisjs',//图表样式
+          'raphael'//矢量图形
+        ],
         packageSpecific: {
           angular: {
             js_dest: '.tmp/public/js/dependencies'

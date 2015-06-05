@@ -4,9 +4,9 @@ module.exports = function(grunt) {
       dest: '.tmp/public',
       js_dest: '.tmp/public/js',
       css_dest: '.tmp/public/styles',
-      fonts_dest: '.tmp/public/fonts/',
+      fonts_dest: '.tmp/public/styles',
       options: {
-        keepExpandedHierarchy: false,
+        //keepExpandedHierarchy: false,
         ignorePackages: ['bootstrap-social',//社交分享
           'datatables-plugins',
           'datatables-responsive',
@@ -27,8 +27,11 @@ module.exports = function(grunt) {
           jquery: {
             js_dest: '.tmp/public/js/dependencies'
           },
-          'datatables-responsive': {
-            js_dest: '.tmp/public/js/lib'
+          datatables: {
+            js_dest: '.tmp/public/js/dependencies'
+          },
+          bootstrap: {
+            js_dest: '.tmp/public/js/dependencies'
           }
         }
       }

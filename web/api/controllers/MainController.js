@@ -30,6 +30,18 @@ module.exports = {
     });
   },
 
+  tables: function(req, res) {
+    return res.view('tables', {
+      layout: 'main-layout'
+    });
+  },
+
+  forms: function(req, res) {
+    return res.view('forms', {
+      layout: 'main-layout'
+    });
+  },
+
   panels: function(req, res) {
     return res.view('panels', {
       layout: 'main-layout'

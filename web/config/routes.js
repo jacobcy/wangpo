@@ -46,6 +46,10 @@ module.exports.routes = {
 
   // UI ELEMENTS
 
+  '/tables.html': 'MainController.tables',
+
+  '/forms.html': 'MainController.forms',
+
   '/panels.html': 'MainController.panels',
 
   '/buttons.html': 'MainController.buttons',

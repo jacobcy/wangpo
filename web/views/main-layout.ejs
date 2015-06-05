@@ -40,30 +40,40 @@
   -->
 
   <!--STYLES-->
-  <link rel="stylesheet" href="/styles/bootstrap.css">
-  <link rel="stylesheet" href="/styles/font-awesome.css">
-  <link rel="stylesheet" href="/styles/jquery.dataTables.css">
-  <link rel="stylesheet" href="/styles/metisMenu.css">
-  <link rel="stylesheet" href="/styles/sb-admin-2.css">
+  <link rel="stylesheet" href="/styles/css/font-awesome.css">
+  <link rel="stylesheet" href="/styles/dist/css/bootstrap.css">
+  <link rel="stylesheet" href="/styles/dist/css/sb-admin-2.css">
+  <link rel="stylesheet" href="/styles/dist/metisMenu.css">
+  <link rel="stylesheet" href="/styles/dist/plugins/bootstrap/datatables.bootstrap.css">
+  <link rel="stylesheet" href="/styles/media/css/jquery.dataTables.css">
   <!--STYLES END-->
 
   <!--SCRIPTS-->
-  <script src="/js/dependencies/sails.io.js"></script>
   <script src="/js/dependencies/angular.js"></script>
-  <script src="/js/dependencies/jquery.js"></script>
+  <script src="/js/dependencies/dist/jquery.js"></script>
+  <script src="/js/dependencies/dist/js/bootstrap.js"></script>
+  <script src="/js/dependencies/dist/sails.io.js"></script>
+  <script src="/js/dependencies/media/js/jquery.dataTables.js"></script>
   <script src="/js/angular-resource.js"></script>
   <script src="/js/angular-route.js"></script>
-  <script src="/js/angular-sails.js"></script>
-  <script src="/js/angular/app.js"></script>
-  <script src="/js/angular/controllers.js"></script>
-  <script src="/js/angular/directives.js"></script>
-  <script src="/js/angular/filters.js"></script>
-  <script src="/js/angular/services.js"></script>
-  <script src="/js/bootstrap.js"></script>
-  <script src="/js/jquery.dataTables.js"></script>
+  <script src="/js/dist/angular-datatables.js"></script>
+  <script src="/js/dist/angular-sails.js"></script>
+  <script src="/js/dist/js/sb-admin-2.js"></script>
+  <script src="/js/dist/metisMenu.js"></script>
+  <script src="/js/dist/plugins/bootstrap/angular-datatables.bootstrap.js"></script>
+  <script src="/js/dist/plugins/colreorder/angular-datatables.colreorder.js"></script>
+  <script src="/js/dist/plugins/columnfilter/angular-datatables.columnfilter.js"></script>
+  <script src="/js/dist/plugins/colvis/angular-datatables.colvis.js"></script>
+  <script src="/js/dist/plugins/fixedcolumns/angular-datatables.fixedcolumns.js"></script>
+  <script src="/js/dist/plugins/fixedheader/angular-datatables.fixedheader.js"></script>
+  <script src="/js/dist/plugins/scroller/angular-datatables.scroller.js"></script>
+  <script src="/js/dist/plugins/tabletools/angular-datatables.tabletools.js"></script>
   <script src="/js/lib/bootstrap-paginator.min.js"></script>
-  <script src="/js/metisMenu.js"></script>
-  <script src="/js/sb-admin-2.js"></script>
+  <script src="/js/script/app.js"></script>
+  <script src="/js/script/controllers.js"></script>
+  <script src="/js/script/directives.js"></script>
+  <script src="/js/script/filters.js"></script>
+  <script src="/js/script/services.js"></script>
   <script src="/js/weibouser/main.js"></script>
   <!--SCRIPTS END-->
 </head>
@@ -182,28 +192,34 @@
           </li>
 
           <li>
-            <a href="/app#/"><i class="fa fa-home fa-fw"></i> Angular</a>
+            <a href="/app#/"><i class="fa fa-home fa-home"></i> Angular</a>
           </li>
 
           <li>
-            <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> 后台接口<span class="fa arrow"></span></a>
+            <a href="/admin"><i class="fa fa-bar-chart-o fa-dashboard"></i> 后台接口<span class="fa arrow"></span></a>
             <ul class="nav nav-second-level">
               <li>
-                <a href="/messages.html"><i class="fa fa-fw fa-dashboard"></i> 消息管理</a>
+                <a href="/weibouser.html"><i class="fa fa-fw fa-user"></i> 用户管理</a>
               </li>
               <li>
-                <a href="/weibouser.html"><i class="fa fa-fw fa-table"></i> 用户管理</a>
+                <a href="/messages.html"><i class="fa fa-fw fa-comment"></i> 消息管理</a>
               </li>
               <li>
-                <a href="/posts.html"><i class="fa fa-fw fa-file"></i> 微博管理</a>
+                <a href="/posts.html"><i class="fa fa-fw fa-weibo"></i> 微博管理</a>
               </li>
             </ul>
             <!-- /.nav-second-level -->
           </li>
 
           <li>
-            <a href="#"><i class="fa fa-wrench fa-fw"></i> UI Elements<span class="fa arrow"></span></a>
+            <a href="/ui"><i class="fa fa-wrench fa-fw"></i> UI Elements<span class="fa arrow"></span></a>
             <ul class="nav nav-second-level">
+              <li>
+                <a href="/tables.html">Tables</a>
+              </li>
+              <li>
+                <a href="/forms.html">Forms</a>
+              </li>
               <li>
                 <a href="/panels.html">Panels and Wells</a>
               </li>
@@ -260,7 +276,7 @@
     -->
 
     <!--TEMPLATES-->
-    
+
     <!--TEMPLATES END-->
 
   </div>

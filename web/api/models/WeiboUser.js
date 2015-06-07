@@ -19,7 +19,10 @@ var WeiboUser = {
     // e.g. "175", 单位厘米
     height: {type: 'integer'},
     // e.g. "北京"
-    userLocation: {type: 'string'}  
+    userLocation: {type: 'string'},
+    description: {type: 'string'},
+    lock: {type: 'boolean'},
+    avatar: {type: 'string'}
   },
 
   beforeCreate: function(user, next) {

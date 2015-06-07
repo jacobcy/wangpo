@@ -21,7 +21,10 @@ module.exports.bootstrap = function(cb) {
         "userBirthday": "1978.03.15",
         "gender":  "男",
         "height": 175,
-        "userLocation": "北京"
+        "userLocation": "北京",
+        "description": "这个人很懒，什么也没写",
+        "lock": false,
+        "avatar": "http://tp3.sinaimg.cn/3304467554/180/22869450874/0"
       },
       {
         "innerId": "0002",
@@ -29,7 +32,10 @@ module.exports.bootstrap = function(cb) {
         "userBirthday": "1987.06.15",
         "gender":  "男",
         "height": 179,
-        "userLocation": "广州"
+        "userLocation": "广州",
+        "description": "这个人很懒，什么也没写",
+        "lock": false,
+        "avatar": "http://tp3.sinaimg.cn/3304467554/180/22869450874/0"
       }
     ];
     WeiboUser.count().exec(function(err, count) {

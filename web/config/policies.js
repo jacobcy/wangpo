@@ -50,6 +50,7 @@ module.exports.policies = {
 	// }
 
  'main': {
+    'index': true,
     '*': ['passport', 'isAuthenticated']
   },
 

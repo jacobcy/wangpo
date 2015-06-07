@@ -17,6 +17,7 @@ module.exports = {
 
       WeiboUser.find({
         skip: (page - 1) * COUNT_PER_PAGE,
+        sort: 'updatedAt DESC',
         limit: COUNT_PER_PAGE
       }).exec(function(err,found){
         for (var i = 0; i < found.length; i++) {

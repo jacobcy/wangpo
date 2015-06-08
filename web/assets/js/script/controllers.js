@@ -96,9 +96,27 @@ myAppControllers
     }]);
 
 myAppControllers
+  .controller('UserTable',
+  function (DTOptionsBuilder, DTColumnBuilder, $resource, userFactory) {
+    var vm = this;
+    vm.dtOptions = DTOptionsBuilder.fromFnPromise(function () {
+
+      console.log('ajax =' + $resource('/weibouser').query());
+      console.log('sails = '+ userFactory.query());
+
+      return $resource('/weibouser').query().$promise;
+    }).withPaginationType('full_numbers');
+
+    vm.dtColumns = [
+      DTColumnBuilder.newColumn('innerId').withTitle('ID'),
+      DTColumnBuilder.newColumn('userName').withTitle('Name'),
+      DTColumnBuilder.newColumn('userLocation').withTitle('Location').notVisible()
+    ];
+  });
+
+myAppControllers
   .controller('UserCtrl', ['$scope', '$location', 'userFactory',
     function ($scope, $location, userFactory) {
-
 
       //Websocket方法
       //为用户列表编号
@@ -108,19 +126,21 @@ myAppControllers
         var obj = new Object;
         for (var i in arr) {
           obj[arr[i].id] = i;
-        };
+        }
+        ;
         console.log(obj);
         return obj;
       };
 
       //获得用户列表
-        userFactory.query(function (data) {
-          $scope.users = data;
-          //lookup = line($scope.users);
-          for (var i in $scope.users){
-            lookup[$scope.users[i].id] = i}
-          console.log(lookup);
-        });
+      userFactory.query(function (data) {
+        $scope.users = data;
+        //lookup = line($scope.users);
+        for (var i in $scope.users) {
+          lookup[$scope.users[i].id] = i
+        }
+        console.log(lookup);
+      });
 
       //获得用户资料
       $scope.getUser = function (id) {
@@ -135,12 +155,12 @@ myAppControllers
       };
 
       //更新用户数据
-      $scope.updateUser = function(id){
+      $scope.updateUser = function (id) {
         userFactory.update(id, $scope.user);
       };
 
       //创建用户
-      $scope.createUser = function(id){
+      $scope.createUser = function (id) {
         userFactory.create(id, $scope.user);
         $scope.users.unshift($scope.user);
         $scope.user = {};

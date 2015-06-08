@@ -42,10 +42,10 @@ myAppServices
       //webSocket方法
       return {
         //获得用户列表
-        query: function (callback) {
+        query: function () {
           myServer.userList
             .success(function (res) {
-              callback(res);
+              return res;
             })
             .error(function (res) {
               console.log(res)

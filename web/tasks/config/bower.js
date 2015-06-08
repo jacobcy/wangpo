@@ -4,10 +4,11 @@ module.exports = function(grunt) {
       dest: '.tmp/public',
       js_dest: '.tmp/public/js',
       css_dest: '.tmp/public/styles',
-      fonts_dest: '.tmp/public/styles',
+      fonts_dest: '.tmp/public/fonts',
       options: {
-        //keepExpandedHierarchy: false,
-        ignorePackages: ['bootstrap-social',//社交分享
+        keepExpandedHierarchy: false,
+        ignorePackages: [
+          'bootstrap-social',//社交分享
           'datatables-plugins',
           'datatables-responsive',
           'flot',//图表样式
@@ -18,13 +19,13 @@ module.exports = function(grunt) {
           'raphael'//矢量图形
         ],
         packageSpecific: {
-          angular: {
-            js_dest: '.tmp/public/js/dependencies'
-          },
           'sails.io.js': {
             js_dest: '.tmp/public/js/dependencies'
           },
           jquery: {
+            js_dest: '.tmp/public/js/dependencies'
+          },
+          angular: {
             js_dest: '.tmp/public/js/dependencies'
           },
           datatables: {

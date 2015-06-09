@@ -27,6 +27,9 @@
     "angular-route": "~1.4.0",
     "startbootstrap-sb-admin-2": "~1.0.7",
     "angular-resource": "~1.4.0",
-    "angular-datatables": "~0.4.3"
+    "angular-datatables": "~0.4.3",
+    "datatables-fixedheader": "~2.1.2",
+    "datatables-tabletools": "~2.2.4",
+    "jquery-datatables-column-filter": "*"
   }
 }

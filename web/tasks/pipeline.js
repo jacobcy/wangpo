@@ -31,8 +31,8 @@ var jsFilesToInject = [
   'js/dependencies/**/*.js',
 
   // All of the rest of your client-side js files
-  //'js/angular-datatables.js',
-
+  '/js/dataTables*.js',
+  '/js/jquery.dataTables*.js',
   // will be injected here in no particular order.
   'js/**/*.js'
 ];

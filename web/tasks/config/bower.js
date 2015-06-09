@@ -10,7 +10,7 @@ module.exports = function(grunt) {
         ignorePackages: [
           'bootstrap-social',//社交分享
           'datatables-plugins',
-          'datatables-responsive',
+          //'datatables-tabletools', //下载表格
           'flot',//图表样式
           'flot.tooltip',
           'holderjs',//缩略图占位

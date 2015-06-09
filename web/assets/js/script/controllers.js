@@ -2,7 +2,13 @@
 
 /* Controllers */
 
-var myAppControllers = angular.module('myApp.controllers', []);
+var myAppControllers = angular.module('myApp.controllers', [
+  'datatables', //表格样式
+  'datatables.tabletools', //下载表格
+  'datatables.bootstrap', //bootstrap样式
+  'datatables.columnfilter', //数据过滤
+  'datatables.fixedheader' //冻结头部
+]);
 
 //TODO：需要改写为directive
 //导航栏当前页高亮效果
@@ -11,22 +17,19 @@ myAppControllers
     $scope.isActive = function (route) {
       return route === $location.path();
     };
-  });
+  })
 
 //欢迎界面
-myAppControllers
   .controller('MainCtrl', function ($scope) {
     $scope.test = '欢迎进入后台管理系统！';
-  });
+  })
 
 //微博收发界面
-myAppControllers
   .controller('PostCtrl', ['$scope',
     function ($scope) {
-    }]);
+    }])
 
 //消息界面
-myAppControllers
   .controller('MsgCtrl', ['$scope', 'msgList',
     function ($scope, msgList) {
       msgList.success(function (data) {
@@ -52,10 +55,9 @@ myAppControllers
         }
         return false;
       }
-    }]);
+    }])
 
 //创建用户页
-myAppControllers
   .controller('UserCreationCtrl', ['$scope', '$sails', 'userFactory', '$location',
     function ($scope, $sails, userFactory, $location) {
 
@@ -74,10 +76,9 @@ myAppControllers
       $scope.cancel = function () {
         $location.path('/user');
       };
-    }]);
+    }])
 
 //用户详情页
-myAppControllers
   .controller('UserDetailCtrl', ['$scope', '$routeParams', 'userFactory', '$location',
     function ($scope, $routeParams, userFactory, $location) {
 
@@ -93,24 +94,96 @@ myAppControllers
       };
 
       $scope.user = userFactory.user.show({id: $routeParams.id});
-    }]);
+    }])
 
 myAppControllers
+
+  //通过dataTable插件来处理数据
   .controller('UserTable',
-  function (DTOptionsBuilder, DTColumnBuilder, $resource, userFactory) {
+  function (DTOptionsBuilder, DTColumnBuilder, $resource, $sails) {
     var vm = this;
     vm.dtOptions = DTOptionsBuilder.fromFnPromise(function () {
+      return $resource('/weibouser').query()
+        //$sails.get('/weibouser')
+        .$promise
+    })
+      //设置翻页效果
+      .withPaginationType('full')
+      //设置默认行数
+      .withDisplayLength(10)
+      // 展开、收起表格
+      .withOption('responsive', true)
+      // 使用bootstrap样式
+      /*
+      .withBootstrap()
+      .withBootstrapOptions({
+        TableTools: {
+          classes: {
+            container: 'btn-group',
+            buttons: {
+              normal: 'btn btn-danger'
+            }
+          }
+        },
+        pagination: {
+          classes: {
+            ul: 'pagination pagination-sm'
+          }
+        }
+      })*/
 
-      console.log('ajax =' + $resource('/weibouser').query());
-      console.log('sails = '+ userFactory.query());
+      //冻结表格首行
+      .withFixedHeader({bottom: false})
+      //允许下载表格
+      .withTableTools('swf/copy_csv_xls_pdf.swf')
+      .withTableToolsButtons([
+        'copy',
+        'print', {
+          'sExtends': 'collection',
+          'sButtonText': 'Save',
+          'aButtons': ['csv', 'xls', 'pdf']
+        }
+      ])
+      //过滤表格数据
+      .withColumnFilter({
+        aoColumns: [{
+          type: 'numble'
+        }, {
+          type: 'text',
+          bRegex: true,
+          bSmart: true
+        }, {
+          type: 'select',
+          bRegex: false,
+          values: ['男', '女']
+        }, {
+          type: 'text',
+          bRegex: true,
+          bSmart: true
+        }]
+      });
 
-      return $resource('/weibouser').query().$promise;
-    }).withPaginationType('full_numbers');
+    //手动刷新表格数据
+    vm.reloadData = reloadData;
+    vm.dtInstance = {};
+    function reloadData() {
+      var resetPaging = true;
+      vm.dtInstance.reloadData(callback, resetPaging);
+    }
 
+    function callback(json) {
+      console.log(json);
+    }
+
+    //显示表格数据
     vm.dtColumns = [
-      DTColumnBuilder.newColumn('innerId').withTitle('ID'),
-      DTColumnBuilder.newColumn('userName').withTitle('Name'),
-      DTColumnBuilder.newColumn('userLocation').withTitle('Location').notVisible()
+      DTColumnBuilder.newColumn('innerId').withTitle('ID').withOption('defaultContent', '-'),
+      DTColumnBuilder.newColumn('userName').withTitle('昵称').withOption('defaultContent', '-'),
+      DTColumnBuilder.newColumn('gender').withTitle('性别').withOption('defaultContent', '-'),
+      DTColumnBuilder.newColumn('userLocation').withTitle('地址').withOption('defaultContent', '-'),
+      // 展开显示数据
+      DTColumnBuilder.newColumn('userBirthday').withTitle('年龄').withOption('defaultContent', '-').withClass('none'),
+      DTColumnBuilder.newColumn('height').withTitle('身高').withOption('defaultContent', '-').withClass('none')
     ];
   });
 

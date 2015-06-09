@@ -12,7 +12,6 @@ angular.module('myApp', [
   'ngRoute', //angular-route
   'ngSails', // angular-sails
   'ngResource',//angular-resource
-  'datatables',//表格样式
   'myApp.filters',
   'myApp.services',
   'myApp.directives',

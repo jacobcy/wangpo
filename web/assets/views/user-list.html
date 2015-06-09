@@ -1,8 +1,23 @@
 <div class="row">
   <div class="col-md-8">
 
-    <div ng-controller="UserTable as users">
-      <table datatable="" dt-options="users.dtOptions" dt-columns="users.dtColumns" class="row-border hover"></table>
+    <div ng-controller="UserTable as showCase">
+      <p>
+        <button ng-click="showCase.reloadData()" type="button" class="btn btn-info">
+          <i class="fa fa-refresh"></i>&nbsp;Reload data
+        </button>
+      </p>
+      <p class="text-danger"><strong>{{ showCase.message }}</strong></p>
+      <table datatable="" dt-options="showCase.dtOptions" dt-columns="showCase.dtColumns" dt-instance="showCase.dtInstance" class="row-border hover">
+        <tfoot style="margin-top: 30px">
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Gender</th>
+          <th>Location</th>
+        </tr>
+        </tfoot>
+      </table>
     </div>
 
     <!--

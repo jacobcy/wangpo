@@ -1,0 +1,104 @@
+<div class="row" ng-controller="UserCtrl as showCase">
+  <div class="col-md-9">
+    <p>
+      <button ng-click="showCase.reloadData()" type="button" class="btn btn-primary">
+        <i class="fa fa-refresh"></i>&nbsp;手动刷新
+      </button>
+      <button ng-click="showCase.createUser()" type="button" class="btn btn-primary">
+        <i class="fa fa-exchange"></i>&nbsp;创建用户
+      </button>
+    </p>
+    <p class="text-danger"><strong>{{ showCase.message }}</strong></p>
+    <table datatable="" dt-options="showCase.dtOptions" dt-columns="showCase.dtColumns"
+           dt-instance="showCase.dtInstance" class="row-border hover">
+      <tfoot style="margin-top: 30px">
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Gender</th>
+        <th>Location</th>
+      </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <!--
+  <table datatable="" class="table table-hover">
+    <thead>
+    <tr>
+      <th>微博ID</th>
+      <th>微博帐号</th>
+      <th>出生日期</th>
+      <th>性别</th>
+      <th>身高</th>
+      <th>所在地</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="user in users">
+      <td><span ng-bind="user.innerId"></span></td>
+      <td><a ng-href="http://weibo.com/u/{{user.innerId}}"><span ng-bind="user.userName"></span></a></td>
+      <td><span ng-bind="user.userBirthday | date"></span></td>
+      <td><span ng-bind="user.gender"></span></td>
+      <td><span ng-bind="user.height"></span></td>
+      <td><span ng-bind="user.userLocation"></span></td>
+      <td>
+        <a ng-click="getUser(user.id)" class="btn btn-primary btn-xs">
+          <span class="glyphicon glyphicon-pencil"></span>
+        </a>
+      </td>
+      <td>
+        <a ng-click="deleteUser(user.id)" class="btn btn-danger btn-xs">
+          <span class="glyphicon glyphicon-remove"></span>
+        </a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  -->
+
+
+  <div class="col-md-2" ng-show="side">
+
+    <form role="form">
+
+      <div class="form-group">
+        <label class="control-label" for="innerId">微博ID：</label>
+        <input class="form-control" type="text" id="innerId" ng-model="user.innerId"/>
+      </div>
+
+      <div class="form-group">
+        <label class="control-label" for="userName">微博账号：</label>
+        <input class="form-control" type="text" id="userName" ng-model="user.userName"/>
+      </div>
+
+      <div class="form-group">
+        <label class="control-label" for="userBirthday">出生日期</label>
+        <input class="form-control" type="text" id="userBirthday" ng-model="user.userBirthday"/>
+      </div>
+
+      <div class="form-group">
+        <label class="control-label" for="gender">性别</label>
+        <input class="form-control" type="text" id="gender" ng-model="user.gender"/>
+      </div>
+
+      <div class="form-group">
+        <label class="control-label" for="height">身高</label>
+        <input class="form-control" type="text" id="height" ng-model="user.height"/>
+      </div>
+
+      <div class="form-group">
+        <label class="control-label" for="userLocation">城市</label>
+        <input class="form-control" type="text" id="userLocation" ng-model="user.userLocation"/>
+      </div>
+      <br/>
+
+      <div class="form-group">
+        <a ng-click="updateUser(user.id)" class="btn btn-small btn-primary"><i class="fa fa-check"></i>&nbsp;更新</a>
+        <a ng-click="cancel()" class="btn btn-small"><i fa-check ></i>取消</a>
+      </div>
+    </form>
+  </div>
+</div>

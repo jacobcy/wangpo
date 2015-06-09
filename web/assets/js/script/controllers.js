@@ -25,9 +25,8 @@ myAppControllers
   })
 
 //微博收发界面
-  .controller('PostCtrl', ['$scope',
-    function ($scope) {
-    }])
+  .controller('PostCtrl',function ($scope) {
+    })
 
 //消息界面
   .controller('MsgCtrl', ['$scope', 'msgList',
@@ -57,53 +56,67 @@ myAppControllers
       }
     }])
 
-//创建用户页
-  .controller('UserCreationCtrl', ['$scope', '$sails', 'userFactory', '$location',
-    function ($scope, $sails, userFactory, $location) {
-
-      // callback for ng-click 'createNewUser':
-      $scope.createUser = function () {
-        $sails.post("/weibouser/", $scope.user)
-          .success(function () {
-            $location.path('/user')
-          })
-          .error(function (res) {
-            console.log('create user errors: ' + res);
-          })
-      };
-
-      // callback for ng-click 'cancel':
-      $scope.cancel = function () {
-        $location.path('/user');
-      };
-    }])
-
-//用户详情页
-  .controller('UserDetailCtrl', ['$scope', '$routeParams', 'userFactory', '$location',
-    function ($scope, $routeParams, userFactory, $location) {
-
-      // callback for ng-click 'updateUser':
-      $scope.updateUser = function () {
-        userFactory.user.update($scope.user);
-        $location.path('/user');
-      };
-
-      // callback for ng-click 'cancel':
-      $scope.cancel = function () {
-        $location.path('/user');
-      };
-
-      $scope.user = userFactory.user.show({id: $routeParams.id});
-    }])
-
 myAppControllers
 
   //通过dataTable插件来处理数据
-  .controller('UserTable',
-  function (DTOptionsBuilder, DTColumnBuilder, $resource, $sails) {
+  .controller('UserCtrl',
+  function (DTOptionsBuilder, DTColumnBuilder, $resource, $scope, $compile) {
+    $scope.side=false;
     var vm = this;
+    vm.message = '';
+    vm.dtInstance = {};
+
+    vm.edit = edit;
+    function edit(id) {
+      vm.message = 'You are trying to edit the row with ID: ' + id;
+      // Edit some data and call server to make changes...
+      $scope.user = $resource('/weibouser/'+id).get();
+      $scope.side = true;
+      // Then reload the data so that DT is refreshed
+      vm.dtInstance.reloadData();
+    };
+    // callback for ng-click 'updateUser':
+    $scope.updateUser = function (id) {
+      $resource('/weibouser/'+id).update($scope.user);
+    };
+
+    vm.delete = deleteRow;
+    function deleteRow(id) {
+      vm.message = 'You are trying to remove the row with ID: ' + id;
+      // Delete some data and call server to make changes...
+      $resource('/weibouser/'+id).delete();
+      // Then reload the data so that DT is refreshed
+      vm.dtInstance.reloadData();
+    };
+
+    vm.createUser = function(){
+      $scope.user = {}
+      $scope.side = !$scope.side;
+    };
+
+    $scope.createUser = function () {
+      $resource.post("/weibouser/", $scope.user)
+        .success(function () {
+          $location.path('/user')
+        })
+        .error(function (res) {
+          console.log('create user errors: ' + res);
+        })
+    };
+
+    function createdRow(row, data, dataIndex) {
+      // Recompiling so we can bind Angular directive to the DT
+      $compile(angular.element(row).contents())($scope);
+    };
+
+    //手动刷新表格数据
+    vm.reloadData = reloadData;
+    function reloadData() {
+      vm.dtInstance.reloadData();
+    };
+
     vm.dtOptions = DTOptionsBuilder.fromFnPromise(function () {
-      return $resource('/weibouser').query()
+      return $resource('/weibouser/').query()
         //$sails.get('/weibouser')
         .$promise
     })
@@ -111,6 +124,8 @@ myAppControllers
       .withPaginationType('full')
       //设置默认行数
       .withDisplayLength(10)
+      //新建数据
+      .withOption('createdRow', createdRow)
       // 展开、收起表格
       .withOption('responsive', true)
       // 使用bootstrap样式
@@ -131,7 +146,6 @@ myAppControllers
           }
         }
       })*/
-
       //冻结表格首行
       .withFixedHeader({bottom: false})
       //允许下载表格
@@ -163,143 +177,28 @@ myAppControllers
         }]
       });
 
-    //手动刷新表格数据
-    vm.reloadData = reloadData;
-    vm.dtInstance = {};
-    function reloadData() {
-      var resetPaging = true;
-      vm.dtInstance.reloadData(callback, resetPaging);
-    }
-
-    function callback(json) {
-      console.log(json);
-    }
-
     //显示表格数据
     vm.dtColumns = [
       DTColumnBuilder.newColumn('innerId').withTitle('ID').withOption('defaultContent', '-'),
       DTColumnBuilder.newColumn('userName').withTitle('昵称').withOption('defaultContent', '-'),
       DTColumnBuilder.newColumn('gender').withTitle('性别').withOption('defaultContent', '-'),
       DTColumnBuilder.newColumn('userLocation').withTitle('地址').withOption('defaultContent', '-'),
+      DTColumnBuilder.newColumn(null).withTitle('Actions').notSortable()
+        .renderWith(actionsHtml),
       // 展开显示数据
       DTColumnBuilder.newColumn('userBirthday').withTitle('年龄').withOption('defaultContent', '-').withClass('none'),
       DTColumnBuilder.newColumn('height').withTitle('身高').withOption('defaultContent', '-').withClass('none')
     ];
+
+    function actionsHtml(data, type, full, meta) {
+      return '<button class="btn btn-warning" ng-click="showCase.edit(' + data.id + ')">' +
+        '   <i class="fa fa-edit"></i>' +
+        '</button>&nbsp;' +
+        '<button class="btn btn-danger" ng-click="showCase.delete(' + data.id + ')">' +
+        '   <i class="fa fa-trash-o"></i>' +
+        '</button>';
+    };
   });
 
-myAppControllers
-  .controller('UserCtrl', ['$scope', '$location', 'userFactory',
-    function ($scope, $location, userFactory) {
-
-      //Websocket方法
-      //为用户列表编号
-      var lookup = {};
-      var line = function (arr) {
-        var arr = new Array;
-        var obj = new Object;
-        for (var i in arr) {
-          obj[arr[i].id] = i;
-        }
-        ;
-        console.log(obj);
-        return obj;
-      };
-
-      //获得用户列表
-      userFactory.query(function (data) {
-        $scope.users = data;
-        //lookup = line($scope.users);
-        for (var i in $scope.users) {
-          lookup[$scope.users[i].id] = i
-        }
-        console.log(lookup);
-      });
-
-      //获得用户资料
-      $scope.getUser = function (id) {
-        userFactory.get(id, function (data) {
-          $scope.user = data;
-        });
-      };
-
-      // 删除用户数据
-      $scope.deleteUser = function (id) {
-        userFactory.delete(id);
-      };
-
-      //更新用户数据
-      $scope.updateUser = function (id) {
-        userFactory.update(id, $scope.user);
-      };
-
-      //创建用户
-      $scope.createUser = function (id) {
-        userFactory.create(id, $scope.user);
-        $scope.users.unshift($scope.user);
-        $scope.user = {};
-      };
-
-      /* 通过Websocket返回值监控页面刷新
-       void function () {
-       var lookup = {};
-       $sails.on('weibouser', function (message) {
-       console.log("pushing " + JSON.stringify(message));
-       var idx = lookup[message.id];
-       switch (message.verb) {
-       case 'created':
-       $scope.users.unshift(message.data);
-       for (var i in $scope.users) {
-       lookup[$scope.users[i].id] = i;
-       }
-       ;
-       break;
-       case 'destroyed':
-       $scope.users.splice(idx, 1);
-       for (var i in $scope.users) {
-       lookup[$scope.users[i].id] = i;
-       }
-       ;
-       break;
-       case 'updated':
-       $scope.users.splice([idx], 1, message.data);
-       break;
-       };
-       });
-       }();
-       */
-
-      /* AjAX方法 页面不跳转
-
-       //get user list
-       $scope.users = userFactory.userList.$query();
-
-       // callback for ng-click 'createUser': 未验证
-       $scope.createUser = userFactory.userCreate($scope.user);
-
-
-       // get user detail
-       $scope.editUser = function (userId) {
-       userFactory.userDetail(userId)
-       .then(function(data){
-       $scope.user = data;
-       })
-       };
-       */
-
-      /*
-       /* AJAX方法 通过页面跳转
-
-       // callback for ng-click 'createUser':
-       $scope.createUser = function () {
-       $location.path('/user-creation');
-       };
-
-       // callback for ng-click 'editUser':
-       $scope.editUser = function (userId) {
-       $location.path('/user-detail/' + userId);
-       };
-       */
-
-    }]);
 
 

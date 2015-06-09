@@ -27,16 +27,8 @@ angular.module('myApp', [
           controller: 'MainCtrl'
         })
         .when('/user', {
-          templateUrl: 'views/user-list.html',
+          templateUrl: 'views/user.html',
           controller: 'UserCtrl'
-        })
-        .when('/user-detail/:id', {
-          templateUrl: 'views/user-detail.html',
-          controller: 'UserDetailCtrl'
-        })
-        .when('/user-creation', {
-          templateUrl: 'views/user-creation.html',
-          controller: 'UserCreationCtrl'
         })
         .when('/msg', {
           templateUrl: 'views/msg.html',

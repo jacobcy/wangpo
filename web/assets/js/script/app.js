@@ -10,7 +10,6 @@
  */
 angular.module('myApp', [
   'ngRoute', //angular-route
-  'ngSails', // angular-sails
   'ngResource',//angular-resource
   'myApp.filters',
   'myApp.services',

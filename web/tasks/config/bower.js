@@ -11,6 +11,7 @@ module.exports = function(grunt) {
           'bootstrap-social',//社交分享
           'datatables-plugins',
           //'datatables-tabletools', //下载表格
+          'datatables-fixedheader',
           'flot',//图表样式
           'flot.tooltip',
           'holderjs',//缩略图占位

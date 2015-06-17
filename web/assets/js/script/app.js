@@ -2,42 +2,42 @@
 
 /**
  * @ngdoc overview
- * @name angularViqunApp
+ * @name myApp
  * @description
- * # angularViqunApp
+ * # myApp
  *
  * Main module of the application.
  */
 angular.module('myApp', [
   'ngRoute', //angular-route
-  'ngResource',//angular-resource
   'myApp.filters',
   'myApp.services',
   'myApp.directives',
   'myApp.controllers'
 ])
   .config(['$routeProvider', '$locationProvider',
-    function ($routeProvider, $locationProvider) {
+    function ($routeProvider) {
       //去掉url中的#，但是导致sails的路由处理错误
       //$locationProvider.html5Mode(true);
       $routeProvider
         .when('/', {
           templateUrl: 'views/main.html',
-          controller: 'MainCtrl'
+          controller: 'MainController'
         })
         .when('/user', {
           templateUrl: 'views/user.html',
-          controller: 'UserCtrl'
+          controller: 'UserController as showCase'
         })
         .when('/msg', {
           templateUrl: 'views/msg.html',
-          controller: 'MsgCtrl'
+          controller: 'MsgController'
         })
         .when('/post', {
           templateUrl: 'views/post.html',
-          controller: 'PostCtrl'
+          controller: 'PostController'
         })
         .otherwise({
           redirectTo: '/'
         });
     }]);
+

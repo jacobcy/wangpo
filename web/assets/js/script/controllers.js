@@ -1,31 +1,35 @@
 'use strict';
 
 var myAppControllers = angular.module('myApp.controllers', [
-  'datatables', //表格样式
-  'datatables.tabletools', //下载表格
-  'datatables.bootstrap', //bootstrap样式
-  'datatables.columnfilter', //数据过滤
+  //表格样式
+  'datatables',
+  //数据过滤
+  'datatables.columnfilter'
+  //下载表格
+  //'datatables.tabletools',
+  //bootstrap样式
+  //'datatables.bootstrap'
 ]);
 
 //导航栏当前页高亮效果
 myAppControllers
-  .controller('NavCtrl', function ($scope, $location) {
+  .controller('NavController', function ($scope, $location) {
     $scope.isActive = function (route) {
       return route === $location.path();
     };
   })
 
 //欢迎界面
-  .controller('MainCtrl', function ($scope) {
+  .controller('MainController', function ($scope) {
     $scope.test = '欢迎进入后台管理系统！';
   })
 
 //微博收发界面
-  .controller('PostCtrl', function ($scope) {
+  .controller('PostController', function ($scope) {
   })
 
 //消息界面
-  .controller('MsgCtrl', function ($scope, msgList) {
+  .controller('MsgController', function ($scope, msgList) {
       msgList.success(function (data) {
         $scope.msgs = data;
 
@@ -54,67 +58,82 @@ myAppControllers
 myAppControllers
 
   //通过dataTable插件来处理数据
-  .controller('UserCtrl',
-  function (DTOptionsBuilder, DTColumnBuilder, $scope, $compile, userList, userDetail ) {
+  .controller('UserController',
+  function (DTOptionsBuilder, DTColumnBuilder, $scope, $compile, user, $filter) {
     var vm = this;
-    vm.alert = 'hide';
-    vm.message = '';
     vm.dtInstance = {};
+    function alert(type, message) {
+      vm.alert = {
+        'type': type,
+        'message': message
+      }
+    }
+
+    alert('hide');
 
     //手动刷新表格数据
     vm.reloadData = reloadData;
     function reloadData() {
-      var resetPaging = false;
-      vm.dtInstance.reloadData(callback, resetPaging);
-    };
-    function callback(json) {
-      vm.alert = 'alert-success';
-      vm.message = '更新表格内容';
-    };
+      vm.dtInstance.reloadData(callback, false);
+    }
+
+    function callback() {
+      alert('alert-success', '数据已更新');
+    }
 
     //编辑用户数据
     vm.edit = edit;
-    function edit(userId) {
-      vm.alert = "alert-warning";
-      vm.message = '编辑用户数据 ID: ' + userId;
+    function edit(id) {
+      alert('alert-warning', '更新用户数据 ID: ' + id);
       vm.type = false;
-      vm.user = userDetail.show({id:userId});
-    };
+      vm.user = user.get({id: id}, function () {
+        console.log($filter('age')(vm.user.userBirthday));
+      });
+    }
     vm.updateUser = function () {
-      userDetail.update(vm.user);
-      vm.dtInstance.reloadData();
+      user.save(vm.user,
+        function () {
+          vm.dtInstance.reloadData();
+        }, function () {
+          alert('alert-danger', '更新失败');
+        }
+      );
     };
 
     //删除用户数据
     vm.delete = deleteRow;
-    function deleteRow(userId) {
-      vm.alert = 'alert-danger'
-      vm.message = '删除用户数据 ID: ' + userId;
-      userDetail.delete({id:userId});
-      vm.dtInstance.reloadData();
-    };
+    function deleteRow(id) {
+      alert('alert-danger', '删除用户数据 ID: ' + id);
+      user.remove({id: id},
+        function () {
+          vm.dtInstance.reloadData()
+        }, function () {
+          alert('alert-danger', '删除失败');
+        });
+    }
 
     //创建用户数据
-    vm.create = function () {
-      vm.alert = 'alert-info'
-      vm.message = '创建用户数据';
+    vm.create = create;
+    function create() {
+      alert('alert-info', '创建用户数据');
       vm.type = true;
       vm.user = {};
-    };
+    }
     vm.createUser = function () {
-      userList.create(vm.user);
-      vm.dtInstance.reloadData();
+      user.save(vm.user, function () {
+        vm.dtInstance.reloadData()
+      }, function (error) {
+        alert('alert-danger', '创建失败' + error);
+      });
     };
 
     //填入表格数据
-    vm.dtOptions = DTOptionsBuilder.fromSource(userList.query)
-    //vm.dtOptions = DTOptionsBuilder.fromSource($resource('/weibouser').get)
-    //vm.dtOptions = DTOptionsBuilder.fromSource($sails.get('/weibouser'))
+    vm.dtOptions = DTOptionsBuilder.fromSource(user.query)
     /*
     vm.dtOptions = DTOptionsBuilder.fromFnPromise(function () {
-      return $resource('/weibouser/').query().$promise
+     return user.query().$promise；
     })*/
-      //实时更新数据
+      //保持状态
       .withOption('stateSave', true)
       //设置翻页效果
       .withPaginationType('full')
@@ -124,18 +143,6 @@ myAppControllers
       .withOption('createdRow', createdRow)
       // 展开、收起表格
       .withOption('responsive', true)
-      // 使用bootstrap样式
-      //.withBootstrap()
-      //允许下载表格
-      .withTableTools('swf/copy_csv_xls_pdf.swf')
-      .withTableToolsButtons([
-        'copy',
-        'print', {
-          'sExtends': 'collection',
-          'sButtonText': 'Save',
-          'aButtons': ['csv', 'xls', 'pdf']
-        }
-      ])
       //过滤表格数据
       .withColumnFilter({
         aoColumns: [{
@@ -149,6 +156,10 @@ myAppControllers
           bRegex: false,
           values: ['男', '女']
         }, {
+          type: 'numble'
+        }, {
+          type: 'numble'
+        }, {
           type: 'text',
           bRegex: true,
           bSmart: true
@@ -158,19 +169,25 @@ myAppControllers
     function createdRow(row, data, dataIndex) {
       // Recompiling so we can bind Angular directive to the DT
       $compile(angular.element(row).contents())($scope);
-    };
+    }
 
     //显示表格数据
     vm.dtColumns = [
-      DTColumnBuilder.newColumn('innerId').withTitle('ID').withOption('defaultContent', '-'),
-      DTColumnBuilder.newColumn('userName').withTitle('昵称').withOption('defaultContent', '-'),
-      DTColumnBuilder.newColumn('gender').withTitle('性别').withOption('defaultContent', '-'),
-      DTColumnBuilder.newColumn('userLocation').withTitle('地址').withOption('defaultContent', '-'),
-      DTColumnBuilder.newColumn(null).withTitle('Actions').notSortable()
+      DTColumnBuilder.newColumn('innerId').withTitle('ID').withOption('width', '20%').withOption('defaultContent', '-'),
+      DTColumnBuilder.newColumn('userName').withTitle('昵称').withOption('width', '20%').withOption('defaultContent', '-'),
+      DTColumnBuilder.newColumn('gender').withTitle('性别').withOption('width', '10%').withOption('defaultContent', '-'),
+      DTColumnBuilder.newColumn('userBirthday').withTitle('年龄').withOption('width', '10%').withOption('defaultContent', '-').renderWith(function (data) {
+        return $filter('age')(data);
+      }),
+      DTColumnBuilder.newColumn('height').withTitle('身高').withOption('width', '10%').withOption('defaultContent', '-'),
+      DTColumnBuilder.newColumn('userLocation').withTitle('地址').withOption('width', '15%').withOption('defaultContent', '-'),
+      DTColumnBuilder.newColumn(null).withTitle('Actions').withOption('width', '15%').notSortable()
         .renderWith(actionsHtml),
       // 展开显示数据
-      DTColumnBuilder.newColumn('userBirthday').withTitle('年龄').withOption('defaultContent', '-').withClass('none'),
-      DTColumnBuilder.newColumn('height').withTitle('身高').withOption('defaultContent', '-').withClass('none')
+      DTColumnBuilder.newColumn('avatar').withTitle('头像').withOption('defaultContent', '-').withClass('none').renderWith(function (data) {
+        return $filter('image')(data, 150);
+      }),
+      DTColumnBuilder.newColumn('description').withTitle('个人说明').withOption('defaultContent', '-').withClass('none')
     ];
 
     //编辑、删除按钮
@@ -181,5 +198,5 @@ myAppControllers
         '<button class="btn btn-danger" ng-click="showCase.delete(' + data.id + ')">' +
         '   <i class="fa fa-trash-o"></i>' +
         '</button>';
-    };
+    }
   });

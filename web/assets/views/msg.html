@@ -1,16 +1,16 @@
 <h1>This is the msg view.</h1>
 
 <div class="col-xs-12 col-sm-9">
-  <p ng-repeat="msg in msgs">the messages is {{msg.content}}</p>
+  <p ng-repeat="item in msg.msgs">the messages is {{item.content}}</p>
   <br \>
 </div><!--/.col-xs-12.col-sm-9-->
 
 
 <div class="col-xs-6 col-sm-3 sidebar-offcanvas">
   <div class="list-group">
-      <a ng-repeat="msger in msgers" ng-href="#/msg-detail/{{msger}}" class="list-group-item">
-        <span ng-bind="msger"></span>
-      </a>
+    <a ng-repeat="item in msg.msgers track by $index" ng-href="#/msg-detail/{{item}}" class="list-group-item">
+      {{item}}
+    </a>
   </div>
 </div><!--/.sidebar-offcanvas-->
 

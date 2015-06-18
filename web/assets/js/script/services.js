@@ -1,37 +1,36 @@
 'use strict';
 
-var myAppServices = angular.module('myApp.services', [
+angular.module('myApp.services', [
   'ngResource',//angular-resource
   'ngSails' // angular-sails
-]);
+])
 
 // WebSocket方法取后端数据
-myAppServices
-  .factory('userSails', function ($sails) {
+  .factory('userSails', ['$sails', function ($sails) {
     var userUrl = '/weibouser/';
-
     return {
-      query: $sails.get(userUrl),
-      create: function (data) {
-        $sails.post(userUrl, data);
+      query: function () {
+        return $sails.get(userUrl)
       },
       get: function (id) {
-        $sails.get(userUrl + id);
+        return $sails.get(userUrl + id);
       },
-      delete: function (id) {
-        $sails.delete(userUrl + id);
+      save: function (data) {
+        return $sails.post(userUrl, data);
       },
       update: function (id, data) {
-        $sails.put(userUrl + id, data);
+        return $sails.put(userUrl + id, data);
+      },
+      remove: function (id) {
+        return $sails.delete(userUrl + id);
       }
-    };
-  })
+    }
+  }])
 
-  .factory('user', function ($resource) {
+  .factory('userFactory', ['$resource', function ($resource) {
     return $resource('/weibouser/:id', {id: '@id'})
-  });
+  }])
 
-myAppServices
-  .service('msgList', function ($http) {
+  .service('msgService', ['$http', function ($http) {
     return $http.get('http://www.meiroom.com/msg/')
-  });
+  }]);

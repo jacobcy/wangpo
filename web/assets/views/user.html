@@ -1,24 +1,22 @@
+<div class="row" style="height: 72px">
 
-
-  <div class="row" style="height: 72px">
-
-    <div class="col-md-4">
-      <button ng-click="showCase.reloadData()" type="button" class="btn btn-primary">
-        <i class="fa fa-refresh"></i>&nbsp;手动刷新
-      </button>
-      <button data-target="#myModal" data-toggle="modal" ng-click="showCase.create()" type="button" class="btn btn-primary">
-        <i class="fa fa-exchange"></i>&nbsp;创建用户
-      </button>
-    </div>
-
-    <alert>{{ showCase.alert.message }}</alert>
-
+  <div class="col-md-4">
+    <button ng-click="user.reloadData()" type="button" class="btn btn-primary">
+      <i class="fa fa-refresh"></i>&nbsp;手动刷新
+    </button>
+    <button data-target="#myModal" data-toggle="modal" ng-click="user.create()" type="button" class="btn btn-primary">
+      <i class="fa fa-exchange"></i>&nbsp;创建用户
+    </button>
   </div>
 
-  <div class="row">
+  <alert/>
+
+</div>
+
+<div class="row">
   <div class="col-md-10">
-    <table datatable="" dt-options="showCase.dtOptions" dt-columns="showCase.dtColumns"
-           dt-instance="showCase.dtInstance" class="row-border hover">
+    <table datatable="" dt-options="user.dtOptions" dt-columns="user.dtColumns"
+           dt-instance="user.dtInstance" class="row-border hover">
       <tfoot style="margin-top: 30px">
       <tr>
         <th>ID</th>
@@ -31,8 +29,8 @@
       </tfoot>
     </table>
   </div>
-    </div>
+</div>
 
 
-  <user-form/>
+<user-form/>
 

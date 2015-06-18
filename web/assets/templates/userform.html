@@ -6,50 +6,50 @@
 
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title" id="myModalLabel">{{showCase.alert.message}}</h4>
+          <h4 class="modal-title" id="myModalLabel">{{user.alert.message}}</h4>
         </div>
 
         <div class="modal-body">
           <div class="form-group">
             <label class="control-label" for="innerId">微博ID：</label>
-            <input class="form-control" type="text" id="innerId" ng-model="showCase.user.innerId"/>
+            <input class="form-control" type="text" id="innerId" ng-model="user.detail.innerId"/>
           </div>
 
           <div class="form-group">
             <label class="control-label" for="userName">微博账号：</label>
-            <input class="form-control" type="text" id="userName" ng-model="showCase.user.userName"/>
+            <input class="form-control" type="text" id="userName" ng-model="user.detail.userName"/>
           </div>
 
           <div class="form-group">
             <label class="control-label" for="userBirthday">出生日期</label>
-            <input class="form-control" type="text" id="userBirthday" ng-model="showCase.user.userBirthday"/>
+            <input class="form-control" type="text" id="userBirthday" ng-model="user.detail.userBirthday"/>
           </div>
 
           <div class="form-group">
             <label class="control-label" for="gender">性别</label>
-            <input class="form-control" type="text" id="gender" ng-model="showCase.user.gender"/>
+            <input class="form-control" type="text" id="gender" ng-model="user.detail.gender"/>
           </div>
 
           <div class="form-group">
             <label class="control-label" for="height">身高</label>
-            <input class="form-control" type="text" id="height" ng-model="showCase.user.height"/>
+            <input class="form-control" type="text" id="height" ng-model="user.detail.height"/>
           </div>
 
           <div class="form-group">
             <label class="control-label" for="userLocation">城市</label>
-            <input class="form-control" type="text" id="userLocation" ng-model="showCase.user.userLocation"/>
+            <input class="form-control" type="text" id="userLocation" ng-model="user.detail.userLocation"/>
           </div>
         </div>
 
         <div class="modal-footer">
           <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
-          <button ng-click="showCase.updateUser()" data-dismiss="modal" class="btn btn-primary" type="button"
-                  ng-show="!showCase.type"><i
-            class="fa fa-check"></i>&nbsp;更新
+          <button ng-click="user.update(user.detail.id)" ng-show="!user.newbie" data-dismiss="modal"
+                  class="btn btn-primary" type="button">
+            <i class="fa fa-check"></i>&nbsp;更新
           </button>
-          <button ng-click="showCase.createUser()" data-dismiss="modal" class="btn btn-success" type="button"
-                  ng-show="showCase.type"><i
-            class="fa fa-check"></i>&nbsp;创建
+          <button ng-click="user.save()" ng-show="user.newbie" data-dismiss="modal" class="btn btn-primary"
+                  type="button">
+            <i class="fa fa-check"></i>&nbsp;创建
           </button>
         </div>
       </ng-form>

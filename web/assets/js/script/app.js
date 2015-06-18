@@ -15,26 +15,26 @@ angular.module('myApp', [
   'myApp.directives',
   'myApp.controllers'
 ])
-  .config(['$routeProvider', '$locationProvider',
+  .config(['$routeProvider',
     function ($routeProvider) {
       //去掉url中的#，但是导致sails的路由处理错误
       //$locationProvider.html5Mode(true);
       $routeProvider
         .when('/', {
           templateUrl: 'views/main.html',
-          controller: 'MainController'
+          controller: 'MainController as main'
         })
         .when('/user', {
           templateUrl: 'views/user.html',
-          controller: 'UserController as showCase'
+          controller: 'UserController as user'
         })
         .when('/msg', {
           templateUrl: 'views/msg.html',
-          controller: 'MsgController'
+          controller: 'MsgController as msg'
         })
         .when('/post', {
           templateUrl: 'views/post.html',
-          controller: 'PostController'
+          controller: 'PostController as post'
         })
         .otherwise({
           redirectTo: '/'

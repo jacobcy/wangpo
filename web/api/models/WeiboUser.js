@@ -8,21 +8,64 @@ var WEIBO_USER_INFO_URL = 'https://api.weibo.com/2/eps/user/info.json?access_tok
 var WeiboUser = {
 
   attributes: {
-    // e.g. "0001"
-    innerId: {type: 'string'},
-    // e.g. "李小敏"
-    userName: {type:  'string'},
+    // e.g. "0001"，必须，唯一
+    weiboId: {
+      type: 'integer',
+      size: 16,
+      required: true,
+      unique: true
+    },
+    // e.g. "李小敏"，必须
+    nickname: {
+      type: 'string',
+      size: 32,
+      required: true
+    },
+    // e.g. "1：男 2：女 0：未知"
+    gender: {
+      type: 'integer',
+      size: 1,
+      enum: '[1,2,0]',
+      defaultsTo: 0
+    },
     // e.g. "1978.03.15"
-    userBirthday: {type: 'date'},
-    // e.g. "男"
-    gender: {type: 'string'},
+    birthday: {
+      type: 'date'
+    },
     // e.g. "175", 单位厘米
-    height: {type: 'integer'},
-    // e.g. "北京"
-    userLocation: {type: 'string'},
-    description: {type: 'string'},
-    lock: {type: 'boolean'},
-    avatar: {type: 'string'}
+    height: {
+      type: 'integer',
+      size: 3
+    },
+    // e.g. "010：北京"
+    location: {
+      type: 'string',
+      size: 4
+    },
+    // 用户头像url
+    avatar: {
+      type: 'string',
+      size: 128
+    },
+    // 用户照片url
+    photos: {
+      type: 'array'
+    },
+    // 用户描述
+    description: {
+      type: 'string',
+      size: 512
+    },
+    // 锁定用户资料，不再匹配
+    lock: {
+      type: 'boolean',
+      defaultsTo: false
+    },
+    // 隐藏用户资料，不再匹配
+    hide: {
+      type: 'boolean',
+      defaultsTo: false
+    }
   },
 
   beforeCreate: function(user, next) {

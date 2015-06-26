@@ -1,11 +1,16 @@
 <div class="row" style="height: 72px">
 
   <div class="col-md-4">
-    <button ng-click="user.reloadData()" type="button" class="btn btn-primary">
-      <i class="fa fa-refresh"></i>&nbsp;手动刷新
+    <button ng-click="user.dtInstance.changeData(user.unlockPromise)" ng-show="user.lockbutton" type="button"
+            class="btn btn-primary">
+      <i class="fa fa-refresh"></i>&nbsp;显示普通用户
+    </button>
+    <button ng-click="user.dtInstance.changeData(user.lockPromise)" ng-hide="user.lockbutton" type="button"
+            class="btn btn-primary">
+      <i class="fa fa-exchange"></i>&nbsp;显示锁定用户
     </button>
     <button data-target="#myModal" data-toggle="modal" ng-click="user.create()" type="button" class="btn btn-primary">
-      <i class="fa fa-exchange"></i>&nbsp;创建用户
+      <i class="fa fa-plus"></i>&nbsp;创建用户
     </button>
   </div>
 

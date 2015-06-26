@@ -23,6 +23,12 @@ angular.module('myApp.services', [
       },
       remove: function (id) {
         return $sails.delete(userUrl + id);
+      },
+      lock: function (id) {
+        return $sails.post(userUrl + id, {lock: true})
+      },
+      unlock: function (id) {
+        return $sails.post(userUrl + id, {lock: false})
       }
     }
   }])

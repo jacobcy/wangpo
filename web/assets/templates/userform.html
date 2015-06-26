@@ -11,23 +11,25 @@
 
         <div class="modal-body">
           <div class="form-group">
-            <label class="control-label" for="innerId">微博ID：</label>
-            <input class="form-control" type="text" id="innerId" ng-model="user.detail.innerId"/>
+            <label class="control-label" for="weiboId">微博ID：</label>
+            <input class="form-control" type="text" id="weiboId" ng-model="user.detail.weiboId"/>
           </div>
 
           <div class="form-group">
-            <label class="control-label" for="userName">微博账号：</label>
-            <input class="form-control" type="text" id="userName" ng-model="user.detail.userName"/>
+            <label class="control-label" for="nickname">微博账号：</label>
+            <input class="form-control" type="text" id="nickname" ng-model="user.detail.nickname"/>
           </div>
 
           <div class="form-group">
-            <label class="control-label" for="userBirthday">出生日期</label>
-            <input class="form-control" type="text" id="userBirthday" ng-model="user.detail.userBirthday"/>
+            <label class="control-label" for="birthday">出生日期</label>
+            <input class="form-control" type="text" id="birthday" ng-model="user.detail.birthday"/>
           </div>
 
           <div class="form-group">
             <label class="control-label" for="gender">性别</label>
-            <input class="form-control" type="text" id="gender" ng-model="user.detail.gender"/>
+            <select class="form-control" type="text" id="gender" ng-model="user.detail.gender"
+                    ng-options="o.value as o.title for o in user.sex">
+            </select>
           </div>
 
           <div class="form-group">
@@ -36,14 +38,38 @@
           </div>
 
           <div class="form-group">
-            <label class="control-label" for="userLocation">城市</label>
-            <input class="form-control" type="text" id="userLocation" ng-model="user.detail.userLocation"/>
+            <label class="control-label" for="location">城市区号</label>
+            <input class="form-control" type="text" id="location" ng-model="user.detail.location"/>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label" for="description">个人描述</label>
+            <textarea class="form-control" rows="3" id="description" ng-model="user.detail.description"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label">照片</label>
+
+            <div class="form-group input-group" ng-repeat="photo in user.detail.photos track by $index">
+              <span class="input-group-addon">url</span>
+              <input class="form-control" type="text" ng-model="photo"/>
+            </div>
+
+            <div class="form-group input-group">
+              <span class="input-group-addon">url</span>
+              <input class="form-control" type="text" ng-model="user.detail.photo"/>
+            </div>
           </div>
         </div>
 
         <div class="modal-footer">
+          <button ng-click="user.delete(user.detail.id)" ng-hide="user.newbie" data-dismiss="modal"
+                  class="btn btn-danger"
+                  type="button" style="margin-right: 350px">
+            <i class="fa fa-trash"></i>&nbsp;删除
+          </button>
           <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
-          <button ng-click="user.update(user.detail.id)" ng-show="!user.newbie" data-dismiss="modal"
+          <button ng-click="user.update(user.detail.id)" ng-hide="user.newbie" data-dismiss="modal"
                   class="btn btn-primary" type="button">
             <i class="fa fa-check"></i>&nbsp;更新
           </button>

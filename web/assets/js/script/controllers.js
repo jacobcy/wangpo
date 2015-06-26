@@ -26,7 +26,20 @@ angular.module('myApp.controllers', [
   })
 
 //微博收发界面
-  .controller('PostController', function () {
+  .controller('PostController', function ($resource) {
+    var post = this;
+    post.token = '2.00mxMdbDM2ItgBb84742f5edSeR2aC';
+    post.url = 'jacobcy';
+    post.check = $resource('https://api.weibo.com/2/users/domain_show.json').get({
+      domain: post.url,
+      access_token: post.token
+    }, function (data) {
+      console.log(data);
+      post.id = data.id,
+        post.nickname = data.screen_name
+    }, function (error) {
+      post.error = error
+    })
   })
 
 //消息界面
@@ -57,18 +70,12 @@ angular.module('myApp.controllers', [
     }
   }])
 
+
   //通过dataTable插件来处理数据
   .controller('UserController', ['DTOptionsBuilder', 'DTColumnBuilder', '$scope', '$compile', '$filter', '$timeout', 'userFactory', 'userSails',
     function (DTOptionsBuilder, DTColumnBuilder, $scope, $compile, $filter, $timeout, userFactory, userSails) {
       var user = this;
-
       user.dtInstance = {};
-      //刷新表格数据
-      user.reloadData = function () {
-        user.dtInstance.reloadData(function () {
-          alert(user, 'alert-success', '数据已更新');
-        }, false);
-      };
 
       function alert(obj, type, message) {
         obj.alert = {
@@ -76,15 +83,26 @@ angular.module('myApp.controllers', [
           'message': message
         }
       }
-
       alert(user, 'hide');
+
+      user.sex = [{
+        value: 1,
+        title: '男'
+      }, {
+        value: 2,
+        title: '女'
+      }, {
+        value: 0,
+        title: '未知'
+      }];
+
 
       //TODO：如何正确使用$timeout
       //$timeout(alert(user,'alert-info','I am back'),3000);
 
       //创建用户数据
       user.create = function () {
-        alert(user, 'alert-info', '创建用户数据');
+        alert(user, 'alert-info', '创建新用户');
         user.newbie = true;
         user.detail = {};
       };
@@ -96,20 +114,21 @@ angular.module('myApp.controllers', [
          user.dtInstance.reloadData()
          }, function (error) {
          alert(user, 'alert-danger', '更新失败' + error);
-        });
+         });
          */
-        userSails.save(user.detail).then(function () {
+        userSails.save(user.detail).success(function () {
+          alert(user, 'alert-success', '成功创建【' + user.detail.nickname + '】的个人资料');
           user.reloadData();
         })
       };
 
       //编辑用户数据
       user.edit = function (id) {
-        alert(user, 'alert-warning', '更新用户数据 ID: ' + id);
         user.newbie = false;
         userSails.get(id).success(
           function (data) {
-            user.detail = data
+            user.detail = data;
+            alert(user, 'alert-info', '编辑【' + user.detail.nickname + '】的个人资料');
           });
         /*
          // ajax方法
@@ -120,15 +139,24 @@ angular.module('myApp.controllers', [
       };
 
       user.update = function (id) {
-        userSails.update(id, user.detail).then(function () {
+        if (!user.detail.photos) {
+          user.detail.photos = [];
+        }
+        if (user.detail.photo) {
+          user.detail.photos.push(user.detail.photo);
+          user.detail.photo = null;
+        }
+        console.log(user.detail.photos);
+        userSails.update(id, user.detail).success(function () {
+          alert(user, 'alert-success', '成功更新【' + user.detail.nickname + '】的个人资料');
           user.reloadData();
         })
       };
 
       //删除用户数据
       user.delete = function (id) {
-        alert(user, 'alert-danger', '删除用户数据 ID: ' + id);
-        userSails.remove(id).then(
+        alert(user, 'alert-warning', '删除【' + user.detail.nickname + '】的个人资料');
+        userSails.remove(id).success(
           function () {
             user.reloadData();
           });
@@ -143,11 +171,46 @@ angular.module('myApp.controllers', [
          */
       };
 
+      //锁定用户数据
+      user.lock = function (id) {
+        userSails.get(id).success(
+          function (data) {
+            user.detail = data;
+            alert(user, 'alert-info', '锁定【' + user.detail.nickname + '】的个人资料');
+          });
+        userSails.lock(id).success(
+          function () {
+            user.reloadData();
+          });
+        /*
+         // ajax方法
+         userFactory.remove({id: id},
+         function () {
+         user.dtInstance.reloadData()
+         }, function () {
+         alert(user, 'alert-danger', '删除失败');
+         });
+         */
+      };
+
+      //恢复用户数据
+      user.unlock = function (id) {
+        userSails.get(id).success(
+          function (data) {
+            user.detail = data;
+            alert(user, 'alert-info', '解锁【' + user.detail.nickname + '】的个人资料');
+          });
+        userSails.unlock(id).success(
+          function () {
+            user.reloadData();
+          });
+      };
+
       //TODO: 用userSails引入数据
       //填入表格数据
       //user.dtOptions = DTOptionsBuilder.fromSource(userFactory.query)
       user.dtOptions = DTOptionsBuilder.fromFnPromise(function () {
-        return userFactory.query().$promise
+        return userFactory.query({lock: 'false'}).$promise
       })
         //保持状态
         .withOption('stateSave', true)
@@ -189,22 +252,47 @@ angular.module('myApp.controllers', [
 
       //显示表格数据
       user.dtColumns = [
-        DTColumnBuilder.newColumn('innerId').withTitle('ID').withOption('width', '20%').withOption('defaultContent', '-'),
-        DTColumnBuilder.newColumn('userName').withTitle('昵称').withOption('width', '20%').withOption('defaultContent', '-'),
-        DTColumnBuilder.newColumn('gender').withTitle('性别').withOption('width', '10%').withOption('defaultContent', '-'),
-        DTColumnBuilder.newColumn('userBirthday').withTitle('年龄').withOption('width', '10%').withOption('defaultContent', '-').renderWith(function (data) {
+        DTColumnBuilder.newColumn('weiboId').withTitle('ID').withOption('width', '20%').withOption('defaultContent', '-'),
+        DTColumnBuilder.newColumn('nickname').withTitle('昵称').withOption('width', '20%').withOption('defaultContent', '-'),
+        DTColumnBuilder.newColumn('gender').withTitle('性别').withOption('width', '10%').renderWith(function (data) {
+          return $filter('sex')(data);
+        }),
+        DTColumnBuilder.newColumn('birthday').withTitle('年龄').withOption('width', '10%').withOption('defaultContent', '-').renderWith(function (data) {
           return $filter('age')(data);
         }),
         DTColumnBuilder.newColumn('height').withTitle('身高').withOption('width', '10%').withOption('defaultContent', '-'),
-        DTColumnBuilder.newColumn('userLocation').withTitle('地址').withOption('width', '15%').withOption('defaultContent', '-'),
-        DTColumnBuilder.newColumn('id').withTitle('Actions').withOption('width', '15%').notSortable()
-          .renderWith(function (data) {
-            return $filter('button')(data);
-          }),
+        DTColumnBuilder.newColumn('location').withTitle('地址').withOption('width', '15%').withOption('defaultContent', '-').renderWith(function (data) {
+          return $filter('city')(data);
+        }),
+        DTColumnBuilder.newColumn('id').withTitle('Actions').withOption('width', '15%').notSortable().renderWith(function (data, type, full, meta) {
+          return $filter('button')(data, type, full, meta);
+        }),
         // 展开显示数据
-        DTColumnBuilder.newColumn('avatar').withTitle('头像').withOption('defaultContent', '-').withClass('none').renderWith(function (data) {
-          return $filter('image')(data, 150);
+        DTColumnBuilder.newColumn('photos').withTitle('照片').withOption('defaultContent', '-').withClass('none').renderWith(function (data) {
+          return $filter('image')(data, 200);
         }),
         DTColumnBuilder.newColumn('description').withTitle('个人说明').withOption('defaultContent', '-').withClass('none')
       ];
+
+      //显示锁定的用户数据
+      user.lockbutton = false;
+      user.lockPromise = function () {
+        user.lockbutton = true;
+        return userFactory.query({lock: 'true'}).$promise
+      };
+
+      //显示未锁定的用户数据
+      user.unlockPromise = function () {
+        user.lockbutton = false;
+        return userFactory.query({lock: 'false'}).$promise
+      };
+
+      //刷新表格数据
+      user.reloadData = function () {
+        user.dtInstance.reloadData(function () {
+          //alert(user, 'alert-success', '数据已更新');
+        }, false);
+      }
+
     }]);
+

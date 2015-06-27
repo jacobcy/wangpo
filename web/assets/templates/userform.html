@@ -21,8 +21,8 @@
           </div>
 
           <div class="form-group">
-            <label class="control-label" for="birthday">出生日期</label>
-            <input class="form-control" type="text" id="birthday" ng-model="user.detail.birthday"/>
+            <label class="control-label" for="birthday">出生日期<span ng-show="user.detail.birthday">，当前年龄为{{user.detail.birthday | age }}</span></label>
+            <input class="form-control" type="text" id="birthday" ng-model="user.date" placeholder="{{user.detail.birthday | date: 'yyMMdd'}}"/>
           </div>
 
           <div class="form-group">
@@ -38,7 +38,7 @@
           </div>
 
           <div class="form-group">
-            <label class="control-label" for="location">城市区号</label>
+            <label class="control-label" for="location">城市区号<span ng-show="user.city">，当前城市为【{{user.city}}】</span></label>
             <input class="form-control" type="text" id="location" ng-model="user.detail.location"/>
           </div>
 
@@ -51,21 +51,22 @@
             <label class="control-label">照片</label>
 
             <div class="form-group input-group" ng-repeat="photo in user.detail.photos track by $index">
-              <span class="input-group-addon">url</span>
-              <input class="form-control" type="text" ng-model="photo"/>
+
+              <input disabled class="form-control" type="text" ng-model="photo"/>
+              <span class="input-group-addon alert-danger" ng-click="user.removePhoto($index)"><i class="fa fa-minus"></i></span>
             </div>
 
             <div class="form-group input-group">
-              <span class="input-group-addon">url</span>
-              <input class="form-control" type="text" ng-model="user.detail.photo"/>
+              <input class="form-control" type="text" ng-model="user.photo"/>
+              <span class="input-group-addon alert-success" ng-click="user.addPhoto()"><i class="fa fa-plus"></i></span>
             </div>
           </div>
         </div>
 
         <div class="modal-footer">
           <button ng-click="user.delete(user.detail.id)" ng-hide="user.newbie" data-dismiss="modal"
-                  class="btn btn-danger"
-                  type="button" style="margin-right: 350px">
+                  class="btn btn-danger btn-delete"
+                  type="button">
             <i class="fa fa-trash"></i>&nbsp;删除
           </button>
           <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>

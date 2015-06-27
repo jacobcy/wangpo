@@ -23,13 +23,12 @@
     "tests"
   ],
   "dependencies": {
-    "angular-sails": "~1.1.3",
-    "angular-route": "~1.4.0",
     "startbootstrap-sb-admin-2": "~1.0.7",
-    "angular-resource": "~1.4.0",
     "angular-datatables": "~0.4.3",
-    "datatables-fixedheader": "~2.1.2",
-    "datatables-tabletools": "~2.2.4",
+    "angular-strap": "~2.2.4",
+    "angular-route": "~1.4.0",
+    "angular-resource": "~1.4.0",
+    "angular-sails": "~1.1.3",
     "jquery-datatables-column-filter": "*"
   }
 }

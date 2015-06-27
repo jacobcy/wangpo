@@ -10,6 +10,7 @@
  */
 angular.module('myApp', [
   'ngRoute', //angular-route
+  'mgcrea.ngStrap',   //实现bootstrap效果
   'myApp.filters',
   'myApp.services',
   'myApp.directives',

@@ -1,6 +1,6 @@
-<div class="row" style="height: 72px">
+<div class="row table-header">
 
-  <div class="col-md-4">
+  <div class="col-md-6">
     <button ng-click="user.dtInstance.changeData(user.unlockPromise)" ng-show="user.lockbutton" type="button"
             class="btn btn-primary">
       <i class="fa fa-refresh"></i>&nbsp;显示普通用户
@@ -9,7 +9,7 @@
             class="btn btn-primary">
       <i class="fa fa-exchange"></i>&nbsp;显示锁定用户
     </button>
-    <button data-target="#myModal" data-toggle="modal" ng-click="user.create()" type="button" class="btn btn-primary">
+    <button data-target="#myModal" data-toggle="modal" ng-click="user.create()" type="button" class="btn btn-success">
       <i class="fa fa-plus"></i>&nbsp;创建用户
     </button>
   </div>
@@ -19,10 +19,10 @@
 </div>
 
 <div class="row">
-  <div class="col-md-10">
+  <div class="col-md-12">
     <table datatable="" dt-options="user.dtOptions" dt-columns="user.dtColumns"
            dt-instance="user.dtInstance" class="row-border hover">
-      <tfoot style="margin-top: 30px">
+      <tfoot>
       <tr>
         <th>ID</th>
         <th>昵称</th>
@@ -33,7 +33,7 @@
       </tr>
       </tfoot>
     </table>
-  </div>
+    </div>
 </div>
 
 

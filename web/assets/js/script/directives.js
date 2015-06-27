@@ -7,7 +7,7 @@ angular.module('myApp.directives', [])
     return {
       restrict: 'E',
       replace: true,
-      template: '<div class="col-md-4 col-md-offset-2 alert" ng-class="user.alert.type">{{ user.alert.message }}</div>'
+      template: '<div class="col-md-4 col-md-offset-1 alert" ng-class="user.alert.type">{{ user.alert.message }}</div>'
     }
   })
 

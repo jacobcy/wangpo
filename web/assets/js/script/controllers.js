@@ -1,14 +1,11 @@
 'use strict';
 
 angular.module('myApp.controllers', [
-  //表格样式
-  'datatables',
-  //数据过滤
-  'datatables.columnfilter'
-  //下载表格
-  //'datatables.tabletools',
+  'datatables',  //表格
+  'datatables.columnfilter'   //表格数据过滤
   //bootstrap样式
   //'datatables.bootstrap'
+
 ])
 
 //导航栏当前页高亮效果
@@ -72,8 +69,8 @@ angular.module('myApp.controllers', [
 
 
   //通过dataTable插件来处理数据
-  .controller('UserController', ['DTOptionsBuilder', 'DTColumnBuilder', '$scope', '$compile', '$filter', '$timeout', 'userFactory', 'userSails',
-    function (DTOptionsBuilder, DTColumnBuilder, $scope, $compile, $filter, $timeout, userFactory, userSails) {
+  .controller('UserController', ['DTOptionsBuilder', 'DTColumnBuilder', '$scope', '$compile', '$filter','$modal', 'userFactory', 'userSails','filters',
+    function (DTOptionsBuilder, DTColumnBuilder, $scope, $compile, $filter, $modal, userFactory, userSails, filters) {
       var user = this;
       user.dtInstance = {};
 
@@ -83,7 +80,13 @@ angular.module('myApp.controllers', [
           'message': message
         }
       }
+
       alert(user, 'hide');
+
+/*      // Pre-fetch an external template populated with a custom scope
+      var myModal = $modal({scope: $scope, template: 'templates/userform.html', show: false});
+      // Show when some event occurs (use $promise property to ensure the template has been loaded)
+      $scope.showModal = function() { myModal.$promise.then(myModal.show); };*/
 
       user.sex = [{
         value: 1,
@@ -96,18 +99,16 @@ angular.module('myApp.controllers', [
         title: '未知'
       }];
 
-
-      //TODO：如何正确使用$timeout
-      //$timeout(alert(user,'alert-info','I am back'),3000);
-
       //创建用户数据
       user.create = function () {
-        alert(user, 'alert-info', '创建新用户');
+        alert(user, 'alert-success', '创建新用户');
         user.newbie = true;
+        user.city = false;
         user.detail = {};
-      };
+      }
 
       user.save = function () {
+        user.detail.birthday = filters.date(user.date);
         /*
          // ajax方法
          userFactory.save(user.detail, function () {
@@ -120,7 +121,7 @@ angular.module('myApp.controllers', [
           alert(user, 'alert-success', '成功创建【' + user.detail.nickname + '】的个人资料');
           user.reloadData();
         })
-      };
+      }
 
       //编辑用户数据
       user.edit = function (id) {
@@ -128,6 +129,7 @@ angular.module('myApp.controllers', [
         userSails.get(id).success(
           function (data) {
             user.detail = data;
+            user.city = filters.city(user.detail.location);
             alert(user, 'alert-info', '编辑【' + user.detail.nickname + '】的个人资料');
           });
         /*
@@ -136,26 +138,38 @@ angular.module('myApp.controllers', [
          console.log($filter('age')(user.detail.userBirthday));
          });
          */
-      };
+      }
+
+      user.addPhoto = function () {
+        user.detail.photos.push(user.photo);
+        user.photo = null;
+      }
+
+      user.removePhoto = function(id){
+        user.detail.photos.splice(id, 1);
+      }
 
       user.update = function (id) {
         if (!user.detail.photos) {
           user.detail.photos = [];
         }
-        if (user.detail.photo) {
-          user.detail.photos.push(user.detail.photo);
-          user.detail.photo = null;
+        if(user.date){
+          user.detail.birthday = filters.date(user.date);
         }
-        console.log(user.detail.photos);
+        //console.log(user.detail.photos);
         userSails.update(id, user.detail).success(function () {
-          alert(user, 'alert-success', '成功更新【' + user.detail.nickname + '】的个人资料');
+          if(user.date){
+            user.detail.birthday = filters.date(user.date);
+          };
+          alert(user, 'alert-info', '成功更新【' + user.detail.nickname + '】的个人资料');
           user.reloadData();
+          user.date = null;
         })
       };
 
       //删除用户数据
       user.delete = function (id) {
-        alert(user, 'alert-warning', '删除【' + user.detail.nickname + '】的个人资料');
+        alert(user, 'alert-danger', '删除【' + user.detail.nickname + '】的个人资料');
         userSails.remove(id).success(
           function () {
             user.reloadData();
@@ -176,7 +190,7 @@ angular.module('myApp.controllers', [
         userSails.get(id).success(
           function (data) {
             user.detail = data;
-            alert(user, 'alert-info', '锁定【' + user.detail.nickname + '】的个人资料');
+            alert(user, 'alert-warning', '锁定【' + user.detail.nickname + '】的个人资料');
           });
         userSails.lock(id).success(
           function () {
@@ -198,7 +212,7 @@ angular.module('myApp.controllers', [
         userSails.get(id).success(
           function (data) {
             user.detail = data;
-            alert(user, 'alert-info', '解锁【' + user.detail.nickname + '】的个人资料');
+            alert(user, 'alert-success', '解锁【' + user.detail.nickname + '】的个人资料');
           });
         userSails.unlock(id).success(
           function () {
@@ -262,14 +276,14 @@ angular.module('myApp.controllers', [
         }),
         DTColumnBuilder.newColumn('height').withTitle('身高').withOption('width', '10%').withOption('defaultContent', '-'),
         DTColumnBuilder.newColumn('location').withTitle('地址').withOption('width', '15%').withOption('defaultContent', '-').renderWith(function (data) {
-          return $filter('city')(data);
+          return filters.city(data);
         }),
         DTColumnBuilder.newColumn('id').withTitle('Actions').withOption('width', '15%').notSortable().renderWith(function (data, type, full, meta) {
-          return $filter('button')(data, type, full, meta);
+          return filters.button(data, type, full, meta);
         }),
         // 展开显示数据
-        DTColumnBuilder.newColumn('photos').withTitle('照片').withOption('defaultContent', '-').withClass('none').renderWith(function (data) {
-          return $filter('image')(data, 200);
+        DTColumnBuilder.newColumn('photos').withTitle('照片').withOption('width', '100%').withOption('defaultContent', '-').withClass('none').renderWith(function (data) {
+          return filters.image(data);
         }),
         DTColumnBuilder.newColumn('description').withTitle('个人说明').withOption('defaultContent', '-').withClass('none')
       ];
@@ -279,13 +293,13 @@ angular.module('myApp.controllers', [
       user.lockPromise = function () {
         user.lockbutton = true;
         return userFactory.query({lock: 'true'}).$promise
-      };
+      }
 
       //显示未锁定的用户数据
       user.unlockPromise = function () {
         user.lockbutton = false;
         return userFactory.query({lock: 'false'}).$promise
-      };
+      }
 
       //刷新表格数据
       user.reloadData = function () {

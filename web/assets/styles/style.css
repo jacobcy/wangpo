@@ -1,0 +1,39 @@
+/*.modal-backdrop.am-fade {
+  opacity: .5;
+  transition: opacity .15s linear;
+  &.ng-enter {
+    opacity: 0;
+    &.ng-enter-active {
+      opacity: .5;
+    }
+  }
+  &.ng-leave {
+    opacity: .5;
+    &.ng-leave-active {
+      opacity: 0;
+    }
+  }
+}*/
+
+
+.table-header {
+  height: 72px;
+}
+.user-photo {
+  width: 100%;
+  height: auto;
+}
+
+.btn-delete {
+  margin-right: 350px;
+}
+
+tfoot {
+  margin-top: 30px;
+}
+
+@media (min-width: 992px) {
+  .user-photos {
+    min-width: 800px;
+  }
+}

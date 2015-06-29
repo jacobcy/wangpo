@@ -53,7 +53,7 @@ angular.module('myApp.services', [
         return pics;
       },
       button : function (data, type, full, meta) {
-        var editButton = '<button data-target="#myModal" data-toggle="modal" class="btn btn-info" ng-click="user.edit(' + data + ')">' +
+        var editButton = '<button class="btn btn-info" ng-click="user.edit(' + data + ')">' +
           '   <i class="fa fa-edit"></i>' +
           '</button>&nbsp;';
         var lockButton = '<button class="btn btn-warning" ng-click="user.lock(' + data + ')">' +

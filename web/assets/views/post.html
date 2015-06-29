@@ -1,19 +1,18 @@
 <h1>微博API测试</h1>
 
-<span>微博Token</span>
+<p>微博Token</p>
 <input type="text" ng-model="post.token"/>
-
-<span>查询的地址</span>
+<br />
+<br />
+<p>查询的地址</p>
 <input type="text" ng-model="post.url"/>
-
-<p></p>
-<button ng-click="post.check">获得用户信息</button>
-<p></p>
-
-<p>返回的ID： {{post.id}}</p>
-
-<p>返回的昵称： {{post.nickname}}</p>
-
+<br />
+<br />
 <p><a
   ng-href="https://api.weibo.com/2/users/domain_show.json?domain={{post.url}}&access_token={{post.token}}">查询用户信息</a>
 </p>
+
+<button type="button" class="btn btn-lg btn-primary" data-animation="am-fade-and-slide-top" data-placement="center" ng-click="showModal()">Click to toggle modal
+  <br>
+  <small>(using an object)</small>
+</button>

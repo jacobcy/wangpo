@@ -23,7 +23,18 @@ angular.module('myApp.controllers', [
   })
 
 //微博收发界面
-  .controller('PostController', function ($resource) {
+  .controller('PostController', function ($resource,$scope, $modal) {
+
+    // Pre-fetch an external template populated with a custom scope
+    var myOtherModal = $modal({scope: $scope, template: '/templates/userform.html', show: false});
+    // Show when some event occurs (use $promise property to ensure the template has been loaded)
+    $scope.showModal = function() {
+      myOtherModal.$promise.then(myOtherModal.show);
+    };
+    $scope.hideModal = function() {
+      myOtherModal.$promise.then(myOtherModal.hide);
+    };
+
     var post = this;
     post.token = '2.00mxMdbDM2ItgBb84742f5edSeR2aC';
     post.url = 'jacobcy';
@@ -69,7 +80,7 @@ angular.module('myApp.controllers', [
 
 
   //通过dataTable插件来处理数据
-  .controller('UserController', ['DTOptionsBuilder', 'DTColumnBuilder', '$scope', '$compile', '$filter','$modal', 'userFactory', 'userSails','filters',
+  .controller('UserController', ['DTOptionsBuilder', 'DTColumnBuilder', '$scope', '$compile', '$filter', '$modal', 'userFactory', 'userSails','filters',
     function (DTOptionsBuilder, DTColumnBuilder, $scope, $compile, $filter, $modal, userFactory, userSails, filters) {
       var user = this;
       user.dtInstance = {};
@@ -83,10 +94,15 @@ angular.module('myApp.controllers', [
 
       alert(user, 'hide');
 
-/*      // Pre-fetch an external template populated with a custom scope
-      var myModal = $modal({scope: $scope, template: 'templates/userform.html', show: false});
+      // Pre-fetch an external template populated with a custom scope
+      var myOtherModal = $modal({scope: $scope, template: '/templates/userform.html', show: false});
       // Show when some event occurs (use $promise property to ensure the template has been loaded)
-      $scope.showModal = function() { myModal.$promise.then(myModal.show); };*/
+      $scope.showModal = function() {
+        myOtherModal.$promise.then(myOtherModal.show);
+      };
+      $scope.hideModal = function() {
+        myOtherModal.$promise.then(myOtherModal.hide);
+      };
 
       user.sex = [{
         value: 1,
@@ -105,6 +121,7 @@ angular.module('myApp.controllers', [
         user.newbie = true;
         user.city = false;
         user.detail = {};
+        $scope.showModal();
       }
 
       user.save = function () {
@@ -120,6 +137,7 @@ angular.module('myApp.controllers', [
         userSails.save(user.detail).success(function () {
           alert(user, 'alert-success', '成功创建【' + user.detail.nickname + '】的个人资料');
           user.reloadData();
+          $scope.hideModal();
         })
       }
 
@@ -131,6 +149,7 @@ angular.module('myApp.controllers', [
             user.detail = data;
             user.city = filters.city(user.detail.location);
             alert(user, 'alert-info', '编辑【' + user.detail.nickname + '】的个人资料');
+            $scope.showModal();
           });
         /*
          // ajax方法
@@ -164,6 +183,7 @@ angular.module('myApp.controllers', [
           alert(user, 'alert-info', '成功更新【' + user.detail.nickname + '】的个人资料');
           user.reloadData();
           user.date = null;
+          $scope.hideModal();
         })
       };
 
@@ -183,6 +203,7 @@ angular.module('myApp.controllers', [
          alert(user, 'alert-danger', '删除失败');
          });
          */
+        $scope.hideModal();
       };
 
       //锁定用户数据

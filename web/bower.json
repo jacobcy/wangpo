@@ -29,6 +29,7 @@
     "angular-route": "~1.4.0",
     "angular-resource": "~1.4.0",
     "angular-sails": "~1.1.3",
-    "jquery-datatables-column-filter": "*"
+    "jquery-datatables-column-filter": "*",
+    "angular-motion": "~0.4.2"
   }
 }

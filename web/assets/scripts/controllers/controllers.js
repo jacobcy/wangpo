@@ -3,7 +3,6 @@
 angular.module('myApp.controllers', [
   'datatables',  //表格
   'datatables.columnfilter'   //表格数据过滤
-  //bootstrap样式
   //'datatables.bootstrap'
 
 ])

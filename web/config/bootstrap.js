@@ -16,26 +16,24 @@ module.exports.bootstrap = function(cb) {
   function createDummyWeiboUserData() {
     var dummyWeiboUserData = [
       {
-        "innerId": "0001",
-        "userName": "李小敏",
-        "userBirthday": "1978.03.15",
-        "gender":  "男",
+        "weiboId": "0001",
+        "nickname": "李小敏",
+        "birthday": "1978.03.15",
+        "gender":  1,
         "height": 175,
-        "userLocation": "北京",
+        "location": "010",
         "description": "这个人很懒，什么也没写",
-        "lock": false,
-        "avatar": "http://tp3.sinaimg.cn/3304467554/180/22869450874/0"
+        "photos": ["http://tp3.sinaimg.cn/3304467554/180/22869450874/0"]
       },
       {
-        "innerId": "0002",
-        "userName": "黄鹏",
-        "userBirthday": "1987.06.15",
-        "gender":  "男",
+        "weiboId": "0002",
+        "nickname": "黄鹏",
+        "birthday": "1987.06.15",
+        "gender":  1,
         "height": 179,
-        "userLocation": "广州",
+        "location": "021",
         "description": "这个人很懒，什么也没写",
-        "lock": false,
-        "avatar": "http://tp3.sinaimg.cn/3304467554/180/22869450874/0"
+        "photos": ["http://tp3.sinaimg.cn/3304467554/180/22869450874/0"]
       }
     ];
     WeiboUser.count().exec(function(err, count) {

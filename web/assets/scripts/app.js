@@ -12,11 +12,7 @@ angular.module('sbAdminApp', [
   'oc.lazyLoad',
   'ui.router',
   'ui.bootstrap',
-  'angular-loading-bar',
-  'myApp.filters',
-  'myApp.services',
-  'myApp.directives',
-  'myApp.controllers'
+  'angular-loading-bar'
 ])
   .config(['$stateProvider', '$urlRouterProvider', '$ocLazyLoadProvider', function ($stateProvider, $urlRouterProvider, $ocLazyLoadProvider) {
 
@@ -46,8 +42,8 @@ angular.module('sbAdminApp', [
               $ocLazyLoad.load(
                 {
                   name: 'toggle-switch',
-                  files: ["js/angular-toggle-switch.min.js",
-                    "js/angular-toggle-switch.css"
+                  files: ["js/angular-toggle-switch.js",
+                    "styles/angular-toggle-switch.css"
                   ]
                 }),
               $ocLazyLoad.load(

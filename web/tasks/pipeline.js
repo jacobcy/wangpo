@@ -31,11 +31,18 @@ var jsFilesToInject = [
   'js/dependencies/**/*.js',
 
   // All of the rest of your client-side js files
-  '/js/dataTables*.js',
-  '/js/jquery.dataTables*.js',
+  'js/angular-ui-router.js',
+  'js/json3.js',
+  'js/ocLazyLoad.min.js',
+  'js/loading-bar.js',
+  'js/ui-bootstrap-tpls.js',
+  'js/metisMenu.js',
+  'js/Chart.js',
 
   // will be injected here in no particular order.
-  'js/**/*.js'
+  //'js/**/*.js'
+  'js/sb-admin-2.js',
+  'scripts/app.js'
 ];
 
 

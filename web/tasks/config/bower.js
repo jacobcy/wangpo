@@ -5,6 +5,7 @@ module.exports = function(grunt) {
       js_dest: '.tmp/public/js',
       css_dest: '.tmp/public/styles',
       less_dest: '.tmp/public/less',
+      images_dest: '.tmp/public/img',
       fonts_dest: '.tmp/public/fonts',
       options: {
         keepExpandedHierarchy: false,

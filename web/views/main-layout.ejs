@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html class="no-js">
 
 <head>
 
@@ -7,7 +7,6 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="">
-  <meta name="author" content="">
 
   <title>王婆速配</title>
 
@@ -18,293 +17,55 @@
   <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
   <![endif]-->
 
-  <!--
-      Stylesheets and Preprocessors
-      ==============================
-
-      You can always bring in CSS files manually with `<link>` tags, or asynchronously
-      using a solution like AMD (RequireJS).  Or, if you like, you can take advantage
-      of Sails' conventional asset pipeline (boilerplate Gruntfile).
-
-      By default, stylesheets from your `assets/styles` folder are included
-      here automatically (between STYLES and STYLES END). Both CSS (.css) and LESS (.less)
-      are supported. In production, your styles will be minified and concatenated into
-      a single file.
-
-      To customize any part of the built-in behavior, just edit `tasks/pipeline.js`.
-      For example, here are a few things you could do:
-
-          + Change the order of your CSS files
-          + Import stylesheets from other directories
-          + Use a different or additional preprocessor, like SASS, SCSS or Stylus
-  -->
-
   <!--STYLES-->
-  <link rel="stylesheet" href="/styles/angular-motion.css">
-  <link rel="stylesheet" href="/styles/bootstrap.min.css">
-  <link rel="stylesheet" href="/styles/dataTables.responsive.css">
+  <link rel="stylesheet" href="/styles/angular-chart.css">
+  <link rel="stylesheet" href="/styles/angular-toggle-switch.css">
   <link rel="stylesheet" href="/styles/font-awesome.css">
-  <link rel="stylesheet" href="/styles/importer.css">
   <link rel="stylesheet" href="/styles/jquery.dataTables.css">
+  <link rel="stylesheet" href="/styles/loading-bar.css">
   <link rel="stylesheet" href="/styles/metisMenu.css">
-  <link rel="stylesheet" href="/styles/sb-admin-2.css">
   <link rel="stylesheet" href="/styles/style.css">
+  <link rel="stylesheet" href="/styles/timeline.css">
   <!--STYLES END-->
 
-  <!--SCRIPTS-->
-  <script src="/js/dependencies/jquery.js"></script>
-  <script src="/js/dependencies/angular.js"></script>
-  <script src="/js/dependencies/jquery.dataTables.js"></script>
-  <script src="/js/dependencies/sails.io.js"></script>
-  <script src="/js/dataTables.responsive.js"></script>
-  <script src="/js/jquery.dataTables.columnFilter.js"></script>
-  <script src="/js/angular-mocks.js"></script>
-  <script src="/js/angular-resource.js"></script>
-  <script src="/js/angular-route.js"></script>
-  <script src="/js/angular-sails.js"></script>
-  <script src="/js/angular-strap.js"></script>
-  <script src="/js/angular-strap.tpl.js"></script>
-  <script src="/js/lib/angular-datatables.columnfilter.js"></script>
-  <script src="/js/lib/angular-datatables.js"></script>
-  <script src="/js/lib/bootstrap-paginator.min.js"></script>
-  <script src="/js/lib/bootstrap.min.js"></script>
-  <script src="/js/metisMenu.js"></script>
-  <script src="/js/sb-admin-2.js"></script>
-  <script src="/js/script/app.js"></script>
-  <script src="/js/script/controllers.js"></script>
-  <script src="/js/script/directives.js"></script>
-  <script src="/js/script/filters.js"></script>
-  <script src="/js/script/services.js"></script>
-  <script src="/js/weibouser/main.js"></script>
-  <!--SCRIPTS END-->
 </head>
 
 <body>
 
-<div id="wrapper">
+<div ng-app="sbAdminApp">
 
-  <!-- Navigation -->
-  <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="/index.html">王婆速配</a>
-    </div>
-    <!-- /.navbar-header -->
+  <div ui-view></div>
 
-    <ul class="nav navbar-top-links navbar-right">
+</div>
 
-      <!-- /.dropdown for messages -->
-      <li class="dropdown">
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-          <i class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
-        </a>
-        <ul class="dropdown-menu dropdown-messages">
-          <li>
-            <a href="#">
-              <div>
-                <strong>John Smith</strong>
-                  <span class="pull-right text-muted">
-                      <em>Yesterday</em>
-                  </span>
-              </div>
-              <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
-            </a>
-          </li>
-          <li class="divider"></li>
-          <li>
-            <a class="text-center" href="#">
-              <strong>Read All Messages</strong>
-              <i class="fa fa-angle-right"></i>
-            </a>
-          </li>
-        </ul>
-        <!-- /.dropdown-messages -->
-      </li>
-      <!-- /.dropdown -->
-
-      <!-- /.dropdown for alerts -->
-      <li class="dropdown">
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-          <i class="fa fa-bell fa-fw"></i> <i class="fa fa-caret-down"></i>
-        </a>
-        <ul class="dropdown-menu dropdown-alerts">
-          <li>
-            <a href="#">
-              <div>
-                <i class="fa fa-comment fa-fw"></i> New Comment
-                <span class="pull-right text-muted small">4 minutes ago</span>
-              </div>
-            </a>
-          </li>
-          <li class="divider"></li>
-          <li>
-            <a class="text-center" href="#">
-              <strong>See All Alerts</strong>
-              <i class="fa fa-angle-right"></i>
-            </a>
-          </li>
-        </ul>
-        <!-- /.dropdown-alerts -->
-      </li>
-
-      <!-- /.dropdown for users -->
-      <li class="dropdown">
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-          <i class="fa fa-envelope fa-fw"></i>
-          <%= user.username %>
-          <i class="fa fa-caret-down"></i>
-        </a>
-        <ul class="dropdown-menu dropdown-user">
-          <li><a href="#"><i class="fa fa-user fa-fw"></i> 个人资料</a>
-          </li>
-          <li><a href="#"><i class="fa fa-gear fa-fw"></i> 设置</a>
-          </li>
-          <li class="divider"></li>
-          <li><a href="/logout"><i class="fa fa-sign-out fa-fw"></i> 退出</a>
-          </li>
-        </ul>
-        <!-- /.dropdown-user -->
-      </li>
-      <!-- /.dropdown -->
-
-    </ul>
-    <!-- /.navbar-top-links -->
-
-
-    <!-- Sidebar Menu Items -->
-    <div class="navbar-default sidebar" role="navigation">
-      <div class="sidebar-nav navbar-collapse">
-        <ul class="nav" id="side-menu">
-          <li class="sidebar-search">
-            <div class="input-group custom-search-form">
-              <input type="text" class="form-control" placeholder="Search...">
-                <span class="input-group-btn">
-                  <button class="btn btn-default" type="button">
-                    <i class="fa fa-search"></i>
-                  </button>
-                </span>
-            </div>
-            <!-- /input-group -->
-          </li>
-
-          <li>
-            <a href="/app#/"><i class="fa fa-home fa-home"></i> Angular</a>
-          </li>
-
-          <li>
-            <a href="/admin"><i class="fa fa-bar-chart-o fa-dashboard"></i> 后台接口<span class="fa arrow"></span></a>
-            <ul class="nav nav-second-level">
-              <li>
-                <a href="/weibouser.html"><i class="fa fa-fw fa-user"></i> 用户管理</a>
-              </li>
-              <li>
-                <a href="/messages.html"><i class="fa fa-fw fa-comment"></i> 消息管理</a>
-              </li>
-              <li>
-                <a href="/posts.html"><i class="fa fa-fw fa-weibo"></i> 微博管理</a>
-              </li>
-            </ul>
-            <!-- /.nav-second-level -->
-          </li>
-
-          <li>
-            <a href="/ui"><i class="fa fa-wrench fa-fw"></i> UI Elements<span class="fa arrow"></span></a>
-            <ul class="nav nav-second-level">
-              <li>
-                <a href="/tables.html">Tables</a>
-              </li>
-              <li>
-                <a href="/forms.html">Forms</a>
-              </li>
-              <li>
-                <a href="/panels.html">Panels and Wells</a>
-              </li>
-              <li>
-                <a href="/buttons.html">Buttons</a>
-              </li>
-              <li>
-                <a href="/notifications.html">Notifications</a>
-              </li>
-              <li>
-                <a href="/typography.html">Typography</a>
-              </li>
-              <li>
-                <a href="/icons.html"> Icons</a>
-              </li>
-              <li>
-                <a href="/grid.html">Grid</a>
-              </li>
-            </ul>
-            <!-- /.nav-second-level -->
-          </li>
-
-        </ul>
-      </div>
-      <!-- /.sidebar-collapse -->
-    </div>
-    <!-- /.navbar-static-side -->
-  </nav>
-
-
-  <div id="page-wrapper">
-
-    <%- body %>
-
-    <!--
-        Client-side Templates
-        ========================
-
-        HTML templates are important prerequisites of modern, rich client applications.
-        To work their magic, frameworks like Backbone, Angular, Ember, and Knockout require
-        that you load these templates client-side.
-
-        By default, your Gruntfile is configured to automatically load and precompile
-        client-side JST templates in your `assets/templates` folder, then
-        include them here automatically (between TEMPLATES and TEMPLATES END).
-
-        To customize this behavior to fit your needs, just edit `tasks/pipeline.js`.
-        For example, here are a few things you could do:
-
-            + Import templates from other directories
-            + Use a different template engine (handlebars, jade, dust, etc.)
-            + Internationalize your client-side templates using a server-side
-              stringfile before they're served.
-    -->
-
-    <!--TEMPLATES-->
-    <script type="text/javascript" src="/jst.js"></script>
-    <!--TEMPLATES END-->
-
-  </div>
-  <!-- /#page-wrapper -->
-
-  <!--
-
-    Client-side Javascript
-    ========================
-
-    You can always bring in JS files manually with `script` tags, or asynchronously
-    on the client using a solution like AMD (RequireJS).  Or, if you like, you can
-    take advantage of Sails' conventional asset pipeline (boilerplate Gruntfile).
-
-    By default, files in your `assets/js` folder are included here
-    automatically (between SCRIPTS and SCRIPTS END).  Both JavaScript (.js) and
-    CoffeeScript (.coffee) are supported. In production, your scripts will be minified
-    and concatenated into a single file.
-
-    To customize any part of the built-in behavior, just edit `tasks/pipeline.js`.
-    For example, here are a few things you could do:
-
-        + Change the order of your scripts
-        + Import scripts from other directories
-        + Use a different preprocessor, like TypeScript
-
-  -->
+<!--SCRIPTS-->
+  <script src="/js/dependencies/jquery.js"></script>
+  <script src="/js/dependencies/angular.js"></script>
+  <script src="/js/dependencies/jquery.dataTables.js"></script>
+  <script src="/js/dependencies/sails.io.js"></script>
+  <script src="/js/jquery.dataTables.columnFilter.js"></script>
+<script src="/js/Chart.js"></script>
+<script src="/js/angular-animate.js"></script>
+<script src="/js/angular-chart.js"></script>
+<script src="/js/angular-cookies.js"></script>
+  <script src="/js/angular-mocks.js"></script>
+  <script src="/js/angular-resource.js"></script>
+  <script src="/js/angular-route.js"></script>
+  <script src="/js/angular-sails.js"></script>
+<script src="/js/angular-sanitize.js"></script>
+<script src="/js/angular-scenario.js"></script>
+<script src="/js/angular-toggle-switch.js"></script>
+<script src="/js/angular-touch.js"></script>
+<script src="/js/angular-ui-router.js"></script>
+<script src="/js/es5-shim.js"></script>
+<script src="/js/json3.js"></script>
+<script src="/js/loading-bar.js"></script>
+  <script src="/js/metisMenu.js"></script>
+<script src="/js/ocLazyLoad.min.js"></script>
+  <script src="/js/sb-admin-2.js"></script>
+<script src="/js/ui-bootstrap-tpls.js"></script>
+  <script src="/js/weibouser/main.js"></script>
+  <!--SCRIPTS END-->
 </body>
 
 </html>

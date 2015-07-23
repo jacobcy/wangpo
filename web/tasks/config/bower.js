@@ -3,26 +3,20 @@ module.exports = function(grunt) {
     dev: {
       dest: '.tmp/public',
       js_dest: '.tmp/public/js',
-      css_dest: '.tmp/public/styles',
+      css_dest: '.tmp/public/css',
       less_dest: '.tmp/public/less',
       fonts_dest: '.tmp/public/fonts',
-      images_dest: '.tmp/public/img',
+      images_dest: '.tmp/public/images',
       options: {
         keepExpandedHierarchy: false,
         packageSpecific: {
           jquery: {
             js_dest: '.tmp/public/js/dependencies'
           },
-          datatables: {
-            js_dest: '.tmp/public/js/dependencies'
-          },
           angular: {
             js_dest: '.tmp/public/js/dependencies'
           },
           bootstrap: {
-            js_dest: '.tmp/public/js/dependencies'
-          },
-          'sails.io.js': {
             js_dest: '.tmp/public/js/dependencies'
           }
         }

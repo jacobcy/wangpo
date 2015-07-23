@@ -18,60 +18,13 @@
   <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
   <![endif]-->
 
-    <!--
-        Stylesheets and Preprocessors
-        ==============================
-
-        You can always bring in CSS files manually with `<link>` tags, or asynchronously
-        using a solution like AMD (RequireJS).  Or, if you like, you can take advantage
-        of Sails' conventional asset pipeline (boilerplate Gruntfile).
-
-        By default, stylesheets from your `assets/styles` folder are included
-        here automatically (between STYLES and STYLES END). Both CSS (.css) and LESS (.less)
-        are supported. In production, your styles will be minified and concatenated into
-        a single file.
-
-        To customize any part of the built-in behavior, just edit `tasks/pipeline.js`.
-        For example, here are a few things you could do:
-
-            + Change the order of your CSS files
-            + Import stylesheets from other directories
-            + Use a different or additional preprocessor, like SASS, SCSS or Stylus
-    -->
-
     <!--STYLES-->
-    <link rel="stylesheet" href="/styles/angular-chart.css">
-    <link rel="stylesheet" href="/styles/angular-toggle-switch.css">
-    <link rel="stylesheet" href="/styles/bootstrap-social.css">
-    <link rel="stylesheet" href="/styles/bootstrap.min.css">
-    <link rel="stylesheet" href="/styles/dataTables.responsive.css">
-    <link rel="stylesheet" href="/styles/datatables.bootstrap.css">
-    <link rel="stylesheet" href="/styles/font-awesome.css">
-    <link rel="stylesheet" href="/styles/jquery.dataTables.css">
-    <link rel="stylesheet" href="/styles/loading-bar.css">
-    <link rel="stylesheet" href="/styles/metisMenu.css">
-    <link rel="stylesheet" href="/styles/morris.css">
-    <link rel="stylesheet" href="/styles/sb-admin-2.css">
-    <link rel="stylesheet" href="/styles/style.css">
-    <link rel="stylesheet" href="/styles/timeline.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/sb-admin-2.css">
+    <link rel="stylesheet" href="/css/metisMenu.css">
+    <link rel="stylesheet" href="/css/font-awesome.css">
     <!--STYLES END-->
-
-    <!--SCRIPTS-->
-    <script src="/js/dependencies/jquery.js"></script>
-    <script src="/js/dependencies/angular.js"></script>
-    <script src="/js/dependencies/bootstrap.js"></script>
-    <script src="/js/dependencies/jquery.dataTables.js"></script>
-    <script src="/js/dependencies/sails.io.js"></script>
-    <script src="/js/angular-ui-router.js"></script>
-    <script src="/js/json3.js"></script>
-    <script src="/js/ocLazyLoad.min.js"></script>
-    <script src="/js/loading-bar.js"></script>
-    <script src="/js/ui-bootstrap-tpls.js"></script>
-    <script src="/js/metisMenu.js"></script>
-    <script src="/js/Chart.js"></script>
-    <script src="/js/sb-admin-2.js"></script>
-    <script src="/scripts/app.js"></script>
-    <!--SCRIPTS END-->
 
 </head>
 
@@ -79,6 +32,23 @@
   <div class="container">
     <%- body %>
   </div>
+
+  <!--SCRIPTS-->
+  <script src="/js/sails.io.js"></script>
+  <script src="/js/dependencies/jquery.js"></script>
+  <script src="/js/dependencies/bootstrap.js"></script>
+  <script src="/js/dependencies/angular.js"></script>
+  <script src="/js/jquery.dataTables.js"></script>
+  <script src="/js/angular-ui-router.js"></script>
+  <script src="/js/ui-bootstrap-tpls.js"></script>
+  <script src="/js/json3.js"></script>
+  <script src="/js/ocLazyLoad.js"></script>
+  <script src="/js/metisMenu.js"></script>
+  <script src="/js/loading-bar.js"></script>
+  <script src="/js/sb-admin-2.js"></script>
+  <script src="/scripts/app.js"></script>
+  <!--SCRIPTS END-->
+
 </body>
 
 </html>

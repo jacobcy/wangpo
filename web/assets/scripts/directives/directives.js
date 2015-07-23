@@ -2,7 +2,7 @@
 
 /* Directives */
 
-angular.module('myApp.directives', [])
+angular.module('sbAdminApp')
   .directive('alert', function () {
     return {
       restrict: 'E',

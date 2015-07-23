@@ -2,7 +2,7 @@
 
 /* Filters */
 
-angular.module('myApp.filters', [])
+angular.module('sbAdminApp')
 
 //返回userDataTable中的用户性别
   .filter('sex', function () {

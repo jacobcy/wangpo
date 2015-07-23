@@ -15,7 +15,13 @@
 // (if you're using LESS with the built-in default config, you'll want
 //  to change `assets/styles/importer.less` instead.)
 var cssFilesToInject = [
-  'styles/**/*.css'
+  //'css/**/*.css'
+  'css/bootstrap.min.css',
+  'css/main.css',
+  'css/sb-admin-2.css',
+  'css/metisMenu.css',
+  'css/loadming-bar.css',
+  'css/font-awesome.css'
 ];
 
 
@@ -25,19 +31,21 @@ var jsFilesToInject = [
 
   // Load sails.io before everything else
   //'js/dependencies/sails.io.js',
-  'js/dependencies/jquery.js',
 
   // Dependencies like jQuery, or Angular are brought in here
-  'js/dependencies/**/*.js',
+  'js/sails.io.js',
+  'js/dependencies/jquery.js',
+  'js/dependencies/bootstrap.js',
+  'js/dependencies/angular.js',
+  'js/jquery.dataTables.js',
 
   // All of the rest of your client-side js files
   'js/angular-ui-router.js',
-  'js/json3.js',
-  'js/ocLazyLoad.min.js',
-  'js/loading-bar.js',
   'js/ui-bootstrap-tpls.js',
+  'js/json3.js',
+  'js/ocLazyLoad.js',
   'js/metisMenu.js',
-  'js/Chart.js',
+  'js/loading-bar.js',
 
   // will be injected here in no particular order.
   //'js/**/*.js'

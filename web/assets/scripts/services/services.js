@@ -1,9 +1,6 @@
 'use strict';
 
-angular.module('myApp.services', [
-  'ngResource',//angular-resource
-  'ngSails' // angular-sails
-])
+angular.module('sbAdminApp')
 
 // WebSocket方法取后端数据
   .factory('userSails', ['$sails', function ($sails) {

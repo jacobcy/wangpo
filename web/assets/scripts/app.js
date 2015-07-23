@@ -1,19 +1,19 @@
 'use strict';
-
 /**
  * @ngdoc overview
- * @name myApp
+ * @name sbAdminApp
  * @description
- * # myApp
+ * # sbAdminApp
  *
  * Main module of the application.
  */
-angular.module('sbAdminApp', [
-  'oc.lazyLoad',
-  'ui.router',
-  'ui.bootstrap',
-  'angular-loading-bar'
-])
+angular
+  .module('sbAdminApp', [
+    'oc.lazyLoad',
+    'ui.router',
+    'ui.bootstrap',
+    'angular-loading-bar'
+  ])
   .config(['$stateProvider', '$urlRouterProvider', '$ocLazyLoadProvider', function ($stateProvider, $urlRouterProvider, $ocLazyLoadProvider) {
 
     $ocLazyLoadProvider.config({
@@ -21,7 +21,7 @@ angular.module('sbAdminApp', [
       events: true
     });
 
-    $urlRouterProvider.otherwise('/dashboard/home');
+    $urlRouterProvider.otherwise('/dashboard/welcome');
 
     $stateProvider
       .state('dashboard', {
@@ -42,38 +42,83 @@ angular.module('sbAdminApp', [
               $ocLazyLoad.load(
                 {
                   name: 'toggle-switch',
-                  files: ["js/angular-toggle-switch.js",
-                    "styles/angular-toggle-switch.css"
+                  files: [
+                    "js/angular-toggle-switch.js",
+                    "css/angular-toggle-switch.css"
                   ]
                 }),
               $ocLazyLoad.load(
                 {
                   name: 'ngAnimate',
                   files: ['js/angular-animate.js']
-                });
-            $ocLazyLoad.load(
-              {
-                name: 'ngCookies',
-                files: ['js/angular-cookies.js']
-              });
-            $ocLazyLoad.load(
-              {
-                name: 'ngResource',
-                files: ['js/angular-resource.js']
-              });
-            $ocLazyLoad.load(
-              {
-                name: 'ngSanitize',
-                files: ['js/angular-sanitize.js']
-              });
-            $ocLazyLoad.load(
-              {
-                name: 'ngTouch',
-                files: ['js/angular-touch.js']
-              })
+                }),
+              $ocLazyLoad.load(
+                {
+                  name: 'ngCookies',
+                  files: ['js/angular-cookies.js']
+                }),
+              $ocLazyLoad.load(
+                {
+                  name: 'ngResource',
+                  files: ['js/angular-resource.js']
+                }),
+              $ocLazyLoad.load(
+                {
+                  name: 'ngSails',
+                  files: ['js/angular-sails.js']
+                }),
+              $ocLazyLoad.load(
+                {
+                  name: 'ngSanitize',
+                  files: ['js/angular-sanitize.js']
+                }),
+              $ocLazyLoad.load(
+                {
+                  name: 'ngTouch',
+                  files: ['js/angular-touch.js']
+                }),
+              $ocLazyLoad.load(
+                {
+                  name: 'datatables',
+                  files: [
+                    'js/angular-datatables.js',
+                    'js/jquery.dataTables.columnFilter.js',
+                    'js/angular-datatables.columnfilter.js',
+                    'js/dataTables.responsive.js',
+
+                    'css/jquery.dataTables.css',
+                    'css/dataTables.responsive.css',
+                    'css/datatables.bootstrap.css'
+                  ]
+                })
           }
         }
       })
+
+      .state('dashboard.welcome', {
+        templateUrl: 'views/welcome.html',
+        url: '/welcome'
+      })
+
+      .state('dashboard.user', {
+        url: '/user',
+        controller: 'UserCtrl as user',
+        templateUrl: 'views/user.html',
+        resolve: {
+          loadMyFile: function ($ocLazyLoad) {
+            return $ocLazyLoad.load({
+              name: 'sbAdminApp',
+              files: [
+                'scripts/controllers/userContoller.js',
+                'scripts/services/services.js',
+                'scripts/filters/filters.js',
+                'scripts/directives/directives.js'
+              ]
+            })
+          }
+        }
+      })
+
       .state('dashboard.home', {
         url: '/home',
         controller: 'MainCtrl',
@@ -87,12 +132,14 @@ angular.module('sbAdminApp', [
                 'scripts/directives/timeline/timeline.js',
                 'scripts/directives/notifications/notifications.js',
                 'scripts/directives/chat/chat.js',
-                'scripts/directives/dashboard/stats/stats.js'
+                'scripts/directives/dashboard/stats/stats.js',
+                'css/timeline.css'
               ]
             })
           }
         }
       })
+
       .state('dashboard.form', {
         templateUrl: 'views/form.html',
         url: '/form'
@@ -106,16 +153,17 @@ angular.module('sbAdminApp', [
         url: '/login'
       })
       .state('dashboard.chart', {
-        templateUrl: 'views/chart.html',
         url: '/chart',
         controller: 'ChartCtrl',
+        templateUrl: 'views/chart.html',
         resolve: {
           loadMyFile: function ($ocLazyLoad) {
             return $ocLazyLoad.load({
               name: 'chart.js',
               files: [
+                'js/Chart.js',
                 'js/angular-chart.js',
-                'bower_components/angular-chart.js/dist/angular-chart.css'
+                'css/angular-chart.css',
               ]
             }),
               $ocLazyLoad.load({

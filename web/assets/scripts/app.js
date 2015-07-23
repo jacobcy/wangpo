@@ -82,13 +82,19 @@ angular
                   name: 'datatables',
                   files: [
                     'js/angular-datatables.js',
-                    'js/jquery.dataTables.columnFilter.js',
-                    'js/angular-datatables.columnfilter.js',
                     'js/dataTables.responsive.js',
 
                     'css/jquery.dataTables.css',
                     'css/dataTables.responsive.css',
                     'css/datatables.bootstrap.css'
+                  ]
+                }),
+              $ocLazyLoad.load(
+                {
+                  name: 'datatables.columnfilter',
+                  files: [
+                    'js/jquery.dataTables.columnFilter.js',
+                    'js/angular-datatables.columnfilter.js'
                   ]
                 })
           }

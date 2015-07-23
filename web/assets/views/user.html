@@ -7,40 +7,11 @@
 </div>
 
 
-<div class="row table-header">
-
-<div class="col-md-6">
-  <button ng-click="user.dtInstance.changeData(user.unlockPromise)" ng-show="user.lockbutton" type="button"
-          class="btn btn-primary">
-    <i class="fa fa-refresh"></i>&nbsp;显示普通用户
-  </button>
-  <button ng-click="user.dtInstance.changeData(user.lockPromise)" ng-hide="user.lockbutton" type="button"
-          class="btn btn-primary">
-    <i class="fa fa-exchange"></i>&nbsp;显示锁定用户
-  </button>
-  <button ng-click="user.create()" type="button" class="btn btn-success">
-    <i class="fa fa-plus"></i>&nbsp;创建用户
-  </button>
-</div>
-
-<alert/>
-
-</div>
 
 <div class="row">
 <div class="col-md-12">
   <table datatable="" dt-options="user.dtOptions" dt-columns="user.dtColumns"
          dt-instance="user.dtInstance" class="row-border hover">
-    <tfoot>
-    <tr>
-      <th>ID</th>
-      <th>昵称</th>
-      <th>性别</th>
-      <th>年龄</th>
-      <th>身高</th>
-      <th>地址</th>
-    </tr>
-    </tfoot>
   </table>
   </div>
 </div>

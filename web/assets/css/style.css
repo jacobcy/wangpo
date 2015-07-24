@@ -1,6 +1,7 @@
 
 .table-header {
-  height: 72px;
+  height:122px;
+  padding: 25px;
 }
 .user-photo {
   width: 100%;

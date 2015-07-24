@@ -21,7 +21,8 @@ var cssFilesToInject = [
   'css/sb-admin-2.css',
   'css/metisMenu.css',
   'css/loadming-bar.css',
-  'css/font-awesome.css'
+  'css/font-awesome.css',
+  'css/style.css'
 ];
 
 
@@ -33,7 +34,6 @@ var jsFilesToInject = [
   //'js/dependencies/sails.io.js',
 
   // Dependencies like jQuery, or Angular are brought in here
-  'js/sails.io.js',
   'js/dependencies/jquery.js',
   'js/dependencies/bootstrap.js',
   'js/dependencies/angular.js',

@@ -64,11 +64,6 @@ angular
                 }),
               $ocLazyLoad.load(
                 {
-                  name: 'ngSails',
-                  files: ['js/angular-sails.js']
-                }),
-              $ocLazyLoad.load(
-                {
                   name: 'ngSanitize',
                   files: ['js/angular-sanitize.js']
                 }),
@@ -117,8 +112,7 @@ angular
               files: [
                 'scripts/controllers/userContoller.js',
                 'scripts/services/services.js',
-                'scripts/filters/filters.js',
-                'scripts/directives/directives.js'
+                'scripts/filters/filters.js'
               ]
             })
           }

@@ -47,7 +47,6 @@ angular.module('sbAdminApp')
         var month = text.substr(2, 2);
         var day = text.substr(4, 2);
         var date = new Date(year.toString() + '/' + month + '/' + day);
-        console.log(date)
         return isFinite(date) ? date : null;
       },
       city : function (data) {

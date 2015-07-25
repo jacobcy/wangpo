@@ -2,11 +2,10 @@
 
 angular.module('sbAdminApp')
 
-  .controller('ModalInstanceCtrl', function ($modalInstance, $scope, items, msgs, display, userFactory, filters) {
+  .controller('ModalInstanceCtrl', function ($modalInstance, items, msgs, userFactory) {
     var modal = this;
     modal.user = items;
     modal.alert = msgs;
-    modal.display = display;
 
     //选择性别
     modal.sex = [{
@@ -19,6 +18,11 @@ angular.module('sbAdminApp')
       value: 0,
       title: '未知'
     }];
+
+    // 打开日期选择器
+    modal.openDatePicker = function () {
+      modal.opened = true;
+    }
 
     //增加用户照片
     modal.addPhoto = function () {
@@ -33,14 +37,13 @@ angular.module('sbAdminApp')
 
     //保存用户数据
     modal.save = function () {
-      if(modal.date){
-        modal.user.birthday = filters.date(modal.date);
-      }
       if (!modal.user.photos) {
         modal.user.photos = [];
       }
       userFactory.save(modal.user, function () {
         modal.ok();
+      }, function(error){
+        console.error(error);
       });
     }
 
@@ -64,11 +67,11 @@ angular.module('sbAdminApp')
 
   })
 
-  .controller('UserCtrl', function (DTOptionsBuilder, DTColumnBuilder, userFactory, $scope, $compile, $modal, $log, $filter, filters) {
+  .controller('UserCtrl', function (DTOptionsBuilder, DTColumnBuilder, userFactory, filters, $scope, $compile, $modal, $filter) {
     var user = this;
     user.dtInstance = {};
-    user.display= {};
 
+    //处理提示信息
     function alert(obj, type, message) {
       obj.alert = {
         'type': type,
@@ -83,7 +86,7 @@ angular.module('sbAdminApp')
       user.alert.display = false;
     }
 
-
+    //弹出user form
     function openForm() {
       var modalInstance = $modal.open({
         animation: true,
@@ -97,48 +100,44 @@ angular.module('sbAdminApp')
           },
           msgs: function () {
             return user.alert;
-          },
-          display: function () {
-            return user.display;
           }
         }
       });
 
       modalInstance.result.then(function () {
         user.dtInstance.reloadData();
-        alert(user, 'hide');
+        user.closeAlert();
       });
     }
 
     //创建用户数据
     user.create = function () {
       alert(user, 'success', '创建新用户');
-      user.display.newbie = true;
       user.detail = {};
       openForm();
     }
 
     //编辑用户数据
     user.edit = function (id) {
-      user.display.newbie = false;
       userFactory.get({id: id}, function (data) {
         user.detail = data;
+        user.detail.birthday = new Date(user.detail.birthday);
         alert(user, 'info', '编辑【' + data.nickname + '】的个人资料');
         openForm();
       });
     }
 
-//锁定用户数据
+    //锁定用户数据
     user.lock = function (id) {
-      userFactory.save({id: id,lock:true},
+      userFactory.save({id: id, lock: true},
         function () {
           user.dtInstance.reloadData()
         });
     }
 
-//恢复用户数据
+    //恢复用户数据
     user.unlock = function (id) {
-      userFactory.save({id: id,lock:false},
+      userFactory.save({id: id, lock: false},
         function () {
           user.dtInstance.reloadData()
         });
@@ -200,7 +199,7 @@ angular.module('sbAdminApp')
       }),
       DTColumnBuilder.newColumn('height').withTitle('身高').withOption('width', '10%').withOption('defaultContent', '-'),
       DTColumnBuilder.newColumn('location').withTitle('地址').withOption('width', '15%').withOption('defaultContent', '-').renderWith(function (data) {
-        return filters.city(data);
+        return $filter('city')(data);
       }),
       DTColumnBuilder.newColumn('id').withTitle('Actions').withOption('width', '15%').notSortable().renderWith(function (data, type, full, meta) {
         return filters.button(data, type, full, meta);
@@ -225,10 +224,4 @@ angular.module('sbAdminApp')
       return userFactory.query({lock: 'false'}).$promise
     }
 
-    //刷新表格数据
-    user.reloadData = function () {
-      user.dtInstance.reloadData(function () {
-        //alert(user, 'uccess', '数据已更新');
-      }, false);
-    }
   })

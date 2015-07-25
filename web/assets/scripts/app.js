@@ -141,7 +141,7 @@ angular
       })
 
       .state('dashboard.form', {
-        templateUrl: 'views/form.html',
+        templateUrl: 'views/dashboard/form.html',
         url: '/form'
       })
       .state('dashboard.blank', {
@@ -155,7 +155,7 @@ angular
       .state('dashboard.chart', {
         url: '/chart',
         controller: 'ChartCtrl',
-        templateUrl: 'views/chart.html',
+        templateUrl: 'views/dashboard/chart.html',
         resolve: {
           loadMyFile: function ($ocLazyLoad) {
             return $ocLazyLoad.load({
@@ -174,7 +174,7 @@ angular
         }
       })
       .state('dashboard.table', {
-        templateUrl: 'views/table.html',
+        templateUrl: 'views/dashboard/table.html',
         url: '/table'
       })
       .state('dashboard.panels-wells', {

@@ -143,6 +143,9 @@ angular.module('sbAdminApp')
         });
     }
 
+    user.refresh = function () {
+      user.dtInstance.reloadData();
+    }
 
     //填入表格数据
     //user.dtOptions = DTOptionsBuilder.fromSource(userFactory.query)

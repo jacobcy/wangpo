@@ -51,11 +51,11 @@ module.exports.policies = {
 
  'main': {
     'index': true,
-    '*': ['passport', 'isAuthenticated']
+    //'*': ['passport', 'isAuthenticated']
   },
 
   'weibouser': {
-    '*': ['passport', 'isAuthenticated']
+    //'*': ['passport', 'isAuthenticated']
   },
 
  'auth': {

@@ -83,8 +83,8 @@ var WeiboUser = {
         return;
       }
       user.nickname = json.nickname;
-      if (!user.gender && json.sex !== 0) {
-        user.gender = json.sex === 1 ? "男" : "女";
+      if (!user.avatar) {
+        user.avatar = json.headimgurl_hd;
       }
       next();
     });

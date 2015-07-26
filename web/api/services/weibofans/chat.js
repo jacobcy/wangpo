@@ -5,6 +5,7 @@ var Chat = function(weibo_id) {
   // @type WeiboUser
   this.weiboUser = null;
   this.state = 'start';
+  this.createTimestamp = Date.now();
 };
 
 Chat.ERROR_MESSAGE = '王婆生病了，正在恢复中，暂时不能为您服务，请原谅。';
@@ -15,6 +16,15 @@ Chat.pendingWeiboUsers = [];
 var saving = false;
 // 定时保存缓存中的WeiboUser数据
 setInterval(function() {
+  var now = Date.now();
+  for (var id in ChatSessions) {
+    // 每个chat设置1800秒的超时时间，超时自动结束
+    if (now - ChatSessions[id].createTimestamp > 1800 * 1000) {
+      delete ChatSessions[id];
+      console.log('chat timeout with weiboId ' + id);
+    }
+  }
+
   if (saving) {
     return;
   }
@@ -32,12 +42,12 @@ setInterval(function() {
     ChatSessions[saved.weiboId].weiboUser = saved;
     saving = false;
   });
-}, 1000);
+}, 5000);
 
 Chat.prototype = {
   init: function(cb) {
     this.state = 'start';
-    console.log('init');
+    console.log('chat init with weiboId ' + this.id);
     WeiboUser.findOne({ weiboId: this.id }).exec(function(err, found) {
       if (err) {
         console.log(err);
@@ -46,7 +56,7 @@ Chat.prototype = {
       }
       if (found) {
         this.weiboUser = found;
-        this.handleMessage(null, cb);
+        this.handleMessage(null, null, cb);
         return;
       }
       WeiboUser.create({ weiboId: this.id }).exec(function(err, created) {
@@ -56,7 +66,7 @@ Chat.prototype = {
           return;
         }
         this.weiboUser = created;
-        this.handleMessage(null, cb);
+        this.handleMessage(null, null, cb);
       }.bind(this));
     }.bind(this));
   },
@@ -64,7 +74,7 @@ Chat.prototype = {
   /**
    * @param {Function} cb function(replyMessage: String) 通过callback返回回复用户的消息内容。
    */
-  handleMessage: function(text, cb) {
+  handleMessage: function(text, image, cb) {
     var user = this.weiboUser;
     switch (this.state) {
       case 'gender':
@@ -99,12 +109,19 @@ Chat.prototype = {
           cb('您输入的区号有误，请重新输入');
           return;
         }
-        var city = util.areaCodeToCity(text);
-        if (!city) {
+        if (!util.areaCodeToCity(text)) {
           cb('没有找到您输入的区号对应的城市，请重新输入');
           return;
         }
-        user.location = city;
+        user.location = text;
+        this.save();
+        break;
+      case 'photos':
+        if (!image) {
+          cb('请上传一张最近的照片');
+          return;
+        }
+        user.photos = [ image ];
         this.save();
         break;
     }
@@ -137,6 +154,9 @@ Chat.prototype = {
     } else if (!user.location) {
       this.state = 'location';
       return '请回复您目前所在地的区号，例如：您在北京，回复010';
+    } else if (!user.photos) {
+      this.state = 'photos';
+      return '请上传一张最近的照片';
     }
     this.state = 'checked';
     return null;
@@ -165,19 +185,19 @@ var ChatManager = {
       chat.init(cb);
       return;
     }
-    chat.handleMessage(null, cb);
+    chat.handleMessage(null, null, cb);
   },
 
   /**
    * @param {Function} cb function(replyMessage: String) 通过callback返回回复用户的消息内容。
    */
-  process: function(weibo_id, text, cb) {
+  process: function(weibo_id, text, image, cb) {
     var chat = ChatSessions[weibo_id];
     if (!chat) {
       cb('');
       return;
     }
-    chat.handleMessage(text, cb);
+    chat.handleMessage(text, image, cb);
   }
 };
 

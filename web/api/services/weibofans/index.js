@@ -44,6 +44,9 @@ var WeiboFans = {
       case 'text':
         handleTextMessage(sender_id, text, cb);
         break;
+      case 'image':
+        handleImageMessage(sender_id, data.tovfid, cb);
+        break;
       case 'event':
         handleEventMessage(sender_id, text, cb);
         break;
@@ -81,7 +84,24 @@ function handleTextMessage(sender_id, text, cb) {
       ChatManager.create(sender_id, cb);
       return;
   }
-  ChatManager.process(sender_id, text, function(msg) {
+  ChatManager.process(sender_id, text, null, function(msg) {
+    if (!msg) {
+      // 默认情况显示帮助信息
+      msg = ReplyMessages.help;
+    }
+    cb(msg);
+  });
+}
+
+/**
+ * 处理图片格式的私信
+ * @param {Function} cb function(replyMessage: String) 处理结束后通过callback返回
+ * 回复用户的消息内容。
+ */
+function handleImageMessage(sender_id, tovfid, cb) {
+  var imageUrl = 'https://upload.api.weibo.com/2/mss/msget?access_token=' + sails.config.weibo.access_token +
+                '&fid=' + tovfid;
+  ChatManager.process(sender_id, null, imageUrl, function(msg) {
     if (!msg) {
       // 默认情况显示帮助信息
       msg = ReplyMessages.help;

@@ -18,7 +18,7 @@ module.exports.bootstrap = function(cb) {
       {
         "weiboId": "0001",
         "nickname": "李小敏",
-        "birthday": "1978.03.15",
+        "birthday": "1978-03-15",
         "gender":  1,
         "height": 175,
         "location": "010",
@@ -28,7 +28,7 @@ module.exports.bootstrap = function(cb) {
       {
         "weiboId": "0002",
         "nickname": "黄鹏",
-        "birthday": "1987.06.15",
+        "birthday": "1987-06-15",
         "gender":  1,
         "height": 179,
         "location": "021",

@@ -29,7 +29,7 @@ setInterval(function() {
       console.error('Failed to save WeiboUser: ' + err);
       return;
     }
-    ChatSessions[saved.innerId].weiboUser = saved;
+    ChatSessions[saved.weiboId].weiboUser = saved;
     saving = false;
   });
 }, 1000);
@@ -37,8 +37,10 @@ setInterval(function() {
 Chat.prototype = {
   init: function(cb) {
     this.state = 'start';
-    WeiboUser.findOne({ innerId: this.id }).exec(function(err, found) {
+    console.log('init');
+    WeiboUser.findOne({ weiboId: this.id }).exec(function(err, found) {
       if (err) {
+        console.log(err);
         cb(Chat.ERROR_MESSAGE);
         return;
       }
@@ -47,8 +49,9 @@ Chat.prototype = {
         this.handleMessage(null, cb);
         return;
       }
-      WeiboUser.create({ innerId: this.id }).exec(function(err, created) {
+      WeiboUser.create({ weiboId: this.id }).exec(function(err, created) {
         if (err) {
+          console.log(err);
           cb(Chat.ERROR_MESSAGE);
           return;
         }
@@ -69,7 +72,7 @@ Chat.prototype = {
           cb('您输入的性别格式有误，请重新输入，男生回复1，女生回复2');
           return;
         }
-        user.gender = text === '1' ? '男' : '女';
+        user.gender = parseInt(text);
         this.save();
         break;
       case 'birthday':
@@ -78,7 +81,7 @@ Chat.prototype = {
           cb('您输入的生日格式有误，请重新输入');
           return;
         }
-        user.userBirthday = date;
+        user.birthday = date;
         this.save();
         break;
       case 'height':
@@ -101,7 +104,7 @@ Chat.prototype = {
           cb('没有找到您输入的区号对应的城市，请重新输入');
           return;
         }
-        user.userLocation = city;
+        user.location = city;
         this.save();
         break;
     }
@@ -125,13 +128,13 @@ Chat.prototype = {
     if (!user.gender) {
       this.state = 'gender';
       return '男生回复1，女生回复2';
-    } else if (!user.userBirthday) {
+    } else if (!user.birthday) {
       this.state = 'birthday';
       return '请回复您的生日，格式为yymmdd，例如860214';
     } else if (!user.height) {
       this.state = 'height';
       return '请回复您的身高，如果您的身高为176公分，回复176';
-    } else if (!user.userLocation) {
+    } else if (!user.location) {
       this.state = 'location';
       return '请回复您目前所在地的区号，例如：您在北京，回复010';
     }

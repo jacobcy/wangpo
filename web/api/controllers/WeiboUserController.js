@@ -1,4 +1,12 @@
+var request = require('request');
+
 const COUNT_PER_PAGE = 30;
+
+// 微博粉服平台获取微博用户基本信息的URL
+// 详见 http://open.weibo.com/wiki/获取用户基本信息
+var WEIBO_USER_INFO_URL = 'https://api.weibo.com/2/eps/user/info.json?access_token=' +
+                          sails.config.weibo.access_token +
+                          '&uid=';
 
 module.exports = {
   list : function(req,res){
@@ -33,6 +41,52 @@ module.exports = {
         });
       });
 
+    });
+  },
+
+  /*
+   * 访问方式 http://iwangpo.com/weibouser/userInfo?weiboId=1430236477
+   *
+   * 输入微博ID，通过 https://api.weibo.com/2/eps/user/info.json
+   * 获取微博用户资料.
+   * @param weiboId
+   * @return JSON格式的用户信息，格式如下：
+   * {
+        "follow": 1,
+        "subscribe": 1,
+        "id": 1430236477,
+        "nickname": "袁徐磊",
+        "sex": 1,
+        "language": "zh-cn",
+        "city": "朝阳",
+        "province": "北京",
+        "country": "中国",
+        "headimgurl": "http://XXX",
+        "headimgurl_large": "http://XXX",
+        "headimgurl_hd": "http://XXX",
+        "subscribe_time": 1428325761
+     }
+   */
+  userInfo: function(req, res){
+    var weiboId = req.param('weiboId');
+    if (!weiboId) {
+      res.json(500, {
+        error: 'Invalid weiboId'
+      });
+      return;
+    }
+    request({
+      url: WEIBO_USER_INFO_URL + weiboId,
+      json: true
+    }, function(err, r, json) {
+      if (err || json.error) {
+        console.error("Failed to access Weibo user info: " + (err || json.error));
+        res.json(500, {
+          error: err || json.error
+        })
+        return;
+      }
+      res.json(json);
     });
   }
 };

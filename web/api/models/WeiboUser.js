@@ -19,7 +19,6 @@ var WeiboUser = {
     nickname: {
       type: 'string',
       size: 32,
-      required: true
     },
     // e.g. "1：男 2：女 0：未知"
     gender: {
@@ -69,13 +68,13 @@ var WeiboUser = {
   },
 
   beforeCreate: function(user, next) {
-    if (user.userName) {
+    if (user.nickname) {
       next();
       return;
     }
     // 通过微博uid获取微博用户详细信息
     request({
-      url: WEIBO_USER_INFO_URL + user.innerId,
+      url: WEIBO_USER_INFO_URL + user.weiboId,
       json: true
     }, function(err, res, json) {
       if (err || json.error) {
@@ -83,7 +82,7 @@ var WeiboUser = {
         next();
         return;
       }
-      user.userName = json.nickname;
+      user.nickname = json.nickname;
       if (!user.gender && json.sex !== 0) {
         user.gender = json.sex === 1 ? "男" : "女";
       }

@@ -22,6 +22,13 @@ var util = {
   },
 
   /**
+   * 将日期转化为YYYY年X月X日格式
+   */
+  toBirthdayString: function(date) {
+    return date.getFullYear() + '年' + (date.getMonth() + 1) + '月' + date.getDate() + '日';
+  },
+
+  /**
    * 通过电话区号获取对应的城市名称
    */
   areaCodeToCity: function(codeString) {

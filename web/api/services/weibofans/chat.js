@@ -117,11 +117,27 @@ Chat.prototype = {
         this.save();
         break;
       case 'photos':
-        if (!image) {
+        if (!user.photos && !image) {
           cb('请上传一张最近的照片');
           return;
         }
-        user.photos = [ image ];
+        if (image) {
+          if (!user.photos) {
+            user.photos = [];
+          }
+          // 最多保存5张照片
+          if (user.photos.length < 5) {
+            user.photos.push(image);
+          }
+          if (user.photos.length >= 5) {
+            cb('简单描述一下自己或者自己喜欢的人');
+            return;
+          }
+        }
+        if (text) {
+          user.description = text;
+          this.state = 'description';
+        }
         this.save();
         break;
     }
@@ -157,6 +173,21 @@ Chat.prototype = {
     } else if (!user.photos) {
       this.state = 'photos';
       return '请上传一张最近的照片';
+    }
+    if (this.state == 'photos') {
+      return '您可以继续上传照片，也可以简单描述一下自己或者自己喜欢的人';
+    }
+    if (this.state != 'start') {
+      this.state = 'start';
+
+      // 用户修改过资料，让用户确认最终资料
+      return '您的资料如下。' +
+             '性别: ' + (user.gender == 1 ? '男' : '女') +
+             '；生日：' + (util.toBirthdayString(user.birthday)) +
+             '；身高：' + user.height + '公分' +
+             '；所在地：' + util.areaCodeToCity(user.location) +
+             (user.description ? '；个人介绍：' + user.description : '') +
+             '。如果您需要修改资料，请私信婆婆。回复date开始速配。';
     }
     this.state = 'checked';
     return null;

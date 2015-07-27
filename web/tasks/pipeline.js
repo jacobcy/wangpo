@@ -22,7 +22,11 @@ var cssFilesToInject = [
   'css/metisMenu.css',
   'css/loading-bar.css',
   'css/font-awesome.css',
-  'css/style.css'
+  'css/style.css',
+
+  'css/jquery.dataTables.css',
+  'css/dataTables.responsive.css',
+  'css/datatables.bootstrap.css'
 ];
 
 
@@ -45,7 +49,10 @@ var jsFilesToInject = [
   'js/ocLazyLoad.js',
   'js/metisMenu.js',
   'js/loading-bar.js',
+
   'js/jquery.dataTables.js',
+  'js/angular-datatables.js',
+  'js/dataTables.responsive.js',
 
   // will be injected here in no particular order.
   //'js/**/*.js'

@@ -23,6 +23,7 @@ module.exports.bootstrap = function(cb) {
         "height": 175,
         "location": "010",
         "description": "这个人很懒，什么也没写",
+        "avatar":"http://tp3.sinaimg.cn/3304467554/180/22869450874/0",
         "photos": ["http://tp3.sinaimg.cn/3304467554/180/22869450874/0"]
       },
       {
@@ -33,6 +34,7 @@ module.exports.bootstrap = function(cb) {
         "height": 179,
         "location": "021",
         "description": "这个人很懒，什么也没写",
+        "avatar":"http://tp3.sinaimg.cn/3304467554/180/22869450874/0",
         "photos": ["http://tp3.sinaimg.cn/3304467554/180/22869450874/0"]
       }
     ];

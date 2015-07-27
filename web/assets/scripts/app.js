@@ -12,7 +12,8 @@ angular
     'oc.lazyLoad',
     'ui.router',
     'ui.bootstrap',
-    'angular-loading-bar'
+    'angular-loading-bar',
+    'datatables'
   ])
   .config(['$stateProvider', '$urlRouterProvider', '$ocLazyLoadProvider', function ($stateProvider, $urlRouterProvider, $ocLazyLoadProvider) {
 
@@ -36,7 +37,7 @@ angular
                   'scripts/directives/header/header.js',
                   'scripts/directives/header/header-notification/header-notification.js',
                   'scripts/directives/sidebar/sidebar.js',
-                  //'scripts/directives/sidebar/sidebar-search/sidebar-search.js'
+                  'scripts/directives/sidebar/sidebar-search/sidebar-search.js'
                 ]
               }),
               $ocLazyLoad.load(
@@ -90,18 +91,6 @@ angular
         resolve: {
           loadMyFile: function ($ocLazyLoad) {
             return $ocLazyLoad.load(
-              {
-                name: 'datatables',
-                files: [
-                  'js/angular-datatables.js',
-                  'js/dataTables.responsive.js',
-
-                  'css/jquery.dataTables.css',
-                  'css/dataTables.responsive.css',
-                  'css/datatables.bootstrap.css'
-                ]
-              }),
-              $ocLazyLoad.load(
                 {
                   name: 'datatables.columnfilter',
                   files: [

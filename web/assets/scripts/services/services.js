@@ -12,10 +12,17 @@ angular.module('sbAdminApp')
 
   .factory('filters', function () {
     return {
-      image: function (data) {
+      avatar: function(data) {
+        if(data){
+          return '<div class="avatar-grid"><img src="' + data + '" class="user-avatar" /></div>'
+        } else {
+          return '<div class="avatar-grid"><img src="http://tp3.sinaimg.cn/3304467554/50/22869450874/0" class="user-avatar" /></div>'
+        }
+      },
+      photos: function (data) {
         var pics = new String;
         for (var i in data) {
-          var pic = '<div class="col-md-3"><img src="' + data[i] + '" class="user-photo" /></div>';
+          var pic = '<div class="col-md-2"><img src="' + data[i] + '" class="user-photo" /></div>';
           pics = pics + pic;
         }
         pics = '<div class="row show-grid user-photos">' + pics + '</div>';

@@ -8,24 +8,32 @@ angular.module('sbAdminApp')
     modal.alert = msgs;
 
     modal.getUserInfo = function (id) {
-      var result = id.match(/\d{9,11}/);
       var regName = /weibo\.com\/(\w*)/i;
       var regId = /weibo\.com\/u\/(\d*)/i;
-      console.log(result);
+
+      var result = id.match(/\d{9,11}/);
       if (!result) {
-        modal.user.nickname = "您输入的链接有误";
+        modal.userError = true;
+        modal.user.nickname = '您输入的链接有误';
         return;
       } else {
         id = result[0];
-        modal.user.weiboId = result[0];
+        modal.user.weiboId = id;
       }
       weiboUser.get({weiboId: id}, function (data) {
-        modal.user.nickname = data.nickname;
-        modal.user.gender = data.sex;
-        if (data.province = "北京") {
-          modal.user.location = "010";
+        if (data.follow) {
+          modal.user.nickname = data.nickname;
+          modal.user.avatar = data.headimgurl;
+          modal.user.gender = data.sex;
+          if (data.province = '北京') {
+            modal.user.location = '010';
+          }
+        } else {
+          modal.userError = true;
+          modal.user.nickname = '此用户尚未关注您';
         }
       }, function () {
+        modal.userError = true;
         modal.user.nickname = '无法获得此用户的信息';
       })
     }
@@ -215,7 +223,9 @@ angular.module('sbAdminApp')
 
     //显示表格数据
     user.dtColumns = [
-      DTColumnBuilder.newColumn('weiboId').withTitle('ID').withOption('width', '20%').withOption('defaultContent', '-'),
+      DTColumnBuilder.newColumn('avatar').withTitle('头像').withOption('width', '15%').notSortable().withOption('defaultContent', '-').renderWith(function (data) {
+        return filters.avatar(data);
+      }), ,
       DTColumnBuilder.newColumn('nickname').withTitle('昵称').withOption('width', '20%').withOption('defaultContent', '-'),
       DTColumnBuilder.newColumn('gender').withTitle('性别').withOption('width', '10%').renderWith(function (data) {
         return $filter('sex')(data);
@@ -227,12 +237,12 @@ angular.module('sbAdminApp')
       DTColumnBuilder.newColumn('location').withTitle('地址').withOption('width', '15%').withOption('defaultContent', '-').renderWith(function (data) {
         return $filter('city')(data);
       }),
-      DTColumnBuilder.newColumn('id').withTitle('Actions').withOption('width', '15%').notSortable().renderWith(function (data, type, full, meta) {
+      DTColumnBuilder.newColumn('id').withTitle('Actions').withOption('width', '20%').notSortable().renderWith(function (data, type, full, meta) {
         return filters.button(data, type, full, meta);
       }),
       // 展开显示数据
       DTColumnBuilder.newColumn('photos').withTitle('照片').withOption('width', '100%').withOption('defaultContent', '-').withClass('none').renderWith(function (data) {
-        return filters.image(data);
+        return filters.photos(data);
       }),
       DTColumnBuilder.newColumn('description').withTitle('个人说明').withOption('defaultContent', '-').withClass('none')
     ];

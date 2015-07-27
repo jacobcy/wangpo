@@ -7,10 +7,26 @@ angular.module('sbAdminApp')
     modal.user = items;
     modal.alert = msgs;
 
-    modal.getUserInfo = function (weiboId) {
-      weiboUser.get({weiboId: weiboId}, function (data) {
+    modal.getUserInfo = function (id) {
+      var result = id.match(/\d{9,11}/);
+      var regName = /weibo\.com\/(\w*)/i;
+      var regId = /weibo\.com\/u\/(\d*)/i;
+      console.log(result);
+      if (!result) {
+        modal.user.nickname = "您输入的链接有误";
+        return;
+      } else {
+        id = result[0];
+        modal.user.weiboId = result[0];
+      }
+      weiboUser.get({weiboId: id}, function (data) {
         modal.user.nickname = data.nickname;
         modal.user.gender = data.sex;
+        if (data.province = "北京") {
+          modal.user.location = "010";
+        }
+      }, function () {
+        modal.user.nickname = '无法获得此用户的信息';
       })
     }
 

@@ -45,6 +45,7 @@ var jsFilesToInject = [
   'js/ocLazyLoad.js',
   'js/metisMenu.js',
   'js/loading-bar.js',
+  'js/jquery.dataTables.js',
 
   // will be injected here in no particular order.
   //'js/**/*.js'

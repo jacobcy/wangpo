@@ -93,7 +93,6 @@ angular
               {
                 name: 'datatables',
                 files: [
-                  'js/jquery.dataTables.js',
                   'js/angular-datatables.js',
                   'js/dataTables.responsive.js',
 

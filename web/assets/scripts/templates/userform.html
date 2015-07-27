@@ -7,10 +7,10 @@
 
   <div class="modal-body">
     <div class="form-group">
-      <label class="control-label" for="weiboId">微博ID：</label>
+      <label class="control-label" for="weiboId">微博ID：{{modal.user.weiboId}}</label>
 
       <div class="form-group input-group">
-        <input class="form-control" type="number" id="weiboId" name="weiboId" required ng-model="modal.user.weiboId"/>
+        <input class="form-control" type="text" id="weiboId" name="weiboId" required ng-model="modal.user.weiboId"/>
         <span class="input-group-btn">
           <button type="button" class="btn btn-info" ng-click="modal.getUserInfo(modal.user.weiboId)">
             <i class="fa fa-magic"></i>

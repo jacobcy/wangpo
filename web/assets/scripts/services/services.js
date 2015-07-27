@@ -7,7 +7,7 @@ angular.module('sbAdminApp')
   }])
 
   .factory('weiboUser', ['$resource', function ($resource) {
-    return $resource('/weibouser/userInfo/:weiboId', {weiboId: '@weiboId'})
+    return $resource('/weibouser/userInfo/', {weiboId: '@weiboId'})
   }])
 
   .factory('filters', function () {

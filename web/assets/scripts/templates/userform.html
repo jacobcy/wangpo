@@ -12,7 +12,7 @@
       <div class="form-group input-group">
         <input class="form-control" type="number" id="weiboId" name="weiboId" required ng-model="modal.user.weiboId"/>
         <span class="input-group-btn">
-          <button type="button" class="btn btn-info" ng-click="modal.getUserInfo()">
+          <button type="button" class="btn btn-info" ng-click="modal.getUserInfo(modal.user.weiboId)">
             <i class="fa fa-magic"></i>
           </button>
         </span>

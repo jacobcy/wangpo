@@ -6,7 +6,11 @@ angular.module('sbAdminApp')
     return $resource('/weibouser/:id', {id: '@id'})
   }])
 
-  .factory('filters',function(){
+  .factory('weiboUser', ['$resource', function ($resource) {
+    return $resource('/weibouser/userInfo/:weiboId', {weiboId: '@weiboId'})
+  }])
+
+  .factory('filters', function () {
     return {
       image: function (data) {
         var pics = new String;

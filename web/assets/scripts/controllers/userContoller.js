@@ -2,10 +2,17 @@
 
 angular.module('sbAdminApp')
 
-  .controller('ModalInstanceCtrl', function ($modalInstance, items, msgs, userFactory) {
+  .controller('ModalInstanceCtrl', function ($modalInstance, items, msgs, userFactory, weiboUser) {
     var modal = this;
     modal.user = items;
     modal.alert = msgs;
+
+    modal.getUserInfo = function (weiboId) {
+      weiboUser.get({weiboId: weiboId}, function (data) {
+        modal.user.nickname = data.nickname;
+        modal.user.gender = data.sex;
+      })
+    }
 
     //选择性别
     modal.sex = [{
@@ -42,7 +49,7 @@ angular.module('sbAdminApp')
       }
       userFactory.save(modal.user, function () {
         modal.ok();
-      }, function(error){
+      }, function (error) {
         console.error(error);
       });
     }

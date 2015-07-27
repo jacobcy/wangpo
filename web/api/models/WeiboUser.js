@@ -18,7 +18,7 @@ var WeiboUser = {
     // e.g. "李小敏"，必须
     nickname: {
       type: 'string',
-      size: 32,
+      size: 32
     },
     // e.g. "1：男 2：女 0：未知"
     gender: {
@@ -84,7 +84,7 @@ var WeiboUser = {
       }
       user.nickname = json.nickname;
       if (!user.avatar) {
-        user.avatar = json.headimgurl_hd;
+        user.avatar = json.headimgurl;
       }
       next();
     });

@@ -20,7 +20,7 @@ var cssFilesToInject = [
   'css/main.css',
   'css/sb-admin-2.css',
   'css/metisMenu.css',
-  'css/loadming-bar.css',
+  'css/loading-bar.css',
   'css/font-awesome.css',
   'css/style.css'
 ];
@@ -37,7 +37,6 @@ var jsFilesToInject = [
   'js/dependencies/jquery.js',
   'js/dependencies/bootstrap.js',
   'js/dependencies/angular.js',
-  'js/jquery.dataTables.js',
 
   // All of the rest of your client-side js files
   'js/angular-ui-router.js',

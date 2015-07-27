@@ -36,62 +36,44 @@ angular
                   'scripts/directives/header/header.js',
                   'scripts/directives/header/header-notification/header-notification.js',
                   'scripts/directives/sidebar/sidebar.js',
-                  'scripts/directives/sidebar/sidebar-search/sidebar-search.js'
+                  //'scripts/directives/sidebar/sidebar-search/sidebar-search.js'
                 ]
               }),
               $ocLazyLoad.load(
                 {
-                  name: 'toggle-switch',
-                  files: [
-                    "js/angular-toggle-switch.js",
-                    "css/angular-toggle-switch.css"
-                  ]
-                }),
-              $ocLazyLoad.load(
-                {
-                  name: 'ngAnimate',
-                  files: ['js/angular-animate.js']
-                }),
-              $ocLazyLoad.load(
-                {
-                  name: 'ngCookies',
-                  files: ['js/angular-cookies.js']
-                }),
-              $ocLazyLoad.load(
-                {
                   name: 'ngResource',
                   files: ['js/angular-resource.js']
-                }),
-              $ocLazyLoad.load(
-                {
-                  name: 'ngSanitize',
-                  files: ['js/angular-sanitize.js']
-                }),
-              $ocLazyLoad.load(
-                {
-                  name: 'ngTouch',
-                  files: ['js/angular-touch.js']
-                }),
-              $ocLazyLoad.load(
-                {
-                  name: 'datatables',
-                  files: [
-                    'js/angular-datatables.js',
-                    'js/dataTables.responsive.js',
-
-                    'css/jquery.dataTables.css',
-                    'css/dataTables.responsive.css',
-                    'css/datatables.bootstrap.css'
-                  ]
-                }),
-              $ocLazyLoad.load(
-                {
-                  name: 'datatables.columnfilter',
-                  files: [
-                    'js/jquery.dataTables.columnFilter.js',
-                    'js/angular-datatables.columnfilter.js'
-                  ]
                 })
+            /*
+             $ocLazyLoad.load(
+             {
+             name: 'ngAnimate',
+             files: ['js/angular-animate.js']
+             }),
+             $ocLazyLoad.load(
+             {
+             name: 'toggle-switch',
+             files: [
+             "js/angular-toggle-switch.js",
+             "css/angular-toggle-switch.css"
+             ]
+             }),
+             $ocLazyLoad.load(
+             {
+             name: 'ngCookies',
+             files: ['js/angular-cookies.js']
+             }),
+             $ocLazyLoad.load(
+             {
+             name: 'ngSanitize',
+             files: ['js/angular-sanitize.js']
+             }),
+             $ocLazyLoad.load(
+             {
+             name: 'ngTouch',
+             files: ['js/angular-touch.js']
+             })
+             */
           }
         }
       })
@@ -107,14 +89,36 @@ angular
         templateUrl: 'views/user.html',
         resolve: {
           loadMyFile: function ($ocLazyLoad) {
-            return $ocLazyLoad.load({
-              name: 'sbAdminApp',
-              files: [
-                'scripts/controllers/userContoller.js',
-                'scripts/services/services.js',
-                'scripts/filters/filters.js'
-              ]
-            })
+            return $ocLazyLoad.load(
+              {
+                name: 'datatables',
+                files: [
+                  'js/jquery.dataTables.js',
+                  'js/angular-datatables.js',
+                  'js/dataTables.responsive.js',
+
+                  'css/jquery.dataTables.css',
+                  'css/dataTables.responsive.css',
+                  'css/datatables.bootstrap.css'
+                ]
+              }),
+              $ocLazyLoad.load(
+                {
+                  name: 'datatables.columnfilter',
+                  files: [
+                    'js/jquery.dataTables.columnFilter.js',
+                    'js/angular-datatables.columnfilter.js'
+                  ]
+                }),
+              $ocLazyLoad.load({
+                name: 'sbAdminApp',
+                files: [
+                  'scripts/controllers/userContoller.js',
+                  'scripts/services/services.js',
+                  'scripts/filters/filters.js'
+                ]
+              })
+
           }
         }
       })
@@ -133,6 +137,7 @@ angular
                 'scripts/directives/notifications/notifications.js',
                 'scripts/directives/chat/chat.js',
                 'scripts/directives/dashboard/stats/stats.js',
+
                 'css/timeline.css'
               ]
             })
@@ -163,6 +168,7 @@ angular
               files: [
                 'js/Chart.js',
                 'js/angular-chart.js',
+
                 'css/angular-chart.css',
               ]
             }),

@@ -6,33 +6,32 @@
   </div>
 
   <div class="modal-body">
-    <div class="form-group">
-      <label class="control-label" for="weiboId">微博ID：{{modal.user.weiboId}}</label>
+    <div class="form-group" ng-class="{'has-error' :modal.userError}">
+      <label class="control-label" for="weiboId">微博ID：{{modal.infoError}}</label>
 
       <div class="form-group input-group">
         <input class="form-control" type="text" id="weiboId" name="weiboId" required ng-model="modal.user.weiboId"/>
         <span class="input-group-btn">
-          <button type="button" class="btn btn-info" ng-click="modal.getUserInfo(modal.user.weiboId)">
+          <button type="button" class="btn btn-info" ng-click="modal.getUserInfo()">
             <i class="fa fa-magic"></i>
           </button>
         </span>
       </div>
     </div>
 
-    <div class="form-group" ng-class="{'has-error' :modal.userError}">
+    <div class="form-group">
       <label class="control-label" for="nickname">微博账号：</label>
       <input class="form-control" type="text" id="nickname" name="nickname" ng-model="modal.user.nickname"/>
     </div>
 
     <div class="form-group">
-      <label class="control-label" for="birthday">出生日期(格式：yyyy-MM-dd)
+      <label class="control-label" for="birthday">出生日期(格式：yyyyMMdd)
         <span ng-show="modal.user.birthday">，当前年龄为{{modal.user.birthday | age }}</span></label>
 
       <div class="form-group input-group">
-        <input class="form-control" type="date" id="birthday" name="birthday" ng-model="modal.user.birthday"
-               placeholder="{{modal.user.birthday | date: 'yyyy-MM-dd'}}" datepicker-popup is-open="modal.opened"/>
+        <input class="form-control" type="text" id="birthday" name="birthday" ng-model="modal.user.birthday" datepicker-popup="yyyyMMdd" is-open="modal.opened"/>
         <span class="input-group-btn">
-          <button type="button" class="btn btn-primary" ng-click="modal.openDatePicker()">
+          <button type="button" class="btn btn-primary" ng-click="modal.openDatePicker($event)">
             <i class="fa fa-calendar"></i>
           </button>
         </span>

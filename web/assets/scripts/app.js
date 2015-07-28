@@ -91,13 +91,23 @@ angular
         resolve: {
           loadMyFile: function ($ocLazyLoad) {
             return $ocLazyLoad.load(
+              {
+                name: 'datatables.columnfilter',
+                files: [
+                  'js/jquery.dataTables.columnFilter.js',
+                  'js/angular-datatables.columnfilter.js'
+                ]
+              }),
+              /*
+              $ocLazyLoad.load(
                 {
-                  name: 'datatables.columnfilter',
+                  name: 'datatables.bootstrap',
                   files: [
-                    'js/jquery.dataTables.columnFilter.js',
-                    'js/angular-datatables.columnfilter.js'
+                    'js/angular-datatables.bootstrap.js',
+                    'css/datatables.bootstrap.css'
                   ]
                 }),
+            */
               $ocLazyLoad.load({
                 name: 'sbAdminApp',
                 files: [

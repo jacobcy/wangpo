@@ -2,40 +2,66 @@
 
 angular.module('sbAdminApp')
 
-  .controller('ModalInstanceCtrl', function ($modalInstance, items, msgs, userFactory, weiboUser) {
+  .controller('ModalInstanceCtrl', function ($modalInstance, weiboUser, userFactory, items, msgs ) {
     var modal = this;
     modal.user = items;
     modal.alert = msgs;
 
-    modal.getUserInfo = function (id) {
+    modal.getUserInfo = function () {
       var regName = /weibo\.com\/(\w*)/i;
       var regId = /weibo\.com\/u\/(\d*)/i;
 
-      var result = id.match(/\d{9,11}/);
-      if (!result) {
-        modal.userError = true;
-        modal.user.nickname = '您输入的链接有误';
-        return;
-      } else {
-        id = result[0];
-        modal.user.weiboId = id;
-      }
-      weiboUser.get({weiboId: id}, function (data) {
-        if (data.follow) {
-          modal.user.nickname = data.nickname;
-          modal.user.avatar = data.headimgurl;
-          modal.user.gender = data.sex;
-          if (data.province = '北京') {
-            modal.user.location = '010';
+      //检查并获取输入框中的数字，作为微博ID
+      var result = modal.user.weiboId.match(/\d+/);
+      if (result) {
+        modal.user.weiboId = result[0];
+        var weiboId = modal.user.weiboId;
+
+        //查看数据库是否存在该微博ID
+        userFactory.query({weiboId: weiboId},
+          function (data) {
+            if (data.length > 1) {
+              console.log(data.length);
+              modal.user = data[0];
+              modal.userError = true;
+              modal.infoError = '存在'+ data.length + '个重复的账号，请检查';
+              return;
+            }
+          }, function (error) {
+            modal.userError = true;
+            modal.infoError = '数据库异常';
+            return;
+          });
+
+        // 从微博后台获取用户信息（在用户已关注的情况）
+        weiboUser.get({weiboId: modal.user.weiboId}, function (data) {
+          if (data.follow) {
+            modal.user.nickname = data.nickname;
+            modal.user.avatar = data.headimgurl;
+            if (!modal.user.gender) {
+              modal.user.gender = data.sex;
+            }
+            if (!modal.user.location) {
+              if (data.province = '北京') {
+                modal.user.location = '010';
+              }
+            }
+            return;
+          } else {
+            modal.userError = true;
+            modal.infoError = '此用户尚未关注您，请手动输入微博信息';
+            return;
           }
-        } else {
+        }, function (error) {
           modal.userError = true;
-          modal.user.nickname = '此用户尚未关注您';
-        }
-      }, function () {
+          modal.infoError = '无法获得此用户的信息';
+          return;
+        })
+      } else {
+        modal.infoError = '无法识别，请输入微博用户的ID号或URL';
         modal.userError = true;
-        modal.user.nickname = '无法获得此用户的信息';
-      })
+        return;
+      }
     }
 
     //选择性别
@@ -51,7 +77,10 @@ angular.module('sbAdminApp')
     }];
 
     // 打开日期选择器
-    modal.openDatePicker = function () {
+    modal.openDatePicker = function ($event) {
+      $event.preventDefault();
+      $event.stopPropagation();
+
       modal.opened = true;
     }
 
@@ -68,9 +97,7 @@ angular.module('sbAdminApp')
 
     //保存用户数据
     modal.save = function () {
-      if (!modal.user.photos) {
-        modal.user.photos = [];
-      }
+      modal.user.birthday = new Date(modal.user.birthday);
       userFactory.save(modal.user, function () {
         modal.ok();
       }, function (error) {
@@ -98,7 +125,7 @@ angular.module('sbAdminApp')
 
   })
 
-  .controller('UserCtrl', function (DTOptionsBuilder, DTColumnBuilder, userFactory, filters, $scope, $compile, $modal, $filter) {
+  .controller('UserCtrl', function (DTOptionsBuilder, DTColumnBuilder, userFactory, utils, $scope, $compile, $modal) {
     var user = this;
     user.dtInstance = {};
 
@@ -117,7 +144,7 @@ angular.module('sbAdminApp')
       user.alert.display = false;
     }
 
-    //弹出user form
+    //弹出用户资料编辑页 user Form
     function openForm() {
       var modalInstance = $modal.open({
         animation: true,
@@ -135,6 +162,7 @@ angular.module('sbAdminApp')
         }
       });
 
+      // 关闭资料页时 刷新数据
       modalInstance.result.then(function () {
         user.dtInstance.reloadData();
         user.closeAlert();
@@ -174,6 +202,7 @@ angular.module('sbAdminApp')
         });
     }
 
+    //刷新用户数据
     user.refresh = function () {
       user.dtInstance.reloadData();
     }
@@ -188,32 +217,31 @@ angular.module('sbAdminApp')
       //设置翻页效果
       .withPaginationType('full')
       //设置默认行数
-      .withDisplayLength(10)
+      .withDisplayLength(25)
       //绑定angular控件
       .withOption('createdRow', createdRow)
       // 展开、收起表格
       .withOption('responsive', true)
+      // 兼容Bootstrap
+      //.withBootstrap()
       //过滤表格数据
       .withColumnFilter({
-        aoColumns: [{
-          type: 'numble'
-        }, {
-          type: 'text',
-          bRegex: true,
-          bSmart: true
-        }, {
-          type: 'select',
-          bRegex: false,
-          values: ['男', '女']
-        }, {
-          type: 'numble'
-        }, {
-          type: 'numble'
-        }, {
-          type: 'text',
-          bRegex: true,
-          bSmart: true
-        }]
+        aoColumns: [
+          null, {
+            type: 'text',
+            bRegex: true,
+            bSmart: true
+          }, {
+            type: 'select',
+            bRegex: false,
+            values: ['男', '女']
+          }, {
+            type: 'number-range'
+          }, {
+            type: 'number-range'
+          }, {
+            type: 'text'
+          }]
       });
     //绑定angular元素
     function createdRow(row, data, dataIndex) {
@@ -223,28 +251,28 @@ angular.module('sbAdminApp')
 
     //显示表格数据
     user.dtColumns = [
-      DTColumnBuilder.newColumn('avatar').withTitle('头像').withOption('width', '15%').notSortable().withOption('defaultContent', '-').renderWith(function (data) {
-        return filters.avatar(data);
+      DTColumnBuilder.newColumn('avatar').withTitle('头像').withOption('width', '12%').notSortable().renderWith(function (data) {
+        return utils.avatar(data);
       }), ,
-      DTColumnBuilder.newColumn('nickname').withTitle('昵称').withOption('width', '20%').withOption('defaultContent', '-'),
-      DTColumnBuilder.newColumn('gender').withTitle('性别').withOption('width', '10%').renderWith(function (data) {
-        return $filter('sex')(data);
+      DTColumnBuilder.newColumn('nickname').withTitle('昵称').withOption('width', '18%').withOption('defaultContent', '-'),
+      DTColumnBuilder.newColumn('gender').withTitle('性别').withOption('width', '12%').renderWith(function (data) {
+        return utils.gender(data);
       }),
-      DTColumnBuilder.newColumn('birthday').withTitle('年龄').withOption('width', '10%').withOption('defaultContent', '-').renderWith(function (data) {
-        return $filter('age')(data);
+      DTColumnBuilder.newColumn('birthday').withTitle('年龄').withOption('width', '12%').renderWith(function (data) {
+        return utils.age(data);
       }),
-      DTColumnBuilder.newColumn('height').withTitle('身高').withOption('width', '10%').withOption('defaultContent', '-'),
-      DTColumnBuilder.newColumn('location').withTitle('地址').withOption('width', '15%').withOption('defaultContent', '-').renderWith(function (data) {
-        return $filter('city')(data);
+      DTColumnBuilder.newColumn('height').withTitle('身高').withOption('width', '12%').withOption('defaultContent', '-'),
+      DTColumnBuilder.newColumn('location').withTitle('地址').withOption('width', '14%').renderWith(function (data) {
+        return utils.city(data);
       }),
       DTColumnBuilder.newColumn('id').withTitle('Actions').withOption('width', '20%').notSortable().renderWith(function (data, type, full, meta) {
-        return filters.button(data, type, full, meta);
+        return utils.button(data, type, full, meta);
       }),
       // 展开显示数据
-      DTColumnBuilder.newColumn('photos').withTitle('照片').withOption('width', '100%').withOption('defaultContent', '-').withClass('none').renderWith(function (data) {
-        return filters.photos(data);
+      DTColumnBuilder.newColumn('photos').withTitle('照片').withOption('width', '100%').withClass('none').renderWith(function (data) {
+        return utils.photos(data);
       }),
-      DTColumnBuilder.newColumn('description').withTitle('个人说明').withOption('defaultContent', '-').withClass('none')
+      DTColumnBuilder.newColumn('description').withTitle('个人说明').withOption('defaultContent', '暂无介绍').withClass('none')
     ];
 
     //显示锁定的用户数据

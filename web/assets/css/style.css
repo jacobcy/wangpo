@@ -1,12 +1,26 @@
 input.ng-invalid {
   border-color:#A94442;
-  outline: 0px none;
-  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset, 0px 0px 6px rgba(200, 50, 50, 0.5);
 }
 
 .table-header {
   height:92px;
   padding-top: 20px;
+}
+
+/*
+th {
+  text-align: center;
+}
+
+tr.child {
+  text-align: left;
+}*/
+
+span.filter_number_range{
+  border:0px;
+  border-radius: 0px;
+  box-shadow: 0px 0px 0px;
+  padding-top: 0px;
 }
 
 .avatar-grid {

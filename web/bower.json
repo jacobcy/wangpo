@@ -32,7 +32,7 @@
     "angular-touch": "*",
     "angular-route": "*",
     "font-awesome": "*",
-    "angular-bootstrap": "*",
+
     "oclazyload": "*",
     "angular-loading-bar": "*",
     "angular-ui-router": "*",

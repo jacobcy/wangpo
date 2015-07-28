@@ -22,11 +22,11 @@ var cssFilesToInject = [
   'css/metisMenu.css',
   'css/loading-bar.css',
   'css/font-awesome.css',
-  'css/style.css',
 
   'css/jquery.dataTables.css',
   'css/dataTables.responsive.css',
-  'css/datatables.bootstrap.css'
+
+  'css/style.css'
 ];
 
 

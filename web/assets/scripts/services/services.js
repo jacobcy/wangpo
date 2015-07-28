@@ -3,7 +3,7 @@
 angular.module('sbAdminApp')
 
   .factory('userFactory', ['$resource', function ($resource) {
-    return $resource('/weibouser/', {id: '@id'})
+    return $resource('/weibouser/:id', {id: '@id'})
   }])
 
   .factory('weiboUser', ['$resource', function ($resource) {

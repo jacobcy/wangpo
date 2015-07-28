@@ -2,7 +2,7 @@
 
 angular.module('sbAdminApp')
 
-  .controller('ModalInstanceCtrl', function ($modalInstance, weiboUser, userFactory, items, msgs ) {
+  .controller('ModalInstanceCtrl', function ($modalInstance, weiboUser, userFactory, items, msgs) {
     var modal = this;
     modal.user = items;
     modal.alert = msgs;
@@ -20,12 +20,13 @@ angular.module('sbAdminApp')
         //查看数据库是否存在该微博ID
         userFactory.query({weiboId: weiboId},
           function (data) {
-            if (data.length > 1) {
-              console.log(data.length);
+            if (data.length >= 1) {
               modal.user = data[0];
               modal.userError = true;
-              modal.infoError = '存在'+ data.length + '个重复的账号，请检查';
+              modal.infoError = '存在' + data.length + '个重复的账号，请检查';
               return;
+            } else {
+              modal.user = {weiboId: modal.user.weiboId};
             }
           }, function (error) {
             modal.userError = true;

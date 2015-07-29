@@ -9,12 +9,17 @@ angular.module('sbAdminApp')
 
     modal.getUserInfo = function () {
 
-      // Todo:通过个性化域名获得用户的微博ID
-      var regName = /weibo\.com\/(\w*)/i;
-      var regId = /weibo\.com\/u\/(\d*)/i;
-
-      // Todo:检查此处错误，空值时报错
       if (angular.isString(modal.user.weiboId)) {
+
+        // Todo:通过个性化域名获得用户的微博ID
+        var regName = /weibo\.com\/(\w*?)[\/\?]?/i;
+        var regId = new RegExp('^.*?weibo\.com\/u\/(\d*?)[\/\?]?.*$', 'i');
+        var id = modal.user.weiboId;
+        var res = regId.test(id);
+        console.log(res);
+        id.replace(regId, '111');
+        console.log(id);
+
         //检查并获取输入框中的数字，作为微博ID
         var result = modal.user.weiboId.match(/\d+/);
         if (result) {
@@ -24,18 +29,21 @@ angular.module('sbAdminApp')
           //查看数据库是否存在该微博ID
           userFactory.query({weiboId: weiboId},
             function (data) {
-              console.error(data);
               // 如果存在2个或以上的微博ID，报错
               if (data.length > 1) {
                 modal.infoError = '存在' + data.length + '个重复的账号，请检查';
                 modal.user = data[0];
                 return;
                 // 如果微博ID已存在，可以修改此用户资料
-              } else if (data.length = 1) {
+              } else if (data.length === 1) {
                 modal.user = data[0];
               } else {
                 // 如果微博ID不存在，清空userForm
-                console.log('从后台返回的数据：');
+                modal.user = {
+                  weiboId: weiboId,
+                  birthday: new Date('1990-01-01'),
+                  location: '010'
+                }
               }
 
               // 从微博后台获取用户信息（在用户已关注的情况）
@@ -52,13 +60,13 @@ angular.module('sbAdminApp')
                       modal.user.location = '010';
                     }
                   }
-                } else if (data.follow = 0) {
+                } else if (data.follow === 0) {
                   modal.infoError = '此用户尚未关注您，请手动输入微博信息';
                 } else {
                   modal.infoError = '未知的错误';
                 }
               }, function (error) {
-                modal.infoError = error.error;
+                modal.infoError = error.data.error;
               })
             }, function (error) {
               modal.infoError = '数据库异常，请稍后再试或联系管理员';
@@ -86,7 +94,7 @@ angular.module('sbAdminApp')
     // 打开日期选择器
     modal.openDatePicker = function ($event) {
       if (!modal.user.birthday) {
-        modal.user.birthday = new Date('1990');
+        modal.user.birthday = new Date('1990-01-01');
       }
       $event.preventDefault();
       $event.stopPropagation();
@@ -97,10 +105,10 @@ angular.module('sbAdminApp')
     //增加用户照片
     //Todo:通过七牛云存储保存用户照片
     modal.addPhoto = function () {
-      if(!angular.isArray(modal.user.photos)){
+      if (!angular.isArray(modal.user.photos)) {
         modal.user.photos = []
       }
-      if(/https?:\/\/[^\s]*/.test(modal.photo)){
+      if (/https?:\/\/[^\s]*/.test(modal.photo)) {
         modal.user.photos.push(modal.photo);
         modal.photo = null;
       }
@@ -114,6 +122,9 @@ angular.module('sbAdminApp')
     //保存用户数据
     modal.save = function () {
       if (!angular.isDate(modal.user.birthday)) {
+        if(!angular.isDefined(modal.user.birthday)){
+          modal.user.birthday = '1990-01-01';
+        }
         modal.user.birthday = new Date(modal.user.birthday);
       }
       userFactory.save(modal.user, function () {
@@ -148,18 +159,10 @@ angular.module('sbAdminApp')
     user.dtInstance = {};
 
     //处理提示信息
-    function alert(obj, type, message) {
-      obj.alert = {
-        'type': type,
-        'message': message,
-        'display': true
+    function alert(message) {
+      user.alert = {
+        'message': message
       }
-    }
-
-    user.alert = {};
-    user.alert.display = false;
-    user.closeAlert = function () {
-      user.alert.display = false;
     }
 
     //弹出用户资料编辑页 user Form
@@ -183,14 +186,14 @@ angular.module('sbAdminApp')
       // 关闭资料页时 刷新数据
       modalInstance.result.then(function () {
         user.dtInstance.reloadData();
-        user.closeAlert();
       });
     }
 
     //创建用户数据
     user.create = function () {
-      alert(user, 'success', '创建新用户');
+      alert('创建新用户');
       user.detail = {
+        birthday: new Date('1990-01-01'),
         location: '010'
       };
       openForm();
@@ -200,8 +203,7 @@ angular.module('sbAdminApp')
     user.edit = function (id) {
       userFactory.get({id: id}, function (data) {
         user.detail = data;
-        user.detail.birthday = new Date(user.detail.birthday);
-        alert(user, 'info', '编辑【' + data.nickname + '】的个人资料');
+        alert('编辑【' + data.nickname + '】的个人资料');
         openForm();
       });
     }

@@ -1,7 +1,6 @@
 
 <div class="row table-header">
-
-  <div class="col-md-6">
+  <div class="col-md-12">
     <button ng-click="user.dtInstance.changeData(user.unlockPromise)" ng-show="user.lockbutton" type="button"
             class="btn btn-warning">
       <i class="fa fa-refresh"></i>&nbsp;显示普通用户
@@ -16,11 +15,6 @@
     <button ng-click="user.create()" type="button" class="btn btn-success">
       <i class="fa fa-plus"></i>&nbsp;创建用户
     </button>
-  </div>
-
-  <div class="col-md-4">
-  <alert ng-show="user.alert.display" type="{{user.alert.type}}" close="user.closeAlert()">{{user.alert.message}}
-  </alert>
   </div>
 </div>
 

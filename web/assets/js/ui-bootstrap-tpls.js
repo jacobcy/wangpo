@@ -987,15 +987,15 @@ angular.module('ui.bootstrap.datepicker', ['ui.bootstrap.dateparser', 'ui.bootst
 
 .constant('datepickerConfig', {
   formatDay: 'dd',
-  formatMonth: 'MMMM',
+  formatMonth: 'MM',
   formatYear: 'yyyy',
   formatDayHeader: 'EEE',
-  formatDayTitle: 'MMMM yyyy',
+  formatDayTitle: 'yyyy-MM',
   formatMonthTitle: 'yyyy',
-  datepickerMode: 'day',
+  datepickerMode: 'year',
   minMode: 'day',
   maxMode: 'year',
-  showWeeks: true,
+  showWeeks: false,
   startingDay: 0,
   yearRange: 20,
   minDate: null,
@@ -1431,11 +1431,11 @@ angular.module('ui.bootstrap.datepicker', ['ui.bootstrap.dateparser', 'ui.bootst
 }])
 
 .constant('datepickerPopupConfig', {
-  datepickerPopup: 'yyyy-MM-dd',
+  datepickerPopup: 'yyyyMMdd',
   html5Types: {
-    date: 'yyyy-MM-dd',
+    date: 'yyyyMMdd',
     'datetime-local': 'yyyy-MM-ddTHH:mm:ss.sss',
-    'month': 'yyyy-MM'
+    'month': 'yyyyMM'
   },
   currentText: 'Today',
   clearText: 'Clear',

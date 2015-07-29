@@ -8,60 +8,66 @@ angular.module('sbAdminApp')
     modal.alert = msgs;
 
     modal.getUserInfo = function () {
+
+      // Todo:通过个性化域名获得用户的微博ID
       var regName = /weibo\.com\/(\w*)/i;
       var regId = /weibo\.com\/u\/(\d*)/i;
 
-      //检查并获取输入框中的数字，作为微博ID
-      var result = modal.user.weiboId.match(/\d+/);
-      if (result) {
-        modal.user.weiboId = result[0];
-        var weiboId = modal.user.weiboId;
+      // Todo:检查此处错误，空值时报错
+      if (angular.isString(modal.user.weiboId)) {
+        //检查并获取输入框中的数字，作为微博ID
+        var result = modal.user.weiboId.match(/\d+/);
+        if (result) {
+          var weiboId = result[0];
+          modal.user.weiboId = weiboId;
 
-        //查看数据库是否存在该微博ID
-        userFactory.query({weiboId: weiboId},
-          function (data) {
-            if (data.length >= 1) {
-              modal.user = data[0];
-              modal.userError = true;
-              modal.infoError = '存在' + data.length + '个重复的账号，请检查';
-              return;
-            } else {
-              modal.user = {weiboId: modal.user.weiboId};
-            }
-          }, function (error) {
-            modal.userError = true;
-            modal.infoError = '数据库异常';
-            return;
-          });
-
-        // 从微博后台获取用户信息（在用户已关注的情况）
-        weiboUser.get({weiboId: modal.user.weiboId}, function (data) {
-          if (data.follow) {
-            modal.user.nickname = data.nickname;
-            modal.user.avatar = data.headimgurl;
-            if (!modal.user.gender) {
-              modal.user.gender = data.sex;
-            }
-            if (!modal.user.location) {
-              if (data.province = '北京') {
-                modal.user.location = '010';
+          //查看数据库是否存在该微博ID
+          userFactory.query({weiboId: weiboId},
+            function (data) {
+              console.error(data);
+              // 如果存在2个或以上的微博ID，报错
+              if (data.length > 1) {
+                modal.infoError = '存在' + data.length + '个重复的账号，请检查';
+                modal.user = data[0];
+                return;
+                // 如果微博ID已存在，可以修改此用户资料
+              } else if (data.length = 1) {
+                modal.user = data[0];
+              } else {
+                // 如果微博ID不存在，清空userForm
+                console.log('从后台返回的数据：');
               }
-            }
-            return;
-          } else {
-            modal.userError = true;
-            modal.infoError = '此用户尚未关注您，请手动输入微博信息';
-            return;
-          }
-        }, function (error) {
-          modal.userError = true;
-          modal.infoError = '无法获得此用户的信息';
-          return;
-        })
+
+              // 从微博后台获取用户信息（在用户已关注的情况）
+              weiboUser.get({weiboId: weiboId}, function (data) {
+                if (data.follow > 0) {
+                  modal.user.nickname = data.nickname;
+                  modal.user.avatar = data.headimgurl;
+                  if (!modal.user.gender) {
+                    modal.user.gender = data.sex;
+                  }
+                  if (!modal.user.location) {
+                    // Todo:根据微博资料，填入用户地址
+                    if (data.province = '北京') {
+                      modal.user.location = '010';
+                    }
+                  }
+                } else if (data.follow = 0) {
+                  modal.infoError = '此用户尚未关注您，请手动输入微博信息';
+                } else {
+                  modal.infoError = '未知的错误';
+                }
+              }, function (error) {
+                modal.infoError = error.error;
+              })
+            }, function (error) {
+              modal.infoError = '数据库异常，请稍后再试或联系管理员';
+            });
+        } else {
+          modal.infoError = '无法识别，请输入微博用户的ID号或URL';
+        }
       } else {
-        modal.infoError = '无法识别，请输入微博用户的ID号或URL';
-        modal.userError = true;
-        return;
+        modal.infoError = '请输入微博用户的ID号或URL';
       }
     }
 
@@ -79,6 +85,9 @@ angular.module('sbAdminApp')
 
     // 打开日期选择器
     modal.openDatePicker = function ($event) {
+      if (!modal.user.birthday) {
+        modal.user.birthday = new Date('1990');
+      }
       $event.preventDefault();
       $event.stopPropagation();
 
@@ -86,9 +95,15 @@ angular.module('sbAdminApp')
     }
 
     //增加用户照片
+    //Todo:通过七牛云存储保存用户照片
     modal.addPhoto = function () {
-      modal.user.photos.push(modal.photo);
-      modal.photo = null;
+      if(!angular.isArray(modal.user.photos)){
+        modal.user.photos = []
+      }
+      if(/https?:\/\/[^\s]*/.test(modal.photo)){
+        modal.user.photos.push(modal.photo);
+        modal.photo = null;
+      }
     }
 
     //删除用户照片
@@ -98,7 +113,9 @@ angular.module('sbAdminApp')
 
     //保存用户数据
     modal.save = function () {
-      modal.user.birthday = new Date(modal.user.birthday);
+      if (!angular.isDate(modal.user.birthday)) {
+        modal.user.birthday = new Date(modal.user.birthday);
+      }
       userFactory.save(modal.user, function () {
         modal.ok();
       }, function (error) {
@@ -173,7 +190,9 @@ angular.module('sbAdminApp')
     //创建用户数据
     user.create = function () {
       alert(user, 'success', '创建新用户');
-      user.detail = {};
+      user.detail = {
+        location: '010'
+      };
       openForm();
     }
 

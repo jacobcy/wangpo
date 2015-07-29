@@ -39,20 +39,20 @@ var jsFilesToInject = [
 
   // Dependencies like jQuery, or Angular are brought in here
   'js/dependencies/jquery.js',
-  'js/dependencies/bootstrap.js',
   'js/dependencies/angular.js',
+  'js/dependencies/bootstrap.js',
 
   // All of the rest of your client-side js files
   'js/angular-ui-router.js',
-  'js/ui-bootstrap-tpls.js',
   'js/json3.js',
   'js/ocLazyLoad.js',
-  'js/metisMenu.js',
   'js/loading-bar.js',
+  'js/ui-bootstrap-tpls.js',
+  'js/metisMenu.js',
 
   'js/jquery.dataTables.js',
-  'js/angular-datatables.js',
   'js/dataTables.responsive.js',
+  'js/angular-datatables.js',
 
   // will be injected here in no particular order.
   //'js/**/*.js'

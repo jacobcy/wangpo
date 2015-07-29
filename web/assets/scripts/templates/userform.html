@@ -6,11 +6,11 @@
   </div>
 
   <div class="modal-body">
-    <div class="form-group" ng-class="{'has-error' :modal.userError}">
+    <div class="form-group" ng-class="{'has-error' :modal.infoError}">
       <label class="control-label" for="weiboId">微博ID：{{modal.infoError}}</label>
 
       <div class="form-group input-group">
-        <input class="form-control" type="text" id="weiboId" name="weiboId" required ng-model="modal.user.weiboId"/>
+        <input class="form-control" type="text" id="weiboId" name="weiboId" required autofocus ng-model="modal.user.weiboId"/>
         <span class="input-group-btn">
           <button type="button" class="btn btn-info" ng-click="modal.getUserInfo()">
             <i class="fa fa-magic"></i>

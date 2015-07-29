@@ -2,16 +2,20 @@
 
 angular.module('sbAdminApp')
 
+  //通过数据库获取用户资料
   .factory('userFactory', ['$resource', function ($resource) {
     return $resource('/weibouser/:id', {id: '@id'})
   }])
 
+  //通过微博查询用户资料
+  //Todo:调试结束，替换为相对地址（完善服务器端跨域限制）
   .factory('weiboUser', ['$resource', function ($resource) {
-    return $resource('/weibouser/userInfo/', {weiboId: '@weiboId'})
+    return $resource('http://iwangpo.com/weibouser/userInfo/', {weiboId: '@weiboId'})
   }])
 
   .factory('utils', function () {
     return {
+      //格式化用户的性别
       gender: function(data){
         if(data){
           switch (data) {
@@ -26,16 +30,19 @@ angular.module('sbAdminApp')
           return '-'
         }
       },
+      //格式化用户的年龄
       age: function(data) {
         if(data){
-          var nowDate = new Date();
-          var birthDate = new Date(data);
-          var myAge = nowDate.getFullYear() - birthDate.getFullYear();
-          return myAge;
+          if(!data.isDate){
+            data = new Date(data)
+          }
+          var today = new Date();
+          return today.getFullYear() - data.getFullYear();
         }else{
           return '-'
         }
       },
+      //格式化用户头像
       avatar: function(data) {
         if(data){
           return '<div class="avatar-grid"><img src="' + data + '" class="user-avatar" /></div>'
@@ -43,6 +50,7 @@ angular.module('sbAdminApp')
           return '<div class="avatar-grid"><img src="http://tp3.sinaimg.cn/3304467554/50/22869450874/0" class="user-avatar" /></div>'
         }
       },
+      //格式化用户照片
       photos: function (data) {
         if(data){
           var pics = new String;
@@ -56,6 +64,7 @@ angular.module('sbAdminApp')
           return '暂无照片'
         }
       },
+      //格式化用户操作按钮
       button: function (data, type, full, meta) {
         var editButton = '<button class="btn btn-info" ng-click="user.edit(' + data + ')">' +
           '   <i class="fa fa-edit"></i>' +
@@ -72,6 +81,7 @@ angular.module('sbAdminApp')
           return (editButton + lockButton);
         }
       },
+      //获得用户的城市区码
       city: function(data) {
         var cities = {
           "010": "北京市",

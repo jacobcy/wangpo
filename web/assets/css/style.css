@@ -1,10 +1,13 @@
-input.ng-invalid {
-  border-color:#A94442;
-}
 
+
+/* dataTables 调整 */
 .table-header {
   height:92px;
   padding-top: 20px;
+}
+
+tfoot {
+  margin-top: 30px;
 }
 
 /*
@@ -16,6 +19,7 @@ tr.child {
   text-align: left;
 }*/
 
+/* dataTables Filters number-range 调整 */
 span.filter_number_range{
   border:0px;
   border-radius: 0px;
@@ -23,13 +27,10 @@ span.filter_number_range{
   padding-top: 0px;
 }
 
+/* 用户头像 */
 .avatar-grid {
   padding:5px;
   text-align: center;
-}
-.user-photo {
-  width: 100%;
-  height: auto;
 }
 
 .user-avatar {
@@ -37,16 +38,20 @@ span.filter_number_range{
   height: 50px;
 }
 
+/* 用户照片 */
+ul[data-dtr-index] {
+  width: 100%;
+}
+
+/* userForm 错误栏样式*/
+input.ng-invalid {
+  border-color:#A94442;
+}
+
+/* userForm 删除按钮 */
 .btn-delete {
   margin-right: 350px;
 }
 
-tfoot {
-  margin-top: 30px;
-}
 
-@media (min-width: 992px) {
-  .user-photos {
-    min-width: 800px;
-  }
-}
+

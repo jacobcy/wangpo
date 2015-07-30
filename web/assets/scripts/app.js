@@ -15,6 +15,8 @@ angular
     'angular-loading-bar',
     'datatables'
   ])
+
+  //Todo:使用ui.rooter，未登陆时跳转到登陆页面
   .config(['$stateProvider', '$urlRouterProvider', '$ocLazyLoadProvider', function ($stateProvider, $urlRouterProvider, $ocLazyLoadProvider) {
 
     $ocLazyLoadProvider.config({
@@ -44,6 +46,11 @@ angular
                 {
                   name: 'ngResource',
                   files: ['js/angular-resource.js']
+                }),
+              $ocLazyLoad.load(
+                {
+                  name: 'ngCookies',
+                  files: ['js/angular-cookies.js']
                 })
             /*
              $ocLazyLoad.load(
@@ -61,11 +68,6 @@ angular
              }),
              $ocLazyLoad.load(
              {
-             name: 'ngCookies',
-             files: ['js/angular-cookies.js']
-             }),
-             $ocLazyLoad.load(
-             {
              name: 'ngSanitize',
              files: ['js/angular-sanitize.js']
              }),
@@ -76,6 +78,18 @@ angular
              })
              */
           }
+          /*
+          //Todo:访问页面需要验证
+          auth: function ($q, authenticationSvc) {
+            var userInfo = authenticationSvc.getUserInfo();
+
+            if (userInfo) {
+              return $q.when(userInfo);
+            } else {
+              return $q.reject({authenticated: false});
+            }
+          }
+          */
         }
       })
 
@@ -99,15 +113,15 @@ angular
                 ]
               }),
               /*
-              $ocLazyLoad.load(
-                {
-                  name: 'datatables.bootstrap',
-                  files: [
-                    'js/angular-datatables.bootstrap.js',
-                    'css/datatables.bootstrap.css'
-                  ]
-                }),
-            */
+               $ocLazyLoad.load(
+               {
+               name: 'datatables.bootstrap',
+               files: [
+               'js/angular-datatables.bootstrap.js',
+               'css/datatables.bootstrap.css'
+               ]
+               }),
+               */
               $ocLazyLoad.load({
                 name: 'sbAdminApp',
                 files: [
@@ -116,7 +130,6 @@ angular
                   'scripts/filters/filters.js'
                 ]
               })
-
           }
         }
       })
@@ -143,18 +156,23 @@ angular
         }
       })
 
-      .state('dashboard.form', {
-        templateUrl: 'views/dashboard/form.html',
-        url: '/form'
-      })
-      .state('dashboard.blank', {
-        templateUrl: 'views/pages/blank.html',
-        url: '/blank'
-      })
       .state('login', {
+        url: '/login',
+        controller: 'LoginCtrl',
         templateUrl: 'views/pages/login.html',
-        url: '/login'
+        resolve: {
+          loadMyFile: function ($ocLazyLoad) {
+            return $ocLazyLoad.load({
+                name: 'sbAdminApp',
+                files: [
+                  'scripts/controllers/loginController.js',
+                  'scripts/services/loginService.js',
+                ]
+              })
+          }
+        }
       })
+
       .state('dashboard.chart', {
         url: '/chart',
         controller: 'ChartCtrl',
@@ -176,6 +194,14 @@ angular
               })
           }
         }
+      })
+      .state('dashboard.form', {
+        templateUrl: 'views/dashboard/form.html',
+        url: '/form'
+      })
+      .state('dashboard.blank', {
+        templateUrl: 'views/pages/blank.html',
+        url: '/blank'
       })
       .state('dashboard.table', {
         templateUrl: 'views/dashboard/table.html',

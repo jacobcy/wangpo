@@ -21,7 +21,7 @@ angular.module('sbAdminApp')
         console.log(id);
 
         //检查并获取输入框中的数字，作为微博ID
-        var result = modal.user.weiboId.match(/\d+/);
+        var result = modal.user.weiboId.match(/\d{3,}/);
         if (result) {
           var weiboId = result[0];
           modal.user.weiboId = weiboId;
@@ -31,8 +31,8 @@ angular.module('sbAdminApp')
             function (data) {
               // 如果存在2个或以上的微博ID，报错
               if (data.length > 1) {
-                modal.infoError = '存在' + data.length + '个重复的账号，请检查';
                 modal.user = data[0];
+                modal.infoError = '存在' + data.length + '个重复的账号，请检查';
                 return;
                 // 如果微博ID已存在，可以修改此用户资料
               } else if (data.length === 1) {
@@ -41,7 +41,6 @@ angular.module('sbAdminApp')
                 // 如果微博ID不存在，清空userForm
                 modal.user = {
                   weiboId: weiboId,
-                  birthday: new Date('1990-01-01'),
                   location: '010'
                 }
               }
@@ -121,10 +120,7 @@ angular.module('sbAdminApp')
 
     //保存用户数据
     modal.save = function () {
-      if (!angular.isDate(modal.user.birthday)) {
-        if(!angular.isDefined(modal.user.birthday)){
-          modal.user.birthday = '1990-01-01';
-        }
+      if (angular.isString(modal.user.birthday)) {
         modal.user.birthday = new Date(modal.user.birthday);
       }
       userFactory.save(modal.user, function () {
@@ -193,7 +189,6 @@ angular.module('sbAdminApp')
     user.create = function () {
       alert('创建新用户');
       user.detail = {
-        birthday: new Date('1990-01-01'),
         location: '010'
       };
       openForm();

@@ -16,8 +16,8 @@ angular.module('sbAdminApp')
   .factory('utils', function () {
     return {
       //格式化用户的性别
-      gender: function(data){
-        if(data){
+      gender: function (data) {
+        if (data) {
           switch (data) {
             case 1:
               return '男';
@@ -26,25 +26,25 @@ angular.module('sbAdminApp')
             default:
               return '未知';
           }
-        }else{
+        } else {
           return '-'
         }
       },
       //格式化用户的年龄
-      age: function(data) {
-        if(data){
-          if(!data.isDate){
+      age: function (data) {
+        if (data) {
+          if (!data.isDate) {
             data = new Date(data)
           }
           var today = new Date();
           return today.getFullYear() - data.getFullYear();
-        }else{
+        } else {
           return '-'
         }
       },
       //格式化用户头像
-      avatar: function(data) {
-        if(data){
+      avatar: function (data) {
+        if (data) {
           return '<div class="avatar-grid"><img src="' + data + '" class="user-avatar" /></div>'
         } else {
           return '<div class="avatar-grid"><img src="http://tp3.sinaimg.cn/3304467554/50/22869450874/0" class="user-avatar" /></div>'
@@ -52,7 +52,7 @@ angular.module('sbAdminApp')
       },
       //格式化用户照片
       photos: function (data) {
-        if(data){
+        if (data) {
           var pics = new String;
           for (var i in data) {
             var pic = '<div class="col-md-2"><img src="' + data[i] + '" class="user-photo" /></div>';
@@ -60,7 +60,7 @@ angular.module('sbAdminApp')
           }
           pics = '<div class="row show-grid user-photos">' + pics + '</div>';
           return pics;
-        }else{
+        } else {
           return '暂无照片'
         }
       },
@@ -82,7 +82,7 @@ angular.module('sbAdminApp')
         }
       },
       //获得用户的城市区码
-      city: function(data) {
+      city: function (data) {
         var cities = {
           "010": "北京市",
           "021": "上海市",
@@ -393,12 +393,12 @@ angular.module('sbAdminApp')
           "1852": "香港特别行政区",
           "1886": "台湾"
         };
-        if (data){
-          if(cities[data]){
+        if (data) {
+          if (cities[data]) {
             return cities[data];
           }
           return '未知'
-        }else {
+        } else {
           return '-'
         }
       }

@@ -2,9 +2,10 @@ var request = require('request');
 
 // 微博粉服平台获取微博用户基本信息的URL
 // 详见 http://open.weibo.com/wiki/获取用户基本信息
-var WEIBO_USER_INFO_URL = 'https://api.weibo.com/2/eps/user/info.json?access_token=' +
-                          sails.config.weibo.access_token +
-                          '&uid=';
+var WEIBO_USER_INFO_URL = sails.config.weibo.infoUrl +
+  sails.config.weibo.access_token +
+  '&uid=';
+
 var WeiboUser = {
 
   attributes: {
@@ -82,9 +83,9 @@ var WeiboUser = {
         next();
         return;
       }
-      user.nickname = json.nickname;
+      user.nickname = json.screen_name;
       if (!user.avatar) {
-        user.avatar = json.headimgurl;
+        user.avatar = json.profile_image_url;
       }
       next();
     });

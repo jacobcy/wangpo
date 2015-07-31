@@ -1,8 +1,9 @@
 var app = angular.module('myApp', ['ngCookies']);
 
-app.controller('login', function login($scope, $cookies, $http) {
+app.controller('login', function login($scope, $apply, $cookies, $http) {
 
   if($cookies.get("userName")){
+    $scope.$apply();
     $scope.identifier = $cookies.get("userName");
     $scope.password = $cookies.get("password");
     $scope.remember = $cookies.get("remember");

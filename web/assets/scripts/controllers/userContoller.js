@@ -8,74 +8,12 @@ angular.module('sbAdminApp')
     modal.alert = msgs;
 
     modal.getUserInfo = function () {
-
-      if (angular.isString(modal.user.weiboId)) {
-
-        // Todo:通过个性化域名获得用户的微博ID
-        var regName = /weibo\.com\/(\w*?)[\/\?]?/i;
-        var regId = new RegExp('^.*?weibo\.com\/u\/(\d*?)[\/\?]?.*$', 'i');
-        var id = modal.user.weiboId;
-        var res = regId.test(id);
-        console.log(res);
-        id.replace(regId, '111');
-        console.log(id);
-
-        //检查并获取输入框中的数字，作为微博ID
-        var result = modal.user.weiboId.match(/\d{3,}/);
-        if (result) {
-          var weiboId = result[0];
-          modal.user.weiboId = weiboId;
-
-          //查看数据库是否存在该微博ID
-          userFactory.query({weiboId: weiboId},
-            function (data) {
-              // 如果存在2个或以上的微博ID，报错
-              if (data.length > 1) {
-                modal.user = data[0];
-                modal.infoError = '存在' + data.length + '个重复的账号，请检查';
-                return;
-                // 如果微博ID已存在，可以修改此用户资料
-              } else if (data.length === 1) {
-                modal.user = data[0];
-              } else {
-                // 如果微博ID不存在，清空userForm
-                modal.user = {
-                  weiboId: weiboId,
-                  location: '010'
-                }
-              }
-
-              // 从微博后台获取用户信息（在用户已关注的情况）
-              weiboUser.get({weiboId: weiboId}, function (data) {
-                if (data.follow > 0) {
-                  modal.user.nickname = data.nickname;
-                  modal.user.avatar = data.headimgurl;
-                  if (!modal.user.gender) {
-                    modal.user.gender = data.sex;
-                  }
-                  if (!modal.user.location) {
-                    // Todo:根据微博资料，填入用户地址
-                    if (data.province = '北京') {
-                      modal.user.location = '010';
-                    }
-                  }
-                } else if (data.follow === 0) {
-                  modal.infoError = '此用户尚未关注您，请手动输入微博信息';
-                } else {
-                  modal.infoError = '未知的错误';
-                }
-              }, function (error) {
-                modal.infoError = error.data.error;
-              })
-            }, function (error) {
-              modal.infoError = '数据库异常，请稍后再试或联系管理员';
-            });
-        } else {
-          modal.infoError = '无法识别，请输入微博用户的ID号或URL';
-        }
-      } else {
-        modal.infoError = '请输入微博用户的ID号或URL';
-      }
+      weiboUser.getInfo(modal.user.weiboId).then(
+        function (data) {
+          modal.user = data;
+        },function (error) {
+          modal.errorInfo = error;
+        })
     }
 
     //选择性别
@@ -132,10 +70,11 @@ angular.module('sbAdminApp')
 
     //删除用户数据
     modal.delete = function (id) {
-      userFactory.remove({id: id},
-        function () {
-          modal.ok();
-        });
+      userFactory.remove({id: id}, function () {
+        modal.ok();
+      }, function (error) {
+        console.error(error);
+      });
     }
 
     //关闭弹出层
@@ -147,7 +86,6 @@ angular.module('sbAdminApp')
     modal.cancel = function () {
       $modalInstance.dismiss('cancel');
     }
-
   })
 
   .controller('UserCtrl', function (DTOptionsBuilder, DTColumnBuilder, userFactory, utils, $scope, $compile, $modal) {
@@ -157,7 +95,7 @@ angular.module('sbAdminApp')
     //处理提示信息
     function alert(message) {
       user.alert = {
-        'message': message
+        message: message
       }
     }
 
@@ -200,23 +138,27 @@ angular.module('sbAdminApp')
         user.detail = data;
         alert('编辑【' + data.nickname + '】的个人资料');
         openForm();
+      }, function (error) {
+        console.error(error);
       });
     }
 
     //锁定用户数据
     user.lock = function (id) {
-      userFactory.save({id: id, lock: true},
-        function () {
-          user.dtInstance.reloadData()
-        });
+      userFactory.save({id: id, lock: true}, function () {
+        user.dtInstance.reloadData()
+      }, function (error) {
+        console.error(error);
+      });
     }
 
     //恢复用户数据
     user.unlock = function (id) {
-      userFactory.save({id: id, lock: false},
-        function () {
-          user.dtInstance.reloadData()
-        });
+      userFactory.save({id: id, lock: false}, function () {
+        user.dtInstance.reloadData()
+      }, function (error) {
+        console.error(error);
+      });
     }
 
     //刷新用户数据
@@ -280,7 +222,7 @@ angular.module('sbAdminApp')
       }),
       DTColumnBuilder.newColumn('height').withTitle('身高').withOption('width', '12%').withOption('defaultContent', '-'),
       DTColumnBuilder.newColumn('location').withTitle('地址').withOption('width', '14%').renderWith(function (data) {
-        return utils.city(data);
+        return utils.codeToCity(data);
       }),
       DTColumnBuilder.newColumn('id').withTitle('Actions').withOption('width', '20%').notSortable().renderWith(function (data, type, full, meta) {
         return utils.button(data, type, full, meta);

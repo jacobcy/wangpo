@@ -29,6 +29,14 @@
 
 module.exports = {
 
+  // 微博粉服平台密钥
+  weibo: {
+    appsecret: "40728b0c31c9b2a294a2afeaca2b0676",
+    access_token: "2.00mxMdbDM2ItgBb84742f5edSeR2aC",
+    infoUrl: "https://api.weibo.com/2/users/show.json?access_token=",
+    domainUrl: "https://api.weibo.com/2/users/domain_show.json?access_token="
+  },
+
   /***************************************************************************
    * Your SSL certificate and key, if you want to be able to serve HTTP      *
    * responses over https:// and/or use websockets over the wss:// protocol  *
@@ -60,7 +68,7 @@ module.exports = {
    * to 80 (http://) or 443 (https://) if you have an SSL certificate        *
    ***************************************************************************/
 
-  // port: process.env.PORT || 1337,
+   port: process.env.PORT || 1337,
 
   /***************************************************************************
    * The runtime "environment" of your Sails app is either typically         *
@@ -80,6 +88,6 @@ module.exports = {
    * 'development' environment.                                              *
    ***************************************************************************/
 
-   // environment: process.env.NODE_ENV || 'development'
+    environment: process.env.NODE_ENV || 'development'
 
 };

@@ -26,7 +26,7 @@ module.exports.policies = {
   *                                                                          *
   ***************************************************************************/
 
-  // '*': true,
+   '*': true,
 
   /***************************************************************************
   *                                                                          *
@@ -50,12 +50,11 @@ module.exports.policies = {
 	// }
 
  'main': {
-    'index': true,
-    //'*': ['passport', 'isAuthenticated']
+    'admin': ['passport', 'isAuthenticated']
   },
 
   'weibouser': {
-    //'*': ['passport', 'isAuthenticated']
+    '*': ['passport', 'isAuthenticated']
   },
 
  'auth': {

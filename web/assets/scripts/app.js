@@ -16,7 +16,6 @@ angular
     'datatables'
   ])
 
-  //Todo:使用ui.rooter，未登陆时跳转到登陆页面
   .config(['$stateProvider', '$urlRouterProvider', '$ocLazyLoadProvider', function ($stateProvider, $urlRouterProvider, $ocLazyLoadProvider) {
 
     $ocLazyLoadProvider.config({
@@ -46,50 +45,38 @@ angular
                 {
                   name: 'ngResource',
                   files: ['js/angular-resource.js']
-                }),
-              $ocLazyLoad.load(
-                {
-                  name: 'ngCookies',
-                  files: ['js/angular-cookies.js']
                 })
-            /*
-             $ocLazyLoad.load(
-             {
-             name: 'ngAnimate',
-             files: ['js/angular-animate.js']
-             }),
-             $ocLazyLoad.load(
-             {
-             name: 'toggle-switch',
-             files: [
-             "js/angular-toggle-switch.js",
-             "css/angular-toggle-switch.css"
-             ]
-             }),
-             $ocLazyLoad.load(
-             {
-             name: 'ngSanitize',
-             files: ['js/angular-sanitize.js']
-             }),
-             $ocLazyLoad.load(
-             {
-             name: 'ngTouch',
-             files: ['js/angular-touch.js']
-             })
-             */
+                /*
+                 $ocLazyLoad.load(
+                 {
+                 name: 'ngCookies',
+                 files: ['js/angular-cookies.js']
+                 })
+                 $ocLazyLoad.load(
+                 {
+                 name: 'ngAnimate',
+                 files: ['js/angular-animate.js']
+                 }),
+                 $ocLazyLoad.load(
+                 {
+                 name: 'toggle-switch',
+                 files: [
+                 "js/angular-toggle-switch.js",
+                 "css/angular-toggle-switch.css"
+                 ]
+                 }),
+                 $ocLazyLoad.load(
+                 {
+                 name: 'ngSanitize',
+                 files: ['js/angular-sanitize.js']
+                 }),
+                 $ocLazyLoad.load(
+                 {
+                 name: 'ngTouch',
+                 files: ['js/angular-touch.js']
+                 })
+                 */
           }
-          /*
-          //Todo:访问页面需要验证
-          auth: function ($q, authenticationSvc) {
-            var userInfo = authenticationSvc.getUserInfo();
-
-            if (userInfo) {
-              return $q.when(userInfo);
-            } else {
-              return $q.reject({authenticated: false});
-            }
-          }
-          */
         }
       })
 
@@ -112,16 +99,6 @@ angular
                   'js/angular-datatables.columnfilter.js'
                 ]
               }),
-              /*
-               $ocLazyLoad.load(
-               {
-               name: 'datatables.bootstrap',
-               files: [
-               'js/angular-datatables.bootstrap.js',
-               'css/datatables.bootstrap.css'
-               ]
-               }),
-               */
               $ocLazyLoad.load({
                 name: 'sbAdminApp',
                 files: [
@@ -130,6 +107,16 @@ angular
                   'scripts/filters/filters.js'
                 ]
               })
+            /*
+             $ocLazyLoad.load(
+             {
+             name: 'datatables.bootstrap',
+             files: [
+             'js/angular-datatables.bootstrap.js',
+             'css/datatables.bootstrap.css'
+             ]
+             }),
+             */
           }
         }
       })
@@ -158,19 +145,7 @@ angular
 
       .state('login', {
         url: '/login',
-        controller: 'LoginCtrl',
-        templateUrl: 'views/pages/login.html',
-        resolve: {
-          loadMyFile: function ($ocLazyLoad) {
-            return $ocLazyLoad.load({
-                name: 'sbAdminApp',
-                files: [
-                  'scripts/controllers/loginController.js',
-                  'scripts/services/loginService.js',
-                ]
-              })
-          }
-        }
+        templateUrl: 'views/pages/login.html'
       })
 
       .state('dashboard.chart', {

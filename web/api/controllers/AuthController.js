@@ -49,7 +49,7 @@ var AuthController = {
     // Render the `auth/login.ext` view
     res.view({
       providers : providers,
-      errors    : req.flash('error'),
+      errors    : req.flash('error')
     });
   },
 
@@ -69,10 +69,10 @@ var AuthController = {
    */
   logout: function (req, res) {
     req.logout();
-    
+
     // mark the user as logged out for auth purposes
     req.session.authenticated = false;
-    
+
     res.redirect('/');
   },
 
@@ -94,11 +94,11 @@ var AuthController = {
   register: function (req, res) {
     User.count().exec(function(err, count) {
       if (count > 0) {
-        res.forbidden('只允许注册一个登录账户！');
+        res.forbidden('暂时关闭注册！');
         return;
       }
       res.view({
-        errors: req.flash('error'),
+        errors: req.flash('error')
       });
     });
   },
@@ -170,16 +170,16 @@ var AuthController = {
         if (err) {
           return tryAgain(err);
         }
-        
+
         // Mark the session as authenticated to work with default Sails sessionAuth.js policy
         req.session.authenticated = true
-        
+
         // Upon successful login, send the user to the homepage were req.user
         // will be available.
-        res.redirect('/');
+        res.redirect('/admin');
       });
     });
-  },
+ },
 
   /**
    * Disconnect a passport from a user

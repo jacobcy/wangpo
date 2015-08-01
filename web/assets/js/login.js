@@ -3,10 +3,13 @@ var app = angular.module('myApp', ['ngCookies']);
 app.controller('login', function login($scope, $apply, $cookies, $http) {
 
   if($cookies.get("userName")){
+    // Todo： 记住密码自动勾选
     $scope.$apply();
+    console.log($scope.remember);
     $scope.identifier = $cookies.get("userName");
     $scope.password = $cookies.get("password");
     $scope.remember = $cookies.get("remember");
+    console.log($scope.remember);
   }
 
   $scope.login = function () {
@@ -15,9 +18,6 @@ app.controller('login', function login($scope, $apply, $cookies, $http) {
       $cookies.put("userName", $scope.identifier, {expires: '2015-12-31'});
       $cookies.put("password", $scope.password, {expires: '2015-12-31'});
       $cookies.put("remember", $scope.remember, {expires: '2015-12-31'});
-    } else {
-      $cookies.remove("userName");
-      $cookies.remove("password");
     }
     /*
     $http.post("/auth/local", {

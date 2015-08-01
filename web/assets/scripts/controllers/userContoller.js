@@ -11,7 +11,7 @@ angular.module('sbAdminApp')
       weiboUser.getInfo(modal.user.weiboId).then(
         function (data) {
           modal.user = data;
-        },function (error) {
+        }, function (error) {
           modal.errorInfo = error;
         })
     }

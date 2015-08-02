@@ -31,10 +31,17 @@ module.exports = {
 
   // 微博粉服平台密钥
   weibo: {
-    appsecret: "40728b0c31c9b2a294a2afeaca2b0676",
-    access_token: "2.00mxMdbDM2ItgBb84742f5edSeR2aC",
+    appsecret: "",
+    access_token: "",
     infoUrl: "https://api.weibo.com/2/users/show.json?access_token=",
     domainUrl: "https://api.weibo.com/2/users/domain_show.json?access_token="
+  },
+
+  qiniu: {
+    AccessKey: "",
+    SecretKey : "",
+    bucket: "vq-script",
+    uploadLimitInMbytes: 10
   },
 
   /***************************************************************************

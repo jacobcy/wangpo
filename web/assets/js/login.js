@@ -1,10 +1,9 @@
 var app = angular.module('myApp', ['ngCookies']);
 
-app.controller('login', function login($scope, $apply, $cookies, $http) {
+app.controller('login', function login($scope, $cookies, $http) {
 
   if($cookies.get("userName")){
     // Todo： 记住密码自动勾选
-    $scope.$apply();
     console.log($scope.remember);
     $scope.identifier = $cookies.get("userName");
     $scope.password = $cookies.get("password");

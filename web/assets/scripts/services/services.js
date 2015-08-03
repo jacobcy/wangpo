@@ -4,7 +4,7 @@ angular.module('sbAdminApp')
 
   //通过后台数据库获取用户资料
   .factory('userFactory', ['$resource', function ($resource) {
-    return $resource('/weibouser/:id', {id: '@id'})
+    return $resource('weibouser/:id', {id: '@id'})
   }])
 
 
@@ -394,7 +394,9 @@ angular.module('sbAdminApp')
           "0662": "阳江",
           "0766": "云浮",
           "0758": "肇庆",
-          "0898": "海南",
+          "0898": "海口",
+          "0890": "儋州",
+          "0899": "三亚",
           "0771": "南宁/崇左",
           "0779": "北海",
           "0770": "防城港",

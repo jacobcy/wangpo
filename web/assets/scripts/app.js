@@ -46,36 +46,36 @@ angular
                   name: 'ngResource',
                   files: ['js/angular-resource.js']
                 })
-                /*
-                 $ocLazyLoad.load(
-                 {
-                 name: 'ngCookies',
-                 files: ['js/angular-cookies.js']
-                 })
-                 $ocLazyLoad.load(
-                 {
-                 name: 'ngAnimate',
-                 files: ['js/angular-animate.js']
-                 }),
-                 $ocLazyLoad.load(
-                 {
-                 name: 'toggle-switch',
-                 files: [
-                 "js/angular-toggle-switch.js",
-                 "css/angular-toggle-switch.css"
-                 ]
-                 }),
-                 $ocLazyLoad.load(
-                 {
-                 name: 'ngSanitize',
-                 files: ['js/angular-sanitize.js']
-                 }),
-                 $ocLazyLoad.load(
-                 {
-                 name: 'ngTouch',
-                 files: ['js/angular-touch.js']
-                 })
-                 */
+            /*
+             $ocLazyLoad.load(
+             {
+             name: 'ngCookies',
+             files: ['js/angular-cookies.js']
+             })
+             $ocLazyLoad.load(
+             {
+             name: 'ngAnimate',
+             files: ['js/angular-animate.js']
+             }),
+             $ocLazyLoad.load(
+             {
+             name: 'toggle-switch',
+             files: [
+             "js/angular-toggle-switch.js",
+             "css/angular-toggle-switch.css"
+             ]
+             }),
+             $ocLazyLoad.load(
+             {
+             name: 'ngSanitize',
+             files: ['js/angular-sanitize.js']
+             }),
+             $ocLazyLoad.load(
+             {
+             name: 'ngTouch',
+             files: ['js/angular-touch.js']
+             })
+             */
           }
         }
       })
@@ -102,9 +102,11 @@ angular
               $ocLazyLoad.load({
                 name: 'sbAdminApp',
                 files: [
-                  'scripts/controllers/userContoller.js',
+                  'scripts/services/cities.js',
+                  'scripts/services/utils.js',
                   'scripts/services/services.js',
-                  'scripts/filters/filters.js'
+                  'scripts/filters/filters.js',
+                  'scripts/controllers/userContoller.js'
                 ]
               })
             /*

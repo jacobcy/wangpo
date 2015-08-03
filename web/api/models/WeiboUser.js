@@ -40,7 +40,7 @@ var WeiboUser = {
     // e.g. "010：北京"
     location: {
       type: 'string',
-      size: 4
+      size: 5
     },
     // 用户头像url
     avatar: {

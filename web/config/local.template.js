@@ -37,11 +37,12 @@ module.exports = {
     domainUrl: "https://api.weibo.com/2/users/domain_show.json?access_token="
   },
 
+  //七牛图片服务密钥
   qiniu: {
     AccessKey: "",
     SecretKey : "",
     bucket: "vq-script",
-    uploadLimitInMbytes: 10
+    uploadLimitInMbytes: 3
   },
 
   /***************************************************************************

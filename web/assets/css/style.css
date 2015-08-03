@@ -43,6 +43,10 @@ ul[data-dtr-index] {
   width: 100%;
 }
 
+.user-photo {
+  width:100%;
+}
+
 /* userForm 错误栏样式*/
 input.ng-invalid {
   border-color:#A94442;

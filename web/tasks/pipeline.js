@@ -44,6 +44,7 @@ var jsFilesToInject = [
 
   // All of the rest of your client-side js files
   'js/angular-ui-router.js',
+  'js/angular-resource.js',
   'js/json3.js',
   'js/ocLazyLoad.js',
   'js/loading-bar.js',
@@ -56,8 +57,7 @@ var jsFilesToInject = [
 
   // will be injected here in no particular order.
   //'js/**/*.js'
-  'js/sb-admin-2.js',
-  'scripts/app.js'
+  'js/sb-admin-2.js'
 ];
 
 

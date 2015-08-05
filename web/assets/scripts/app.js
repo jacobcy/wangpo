@@ -9,6 +9,7 @@
  */
 angular
   .module('sbAdminApp', [
+    'ngResource',
     'oc.lazyLoad',
     'ui.router',
     'ui.bootstrap',
@@ -40,12 +41,7 @@ angular
                   'scripts/directives/sidebar/sidebar.js',
                   'scripts/directives/sidebar/sidebar-search/sidebar-search.js'
                 ]
-              }),
-              $ocLazyLoad.load(
-                {
-                  name: 'ngResource',
-                  files: ['js/angular-resource.js']
-                })
+              })
             /*
              $ocLazyLoad.load(
              {
@@ -106,7 +102,7 @@ angular
                   'scripts/services/utils.js',
                   'scripts/services/services.js',
                   'scripts/filters/filters.js',
-                  'scripts/controllers/userContoller.js'
+                  'scripts/controllers/userContorller.js'
                 ]
               })
             /*
@@ -147,7 +143,18 @@ angular
 
       .state('login', {
         url: '/login',
-        templateUrl: 'views/pages/login.html'
+        controller: 'LoginCtrl',
+        templateUrl: 'views/pages/login.html',
+        resolve: {
+          loadMyFiles: function ($ocLazyLoad) {
+            return $ocLazyLoad.load({
+              name: 'sbAdminApp',
+              files: [
+                'js/controllers/loginController.js',
+              ]
+            })
+          }
+        }
       })
 
       .state('dashboard.chart', {
@@ -167,7 +174,7 @@ angular
             }),
               $ocLazyLoad.load({
                 name: 'sbAdminApp',
-                files: ['scripts/controllers/chartContoller.js']
+                files: ['scripts/controllers/chartContorller.js']
               })
           }
         }
@@ -208,6 +215,6 @@ angular
         templateUrl: 'views/ui-elements/grid.html',
         url: '/grid'
       })
-  }]);
+  }])
 
 

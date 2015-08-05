@@ -7,6 +7,5 @@
  * Controller of the sbAdminApp
  */
 angular.module('sbAdminApp')
-  .controller('FormCtrl', function($scope) {
-    
-});
+  .controller('FormCtrl', ['$scope', function ($scope) {
+  }]);

@@ -2,7 +2,8 @@
 
 angular.module('sbAdminApp')
 
-  .controller('ModalInstanceCtrl', function ($modalInstance, weiboUser, userFactory, userPhoto, items, msgs) {
+  .controller('ModalInstanceCtrl', ['$modalInstance', 'weiboUser', 'userFactory', 'userPhoto', 'items', 'msgs',
+    function ($modalInstance, weiboUser, userFactory, userPhoto, items, msgs) {
     var modal = this;
     modal.user = items;
     modal.alert = msgs;
@@ -95,7 +96,7 @@ angular.module('sbAdminApp')
     modal.cancel = function () {
       $modalInstance.dismiss('cancel');
     }
-  })
+    }])
 
   .controller('UserCtrl', ['DTOptionsBuilder', 'DTColumnBuilder', 'userFactory', 'utils', '$scope', '$compile', '$modal',
     function (DTOptionsBuilder, DTColumnBuilder, userFactory, utils, $scope, $compile, $modal) {
@@ -257,5 +258,4 @@ angular.module('sbAdminApp')
           return userFactory.query({lock: 'false'}).$promise
         }
 
-      }
-      ])
+    }])

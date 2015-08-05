@@ -24,12 +24,6 @@ module.exports = function(grunt) {
 				src: ['**/*.coffee'],
 				dest: '.tmp/public/js/',
 				ext: '.js'
-			}, {
-				expand: true,
-				cwd: 'assets/js/',
-				src: ['**/*.coffee'],
-				dest: '.tmp/public/js/',
-				ext: '.js'
 			}]
 		}
 	});

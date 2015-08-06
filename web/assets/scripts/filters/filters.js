@@ -16,7 +16,7 @@ angular.module('sbAdminApp')
     return function (data) {
       return utils.codeToCity(data);
     }
-  }])
+  }]);
 
 
 

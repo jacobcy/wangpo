@@ -2,13 +2,11 @@
 
 /* Directives */
 
-angular.module('sbAdminApp')
+angular.module('sbAdminApp.directives',[])
   .directive('userForm', function () {
     return {
       restrict: 'E',
       replace: true,
-      link: function (scope, elem, attrs) {
-      },
       templateUrl: 'templates/userform.html'
     }
   });

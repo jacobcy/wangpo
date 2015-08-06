@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('sbAdminApp')
+angular.module('sbAdminApp.services',['ngResource'])
 
   //通过后台数据库获取用户资料
   .factory('userFactory', ['$resource', function ($resource) {
@@ -149,5 +149,5 @@ angular.module('sbAdminApp')
         return deferred.promise;
       }
 
-    }])
+    }]);
 

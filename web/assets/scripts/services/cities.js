@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('sbAdminApp')
+angular.module('sbAdminApp.services')
 
   .factory('cityToCode', function () {
     return {
@@ -1357,7 +1357,7 @@ angular.module('sbAdminApp')
         }
       }
     }
-  })
+  });
 
 /*
  {

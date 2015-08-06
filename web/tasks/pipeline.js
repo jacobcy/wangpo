@@ -15,16 +15,19 @@
 // (if you're using LESS with the built-in default config, you'll want
 //  to change `assets/styles/importer.less` instead.)
 var cssFilesToInject = [
-  //'css/**/*.css'
-  'css/bootstrap.min.css',
+  //dependency css
+  'css/bootstrap.css',
   'css/main.css',
   'css/sb-admin-2.css',
   'css/metisMenu.css',
   'css/loading-bar.css',
   'css/font-awesome.css',
-
+  // dataTables css
   'css/jquery.dataTables.css',
   'css/dataTables.responsive.css',
+  // SB-Admin-2 css
+  // 'css/angular-chart.css',
+  //'css/timeline.css',
 
   'css/style.css'
 ];
@@ -42,22 +45,49 @@ var jsFilesToInject = [
   'js/dependencies/angular.js',
   'js/dependencies/bootstrap.js',
 
-  // All of the rest of your client-side js files
+  // All of the rest of importants js
   'js/angular-ui-router.js',
   'js/angular-resource.js',
+  'js/angular-cookies.js',
   'js/json3.js',
   'js/ocLazyLoad.js',
   'js/loading-bar.js',
   'js/ui-bootstrap-tpls.js',
   'js/metisMenu.js',
 
+  // dataTables js
   'js/jquery.dataTables.js',
   'js/dataTables.responsive.js',
   'js/angular-datatables.js',
+  'js/jquery.dataTables.columnFilter.js',
+  'js/angular-datatables.columnfilter.js',
 
-  // will be injected here in no particular order.
-  //'js/**/*.js'
-  'js/sb-admin-2.js'
+  // SB-Admin-2 js
+  //'js/Chart.js',
+  //'js/angular-chart.js',
+  'js/sb-admin-2.js',
+
+  'scripts/app.js',
+  // angular controllers
+  'scripts/controllers/userController.js',
+  'scripts/controllers/loginController.js',
+  'scripts/controllers/formController.js',
+
+
+  // angular directives
+  'scripts/directives/directives.js',
+  'scripts/directives/header/header.js',
+  'scripts/directives/header/header-notification/header-notification.js',
+  'scripts/directives/sidebar/sidebar.js',
+
+  // angular filters
+  'scripts/filters/filters.js',
+
+  // angular services
+  'scripts/services/services.js',
+  'scripts/services/utils.js',
+  'scripts/services/cities.js'
+
 ];
 
 

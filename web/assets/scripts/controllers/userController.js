@@ -258,4 +258,4 @@ angular.module('sbAdminApp')
           return userFactory.query({lock: 'false'}).$promise
         }
 
-    }])
+    }]);

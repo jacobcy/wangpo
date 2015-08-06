@@ -6,12 +6,13 @@
  * @description
  * # adminPosHeader
  */
-angular.module('sbAdminApp')
+
+angular.module('sbAdminApp.directives')
 	.directive('notifications',function(){
 		return {
         templateUrl:'scripts/directives/notifications/notifications.html',
         restrict: 'E',
-        replace: true,
+        replace: true
     	}
 	});
 

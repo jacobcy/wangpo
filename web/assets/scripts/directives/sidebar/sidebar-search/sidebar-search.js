@@ -7,7 +7,7 @@
  * # adminPosHeader
  */
 
-angular.module('sbAdminApp')
+angular.module('sbAdminApp.directives')
   .directive('sidebarSearch',function() {
     return {
       templateUrl:'scripts/directives/sidebar/sidebar-search/sidebar-search.html',
@@ -15,8 +15,8 @@ angular.module('sbAdminApp')
       replace: true,
       scope: {
       },
-      controller:function($scope){
+      controller: ['$scope', function ($scope) {
         $scope.selectedMenu = 'home';
-      }
+      }]
     }
   });

@@ -1,7 +1,7 @@
 'use strict';
 /**
  * @ngdoc function
- * @name sbAdminApp.controller:MainCtrl
+ * @name sbAdminApp.controller:FormCtrl
  * @description
  * # MainCtrl
  * Controller of the sbAdminApp

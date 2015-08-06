@@ -6,7 +6,8 @@
  * @description
  * # adminPosHeader
  */
-angular.module('sbAdminApp')
+
+angular.module('sbAdminApp.directives')
     .directive('stats',function() {
     	return {
   		templateUrl:'scripts/directives/dashboard/stats/stats.html',
@@ -22,6 +23,6 @@ angular.module('sbAdminApp')
         'type':'@',
         'goto':'@'
   		}
-  		
+
   	}
   });

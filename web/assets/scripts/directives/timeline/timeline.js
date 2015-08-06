@@ -6,7 +6,7 @@
  * @description
  * # adminPosHeader
  */
-angular.module('sbAdminApp')
+angular.module('sbAdminApp.directives')
 	.directive('timeline',function() {
     return {
         templateUrl:'scripts/directives/timeline/timeline.html',

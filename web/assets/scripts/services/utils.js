@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('sbAdminApp')
+angular.module('sbAdminApp.services')
 
   .factory('utils', ['codeToCity', 'cityToCode', 'weiboCities',
     function (codeToCity, cityToCode, weiboCities) {
@@ -123,4 +123,4 @@ angular.module('sbAdminApp')
           }
         }
       }
-    }])
+    }]);

@@ -6,7 +6,7 @@ angular.module('sbAdminApp')
     $httpProvider.defaults.withCredentials = true;
   }])
 
-  .controller('login', ['$scope', '$cookies', '$http', function login($scope, $cookies, $http) {
+  .controller('loginCtrl', ['$scope', '$cookies', '$http', function login($scope, $cookies, $http) {
 
     if ($cookies.get("identifier")) {
       // Todo： 记住密码自动勾选
@@ -42,4 +42,4 @@ angular.module('sbAdminApp')
         console.log('local.error')
       })
     }
-  }])
+  }]);

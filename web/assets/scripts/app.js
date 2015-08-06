@@ -9,12 +9,15 @@
  */
 angular
   .module('sbAdminApp', [
-    'ngResource',
     'oc.lazyLoad',
     'ui.router',
     'ui.bootstrap',
     'angular-loading-bar',
-    'datatables'
+    'datatables',
+    //'chart.js',
+    'datatables.columnfilter',
+    'sbAdminApp.directives',
+    'sbAdminApp.services'
   ])
 
   .config(['$stateProvider', '$urlRouterProvider', '$ocLazyLoadProvider', function ($stateProvider, $urlRouterProvider, $ocLazyLoadProvider) {
@@ -29,158 +32,39 @@ angular
     $stateProvider
       .state('dashboard', {
         url: '/dashboard',
-        templateUrl: 'views/dashboard/main.html',
-        resolve: {
-          loadMyDirectives: function ($ocLazyLoad) {
-            return $ocLazyLoad.load(
-              {
-                name: 'sbAdminApp',
-                files: [
-                  'scripts/directives/header/header.js',
-                  'scripts/directives/header/header-notification/header-notification.js',
-                  'scripts/directives/sidebar/sidebar.js',
-                  'scripts/directives/sidebar/sidebar-search/sidebar-search.js'
-                ]
-              })
-            /*
-             $ocLazyLoad.load(
-             {
-             name: 'ngCookies',
-             files: ['js/angular-cookies.js']
-             })
-             $ocLazyLoad.load(
-             {
-             name: 'ngAnimate',
-             files: ['js/angular-animate.js']
-             }),
-             $ocLazyLoad.load(
-             {
-             name: 'toggle-switch',
-             files: [
-             "js/angular-toggle-switch.js",
-             "css/angular-toggle-switch.css"
-             ]
-             }),
-             $ocLazyLoad.load(
-             {
-             name: 'ngSanitize',
-             files: ['js/angular-sanitize.js']
-             }),
-             $ocLazyLoad.load(
-             {
-             name: 'ngTouch',
-             files: ['js/angular-touch.js']
-             })
-             */
-          }
-        }
-      })
-
-      .state('dashboard.welcome', {
-        templateUrl: 'views/welcome.html',
-        url: '/welcome'
+        //templateUrl: 'views/dashboard/main.html'
+        template:'<div id="wrapper"><header></header><div id="page-wrapper" style="min-height: 561px;"><div ui-view></div></div></div>'
       })
 
       .state('dashboard.user', {
         url: '/user',
         controller: 'UserCtrl as user',
-        templateUrl: 'views/user.html',
-        resolve: {
-          loadMyFile: function ($ocLazyLoad) {
-            return $ocLazyLoad.load(
-              {
-                name: 'datatables.columnfilter',
-                files: [
-                  'js/jquery.dataTables.columnFilter.js',
-                  'js/angular-datatables.columnfilter.js'
-                ]
-              }),
-              $ocLazyLoad.load({
-                name: 'sbAdminApp',
-                files: [
-                  'scripts/services/cities.js',
-                  'scripts/services/utils.js',
-                  'scripts/services/services.js',
-                  'scripts/filters/filters.js',
-                  'scripts/controllers/userContorller.js'
-                ]
-              })
-            /*
-             $ocLazyLoad.load(
-             {
-             name: 'datatables.bootstrap',
-             files: [
-             'js/angular-datatables.bootstrap.js',
-             'css/datatables.bootstrap.css'
-             ]
-             }),
-             */
-          }
-        }
+        templateUrl: 'views/user.html'
       })
-
       .state('dashboard.home', {
         url: '/home',
         controller: 'MainCtrl',
-        templateUrl: 'views/dashboard/home.html',
-        resolve: {
-          loadMyFiles: function ($ocLazyLoad) {
-            return $ocLazyLoad.load({
-              name: 'sbAdminApp',
-              files: [
-                'scripts/controllers/main.js',
-                'scripts/directives/timeline/timeline.js',
-                'scripts/directives/notifications/notifications.js',
-                'scripts/directives/chat/chat.js',
-                'scripts/directives/dashboard/stats/stats.js',
-
-                'css/timeline.css'
-              ]
-            })
-          }
-        }
+        templateUrl: 'views/dashboard/home.html'
       })
-
       .state('login', {
         url: '/login',
         controller: 'LoginCtrl',
-        templateUrl: 'views/pages/login.html',
-        resolve: {
-          loadMyFiles: function ($ocLazyLoad) {
-            return $ocLazyLoad.load({
-              name: 'sbAdminApp',
-              files: [
-                'js/controllers/loginController.js',
-              ]
-            })
-          }
-        }
+        templateUrl: 'views/pages/login.html'
       })
-
       .state('dashboard.chart', {
         url: '/chart',
         controller: 'ChartCtrl',
-        templateUrl: 'views/dashboard/chart.html',
-        resolve: {
-          loadMyFile: function ($ocLazyLoad) {
-            return $ocLazyLoad.load({
-              name: 'chart.js',
-              files: [
-                'js/Chart.js',
-                'js/angular-chart.js',
+        templateUrl: 'views/dashboard/chart.html'
+      })
 
-                'css/angular-chart.css',
-              ]
-            }),
-              $ocLazyLoad.load({
-                name: 'sbAdminApp',
-                files: ['scripts/controllers/chartContorller.js']
-              })
-          }
-        }
+      .state('dashboard.welcome', {
+        //templateUrl: 'views/welcome.html',
+        template:'<div class="row"><div class="col-lg-12"><h1 class="page-header">Welcome</h1></div></div><div class="row"><div class="col-md-10 col-md-offset-1"><div class="jumbotron"><h1>欢迎进入后台管理系统</h1><p>Help you find friends</p><p><a href="index.html" class="btn btn-primary btn-lg" role="button">返回首页<span class="fa fa-arrow-left fa-fw"></span></a></p></div></div></div>',
+        url: '/welcome'
       })
       .state('dashboard.form', {
         templateUrl: 'views/dashboard/form.html',
+        controller: 'FormCtrl',
         url: '/form'
       })
       .state('dashboard.blank', {
@@ -215,6 +99,6 @@ angular
         templateUrl: 'views/ui-elements/grid.html',
         url: '/grid'
       })
-  }])
+  }]);
 
 

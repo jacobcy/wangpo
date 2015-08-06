@@ -40,7 +40,11 @@ angular.module('sbAdminApp')
       modal.opened = true;
     }
 
-    //增加用户照片
+      if (angular.isArray(modal.user.photos) && modal.user.photos.length >= 6) {
+        modal.photoLimit = true;
+      }
+
+      //增加用户照片
     //Todo:通过七牛云存储保存用户照片
     modal.addPhoto = function () {
       if (!angular.isArray(modal.user.photos)) {
@@ -51,6 +55,9 @@ angular.module('sbAdminApp')
           if (data.url) {
             modal.user.photos.push(data.url);
             modal.photo = null;
+            if (modal.user.photos.length >= 6) {
+              modal.photoLimit = true;
+            }
           } else {
             console.log(data.toSource());
             modal.photoInfo = data.error;
@@ -58,6 +65,8 @@ angular.module('sbAdminApp')
         }, function (error) {
           console.log(error.toSource())
         })
+      } else {
+        modal.photoInfo = '请输入照片URL地址';
       }
     }
 

@@ -4,11 +4,11 @@ angular.module('sbAdminApp.services',['ngResource'])
 
   //通过后台数据库获取用户资料
   .factory('userFactory', ['$resource', function ($resource) {
-    return $resource('weibouser/:id', {id: '@id'})
+    return $resource('http://iwangpo.com/weibouser/:id', {id: '@id'},{withCredentials : true})
   }])
 
   .factory('userPhoto', ['$resource', function ($resource) {
-    return $resource('/main/saveImage/')
+    return $resource('/main/saveImage/',{withCredentials : true})
   }])
 
   //通过微博用户ID或者用户主页URL查询用户资料
@@ -17,9 +17,9 @@ angular.module('sbAdminApp.services',['ngResource'])
 
       //根据微博用户ID，从微博后台获取用户资料
       //Todo:调试结束，替换为相对地址
-      var searchId = $resource('/weibouser/userInfo/');
+      var searchId = $resource('/weibouser/userInfo/',{withCredentials : true});
       //根据微博用户个性化域名，从微博后台获取用户资料
-      var searchUrl = $resource('/weibouser/userByUrl/');
+      var searchUrl = $resource('/weibouser/userByUrl/',{withCredentials : true});
       var user = {};
 
       //根据微博数据结构，返回用户性别

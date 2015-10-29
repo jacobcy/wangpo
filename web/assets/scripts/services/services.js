@@ -4,7 +4,7 @@ angular.module('sbAdminApp.services',['ngResource'])
 
   //通过后台数据库获取用户资料
   .factory('userFactory', ['$resource', function ($resource) {
-    return $resource('http://iwangpo.com/weibouser/:id', {id: '@id'},{withCredentials : true})
+    return $resource('/weibouser/:id', {id: '@id'},{withCredentials : true})
   }])
 
   .factory('userPhoto', ['$resource', function ($resource) {

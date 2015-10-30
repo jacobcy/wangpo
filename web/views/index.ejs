@@ -1,11 +1,36 @@
-<div class="container">
-  <div class="jumbotron" style="margin-top: 50px;">
-    <h1>Hello, World!</h1>
+<div ng-controller="appCtrl">
 
-    <p>
-      Help you find friends
-    </p>
+  <header>
+    <div class="container">
+      <br>
 
-    <p><a class="btn btn-lg btn-success" a href="/admin">Try me<span class="fa fa-arrow-right fa-fw"></span></a></p>
-  </div>
+      <h1>王婆速配</h1>
+
+      <p>京城约会专家，五百年江湖美名，赐你绝世好姻缘</p>
+      <br>
+
+      <p>
+        <button class="btn btn-default btn" ng-click="addItem()">Add item</button>
+        <button class="btn btn-success btn" ng-click="changeWidth(50)">Increase itemWidth</button>
+        <button class="btn btn-warning btn" ng-click="changeWidth(-50)">Decrease itemWidth</button>
+        <a class="btn btn-info" a href="/admin">管理后台<span class="fa fa-arrow-right fa-fw"></span></a>
+      </p>
+      <p>resize window to see auto update</p>
+    </div>
+  </header>
+
+  <section>
+    <div class="container">
+
+      <ul class="flowGrid" ng-flow-grid="demoGird" min-item-width="200">
+        <li class="flowGridItem" ng-repeat="item in items">
+          <a href=""><img ng-src="{{item.img}}"></a>
+
+          <p>{{item.id}}__{{item.name}}</p>
+        </li>
+      </ul>
+
+    </div>
+  </section>
+
 </div>

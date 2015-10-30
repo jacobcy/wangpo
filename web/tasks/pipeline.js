@@ -15,20 +15,24 @@
 // (if you're using LESS with the built-in default config, you'll want
 //  to change `assets/styles/importer.less` instead.)
 var cssFilesToInject = [
-  //dependency css
+  
+   //dependency css
   'css/bootstrap.css',
-  'css/main.css',
-  'css/sb-admin-2.css',
   'css/metisMenu.css',
   'css/loading-bar.css',
   'css/font-awesome.css',
+  
   // dataTables css
   'css/jquery.dataTables.css',
   'css/dataTables.responsive.css',
-  // SB-Admin-2 css
-  // 'css/angular-chart.css',
-  //'css/timeline.css',
-
+ 
+   // SB-Admin-2 css
+   // 'css/angular-chart.css',
+   //'css/timeline.css',
+  'css/sb-admin-2.css',
+  'css/main.css',
+  
+   // custom css
   'css/style.css'
 ];
 
@@ -48,7 +52,6 @@ var jsFilesToInject = [
   // All of the rest of importants js
   'js/angular-ui-router.js',
   'js/angular-resource.js',
-  'js/angular-cookies.js',
   'js/json3.js',
   'js/ocLazyLoad.js',
   'js/loading-bar.js',
@@ -70,7 +73,6 @@ var jsFilesToInject = [
   'scripts/app.js',
   // angular controllers
   'scripts/controllers/userController.js',
-  'scripts/controllers/loginController.js',
   'scripts/controllers/formController.js',
 
 

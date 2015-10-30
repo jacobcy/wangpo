@@ -5,6 +5,7 @@ module.exports = function(grunt) {
       js_dest: '.tmp/public/js',
       css_dest: '.tmp/public/css',
       less_dest: '.tmp/public/less',
+      scss_dest: '.tmp/public/scss',
       fonts_dest: '.tmp/public/fonts',
       images_dest: '.tmp/public/images',
       options: {

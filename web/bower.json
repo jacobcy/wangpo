@@ -37,10 +37,11 @@
     "angular-ui-router": "~0.2.15",
     "angular-toggle-switch": "~1.3.0",
     "metisMenu": "~2.2.0",
+    "ngFlowGrid": "*",
     "angular-chart.js": "~0.8.5",
     "angular-sails": "~1.1.4",
     "angular-datatables": "~0.5.1",
-    "jquery-datatables-column-filter": "~0.0.1",
+    "jquery-datatables-column-filter": "*",
     "datatables-responsive": "~1.0.7"
   },
   "devDependencies": {

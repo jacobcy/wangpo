@@ -15,25 +15,12 @@
 // (if you're using LESS with the built-in default config, you'll want
 //  to change `assets/styles/importer.less` instead.)
 var cssFilesToInject = [
-  
+
    //dependency css
-  'css/bootstrap.css',
-  'css/metisMenu.css',
-  'css/loading-bar.css',
-  'css/font-awesome.css',
-  
-  // dataTables css
-  'css/jquery.dataTables.css',
-  'css/dataTables.responsive.css',
- 
-   // SB-Admin-2 css
-   // 'css/angular-chart.css',
-   //'css/timeline.css',
-  'css/sb-admin-2.css',
-  'css/main.css',
-  
+
    // custom css
-  'css/style.css'
+  'css/*.css',
+  'styles/*.css',
 ];
 
 
@@ -42,12 +29,10 @@ var cssFilesToInject = [
 var jsFilesToInject = [
 
   // Load sails.io before everything else
-  //'js/dependencies/sails.io.js',
+  'js/dependencies/jquery.js',
 
   // Dependencies like jQuery, or Angular are brought in here
-  'js/dependencies/jquery.js',
-  'js/dependencies/angular.js',
-  'js/dependencies/bootstrap.js',
+  'js/dependencies/*.js',
 
   // All of the rest of importants js
   'js/angular-ui-router.js',
@@ -57,38 +42,32 @@ var jsFilesToInject = [
   'js/loading-bar.js',
   'js/ui-bootstrap-tpls.js',
   'js/metisMenu.js',
+  'js/Chart.js',
+  'js/angular-chart.js',
 
   // dataTables js
   'js/jquery.dataTables.js',
   'js/dataTables.responsive.js',
   'js/angular-datatables.js',
-  'js/jquery.dataTables.columnFilter.js',
   'js/angular-datatables.columnfilter.js',
 
   // SB-Admin-2 js
-  //'js/Chart.js',
-  //'js/angular-chart.js',
-  'js/sb-admin-2.js',
+  'lib/*.js',
 
-  'scripts/app.js',
   // angular controllers
-  'scripts/controllers/userController.js',
-  'scripts/controllers/formController.js',
-
+  'scripts/app.js',
+  'scripts/controllers/*.js',
 
   // angular directives
   'scripts/directives/directives.js',
-  'scripts/directives/header/header.js',
-  'scripts/directives/header/header-notification/header-notification.js',
-  'scripts/directives/sidebar/sidebar.js',
+  'scripts/directives/**/*.js',
 
   // angular filters
-  'scripts/filters/filters.js',
+  'scripts/filters/*.js',
 
   // angular services
   'scripts/services/services.js',
-  'scripts/services/utils.js',
-  'scripts/services/cities.js'
+  'scripts/services/*.js'
 
 ];
 

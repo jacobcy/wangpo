@@ -12,7 +12,7 @@
       </li>
 
       <li ng-class="{active: collapseVar==1}">{{dropDown}}
-        <a href="" ng-click="check(1)"><i class="fa fa-wrench fa-fw"></i> UI Elements<span
+        <a href="" ng-click="check(1)"><i class="fa fa-wrench fa-fw"></i>设计页面<span
           class="fa arrow"></span></a>
         <ul class="nav nav-second-level" collapse="collapseVar!=1">
           <li ui-sref-active="active">
@@ -38,11 +38,11 @@
       </li>
 
       <li ng-class="{active: collapseVar==2}">
-        <a href="" ng-click="check(2)"><i class="fa fa-sitemap fa-fw"></i> Multi-Level Dropdown<span
+        <a href="" ng-click="check(2)"><i class="fa fa-sitemap fa-fw"></i>参考页面<span
           class="fa arrow"></span></a>
         <ul class="nav nav-second-level" collapse="collapseVar!=2">
-          <li ng-class="{active: selectedMenu=='dashboard'}">
-            <a ui-sref="dashboard.dashboard" ng-click="selectedMenu='dashboard'"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+          <li ng-class="{active: selectedMenu=='home'}">
+            <a ui-sref="dashboard.home" ng-click="selectedMenu='home'"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
           </li>
           <li ng-class="{active: selectedMenu=='forms'}">
             <a ui-sref="dashboard.forms" ng-click="selectedMenu='forms'"><i class="fa fa-edit fa-fw"></i> Forms</a>
@@ -53,18 +53,19 @@
           <li ng-class="{active: selectedMenu=='tables'}">
             <a ui-sref="dashboard.tables" ng-click="selectedMenu='tables'"><i class="fa fa-table fa-fw"></i> Tables</a>
           </li>
-
-
         </ul>
         <!-- /.nav-second-level -->
       </li>
 
-      <li ng-class="{active:collapseVar==4}">
-        <a href="" ng-click="check(4)"><i class="fa fa-files-o fa-fw"></i> Sample Pages<span
+      <li ng-class="{active:collapseVar==3}">
+        <a href="" ng-click="check(3)"><i class="fa fa-files-o fa-fw"></i> 示例页面<span
           class="fa arrow"></span></a>
-        <ul class="nav nav-second-level" collapse="collapseVar!=4">
+        <ul class="nav nav-second-level" collapse="collapseVar!=3">
           <li ng-class="{active: selectedMenu=='blank'}">
-            <a ui-sref="dashboard.blank" ng-click="selectedMenu='blank'">Blank Page</a>
+            <a ui-sref="dashboard.blank" ng-click="selectedMenu='blank'">Table Page</a>
+          </li>
+          <li ng-class="{active: selectedMenu=='dataTable'}">
+            <a ui-sref="dashboard.dataTable" ng-click="selectedMenu='dataTable'">DataTable Page</a>
           </li>
         </ul>
         <!-- /.nav-second-level -->

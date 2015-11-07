@@ -13,8 +13,8 @@ angular
     'ui.router',
     'ui.bootstrap',
     'angular-loading-bar',
+    'chart.js',
     'datatables',
-    //'chart.js',
     'datatables.columnfilter',
     'sbAdminApp.directives',
     'sbAdminApp.services'
@@ -36,45 +36,40 @@ angular
         template:'<div id="wrapper"><header></header><div id="page-wrapper" style="min-height: 561px;"><div ui-view></div></div></div>'
       })
 
+      //后台自建页面
+      .state('dashboard.welcome', {
+        url: '/welcome',
+        //templateUrl: 'views/welcome.html',
+        template:'<div class="row"><div class="col-lg-12"><h1 class="page-header">Welcome</h1></div></div><div class="row"><div class="col-md-10 col-md-offset-1"><div class="jumbotron"><h1>欢迎进入后台管理系统</h1><p>Help you find friends</p><p><a href="index.html" class="btn btn-primary btn-lg" role="button">返回首页<span class="fa fa-arrow-left fa-fw"></span></a></p></div></div></div>'
+      })
       .state('dashboard.user', {
         url: '/user',
         controller: 'UserCtrl as user',
         templateUrl: 'views/user.html'
       })
+
+      //后台模块参考页面
       .state('dashboard.home', {
         url: '/home',
         controller: 'MainCtrl',
         templateUrl: 'views/dashboard/home.html'
       })
-      .state('login', {
-        url: '/login',
-        controller: 'LoginCtrl',
-        templateUrl: 'views/pages/login.html'
+      .state('dashboard.forms', {
+        url: '/form',
+        controller: 'FormCtrl',
+        templateUrl: 'views/dashboard/form.html'
       })
-      .state('dashboard.chart', {
+      .state('dashboard.charts', {
         url: '/chart',
         controller: 'ChartCtrl',
         templateUrl: 'views/dashboard/chart.html'
       })
+      .state('dashboard.tables', {
+        url: '/table',
+        templateUrl: 'views/dashboard/table.html'
+      })
 
-      .state('dashboard.welcome', {
-        //templateUrl: 'views/welcome.html',
-        template:'<div class="row"><div class="col-lg-12"><h1 class="page-header">Welcome</h1></div></div><div class="row"><div class="col-md-10 col-md-offset-1"><div class="jumbotron"><h1>欢迎进入后台管理系统</h1><p>Help you find friends</p><p><a href="index.html" class="btn btn-primary btn-lg" role="button">返回首页<span class="fa fa-arrow-left fa-fw"></span></a></p></div></div></div>',
-        url: '/welcome'
-      })
-      .state('dashboard.form', {
-        templateUrl: 'views/dashboard/form.html',
-        controller: 'FormCtrl',
-        url: '/form'
-      })
-      .state('dashboard.blank', {
-        templateUrl: 'views/pages/blank.html',
-        url: '/blank'
-      })
-      .state('dashboard.table', {
-        templateUrl: 'views/dashboard/table.html',
-        url: '/table'
-      })
+       //UI设计参考页面
       .state('dashboard.panels-wells', {
         templateUrl: 'views/ui-elements/panels-wells.html',
         url: '/panels-wells'
@@ -98,6 +93,22 @@ angular
       .state('dashboard.grid', {
         templateUrl: 'views/ui-elements/grid.html',
         url: '/grid'
+      })
+
+      // 数据示例页面
+      .state('dashboard.blank', {
+        url: '/blank',
+        templateUrl: 'views/pages/blank.html'
+      })
+      .state('dashboard.dataTable', {
+        url: '/datatable',
+        controller: 'DataCtrl as dt',
+        templateUrl: 'views/pages/datatable.html'
+      })
+      .state('dashboard.login', {
+        url: '/login',
+        controller: 'LoginCtrl',
+        templateUrl: 'views/pages/login.html'
       })
   }]);
 

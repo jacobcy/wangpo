@@ -24,28 +24,39 @@ module.exports = {
         return;
       }
 
-      var page = parseInt(req.param('page') || '1');
-      if (isNaN(page)) {
-        page = 1;
+      var drawCounter = parseInt(req.param('draw') || '0');
+      if (isNaN(drawCounter)) {
+        drawCounter = 0;
       }
 
-      totalPages = Math.ceil(count / COUNT_PER_PAGE);
+      var pageStart = parseInt(req.param('start') || '0');
+      if (isNaN(pageStart)) {
+        pageStart = 1;
+      }
+
+      var pageLength = parseInt(req.params.all()['length'] || '25');
+      if (isNaN(pageLength)) {
+        pageLength = 25;
+      }
 
       WeiboUser.find({
-        skip: (page - 1) * COUNT_PER_PAGE,
+        skip: pageStart,
         sort: 'updatedAt DESC',
-        limit: COUNT_PER_PAGE
+        limit: pageLength
       }).exec(function (err, found) {
-        for (var i = 0; i < found.length; i++) {
-          var user = found[i];
-          var date = user.userBirthday;
-          user.formattedBirthday = date ? dateToString(date) : '';
+        if (err) {
+          res.json({
+            draw: drawCounter,
+            error: err
+          });
+          return;
         }
-        res.view({
-          weibousers: found,
-          page: page,
-          totalPages: totalPages,
-          layout: 'main-layout'
+
+        res.json({
+          draw: drawCounter,
+          recordsTotal: count,
+          recordsFiltered: count,
+          data: found
         });
       });
     });

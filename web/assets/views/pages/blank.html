@@ -2,6 +2,33 @@
 	<div class="row">
 		<div class="col-lg-12">
 			<h1 class="page-header">Blank</h1>
+			<table id="example" class="display" cellspacing="0" width="100%">
+				<thead>
+						<tr>
+								<th>Nick name</th>
+								<th>Weibo ID</th>
+						</tr>
+				</thead>
+				<tfoot>
+						<tr>
+								<th>Nick name</th>
+								<th>Weibo ID</th>
+						</tr>
+				</tfoot>
+			</table>
+			<script>
+				$(document).ready(function() {
+					$('#example').DataTable({
+							"processing": true,
+							"serverSide": true,
+							"ajax": "/weibouser/list",
+							"columns": [
+								{ "data": "nickname" },
+								{ "data": "weiboId" }
+							]
+					});
+				});
+			</script>
 		</div>
 		<!-- /.col-lg-12 -->
 	</div>

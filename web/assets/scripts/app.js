@@ -16,8 +16,7 @@ angular
     'chart.js',
     'datatables',
     'datatables.columnfilter',
-    'sbAdminApp.directives',
-    'sbAdminApp.services'
+    'ngResource'
   ])
 
   .config(['$stateProvider', '$urlRouterProvider', '$ocLazyLoadProvider', function ($stateProvider, $urlRouterProvider, $ocLazyLoadProvider) {

@@ -7,32 +7,55 @@
  * Controller of the sbAdminApp
  */
 angular.module('sbAdminApp')
-  .controller('DataCtrl', ['$scope','utils','userFactory','DTOptionsBuilder','DTColumnBuilder',
-    function ($scope,utils,userFactory,DTOptionsBuilder,DTColumnBuilder) {
+  .controller('DataCtrl', ['$resource', 'DTOptionsBuilder', 'DTColumnBuilder',
+    function ($resource, DTOptionsBuilder, DTColumnBuilder) {
 
     var dt = this
 
     dt.dtInstance = {}
 
-      dt.dtOptions = DTOptionsBuilder.fromFnPromise(function () {
-        return userFactory.query({lock: 'false'}).$promise
-      })
+      dt.dtOptions = DTOptionsBuilder
+
+        // json方式获取数据
+        //.fromSource( $resource('/weibouser').query)
+
+        // Promise方式获取数据
+        /* .fromFnPromise(function () {
+         return $resource('/weibouser').query({lock: 'false'}).$promise
+         })*/
+
+        // 服务器端分页
+          .newOptions()
+          .withOption('ajax', {
+          dataSrc: 'data',
+          url: '/weibouser/list',
+          type: 'GET',
+          // 过滤服务器数据
+          data: {
+            lock: false
+          }
+        })
+        .withOption('processing', true)
+        .withOption('serverSide', true)
+
+        // 过滤数据（有冲突未生效，导致翻页时无法获得设置的URL）
+/*        .withColumnFilter({
+          aoColumns: [
+            {
+              type: 'text'
+            }, {
+              type: 'text'
+            }]
+        })
+        //保持过滤状态
+        .withOption('stateSave', true)*/
+
+        .withPaginationType('full')
+        .withDisplayLength(5);
 
     dt.dtColumns = [
-      DTColumnBuilder.newColumn('avatar').withTitle('头像').withOption('width', '12%').notSortable().renderWith(function (data) {
-        return utils.avatar(data);
-      }),
-      DTColumnBuilder.newColumn('nickname').withTitle('昵称').withOption('width', '18%').withOption('defaultContent', '-'),
-      DTColumnBuilder.newColumn('gender').withTitle('性别').withOption('width', '12%').renderWith(function (data) {
-        return utils.gender(data);
-      }),
-      DTColumnBuilder.newColumn('birthday').withTitle('年龄').withOption('width', '12%').renderWith(function (data) {
-        return utils.age(data);
-      }),
-      DTColumnBuilder.newColumn('height').withTitle('身高').withOption('width', '12%').withOption('defaultContent', '-'),
-      DTColumnBuilder.newColumn('location').withTitle('地址').withOption('width', '14%').renderWith(function (data) {
-        return utils.codeToCity(data);
-      })
+      DTColumnBuilder.newColumn('nickname').withTitle('昵称'),
+      DTColumnBuilder.newColumn('height').withTitle('身高')
     ];
 
   }]);

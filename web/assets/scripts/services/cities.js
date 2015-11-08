@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('sbAdminApp.services')
+angular.module('sbAdminApp')
 
   .factory('cityToCode', function () {
     return {

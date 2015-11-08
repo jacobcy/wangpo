@@ -2,7 +2,7 @@
 
 /* Directives */
 
-angular.module('sbAdminApp.directives',[])
+angular.module('sbAdminApp')
   .directive('userForm', function () {
     return {
       restrict: 'E',

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('sbAdminApp.services')
+angular.module('sbAdminApp')
 
   .factory('utils', ['codeToCity', 'cityToCode', 'weiboCities',
     function (codeToCity, cityToCode, weiboCities) {

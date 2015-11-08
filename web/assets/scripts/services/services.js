@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('sbAdminApp.services',['ngResource'])
+angular.module('sbAdminApp')
 
   //通过后台数据库获取用户资料
   .factory('userFactory', ['$resource', function ($resource) {

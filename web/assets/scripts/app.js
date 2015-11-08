@@ -38,8 +38,7 @@ angular
       //后台自建页面
       .state('dashboard.welcome', {
         url: '/welcome',
-        //templateUrl: 'views/welcome.html',
-        template:'<div class="row"><div class="col-lg-12"><h1 class="page-header">Welcome</h1></div></div><div class="row"><div class="col-md-10 col-md-offset-1"><div class="jumbotron"><h1>欢迎进入后台管理系统</h1><p>Help you find friends</p><p><a href="index.html" class="btn btn-primary btn-lg" role="button">返回首页<span class="fa fa-arrow-left fa-fw"></span></a></p></div></div></div>'
+        templateUrl: 'views/welcome.html',
       })
       .state('dashboard.user', {
         url: '/user',
@@ -95,14 +94,14 @@ angular
       })
 
       // 数据示例页面
-      .state('dashboard.blank', {
-        url: '/blank',
-        templateUrl: 'views/pages/blank.html'
-      })
-      .state('dashboard.dataTable', {
+      .state('dashboard.datatable', {
         url: '/datatable',
-        controller: 'DataCtrl as dt',
         templateUrl: 'views/pages/datatable.html'
+      })
+      .state('dashboard.angularTable', {
+        url: '/angulartable',
+        controller: 'DataCtrl as dt',
+        templateUrl: 'views/pages/angulartable.html'
       })
       .state('dashboard.login', {
         url: '/login',

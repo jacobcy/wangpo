@@ -17,10 +17,12 @@
 var cssFilesToInject = [
 
    //dependency css
+  'stylesheet/*.css',
 
    // custom css
-  'css/*.css',
   'styles/*.css',
+
+  'css/*.css',
 ];
 
 
@@ -47,28 +49,17 @@ var jsFilesToInject = [
 
   // dataTables js
   'js/jquery.dataTables.js',
-  'js/dataTables.responsive.js',
   'js/angular-datatables.js',
+  'js/jquery.dataTables.columnFilter.js',
   'js/angular-datatables.columnfilter.js',
+  'js/dataTables.responsive.js',
 
   // SB-Admin-2 js
   'lib/*.js',
 
   // angular controllers
   'scripts/app.js',
-  'scripts/controllers/*.js',
-
-  // angular directives
-  'scripts/directives/directives.js',
-  'scripts/directives/**/*.js',
-
-  // angular filters
-  'scripts/filters/*.js',
-
-  // angular services
-  'scripts/services/services.js',
-  'scripts/services/*.js'
-
+  'scripts/**/*.js'
 ];
 
 

@@ -16,8 +16,8 @@ module.exports = function(grunt) {
 		dev: {
 			files: [{
 				expand: true,
-				cwd: 'assets/css/bootstrap/',
-				src: ['bootstrap.less'],
+				cwd: 'assets/css/',
+				src: ['importer.less'],
 				dest: '.tmp/public/css/',
 				ext: '.css'
 			}]

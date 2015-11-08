@@ -193,7 +193,10 @@ angular.module('sbAdminApp')
         .newOptions()
         .withOption('ajax', {
           url: '/weibouser/list',
-          type: 'POST'
+          type: 'POST',
+          data: {
+            lock: false
+          }
         })
         .withDataProp('data')
         .withOption('processing', true)
@@ -256,18 +259,5 @@ angular.module('sbAdminApp')
         }),
         DTColumnBuilder.newColumn('description').withTitle('个人说明').withOption('defaultContent', '暂无介绍').withClass('none')
       ];
-
-      //显示锁定的用户数据
-       user.lockbutton = false;
-       user.lockPromise = function () {
-       user.lockbutton = true;
-       return userFactory.query({lock: 'true'}).$promise
-       }
-
-       //显示未锁定的用户数据
-       user.unlockPromise = function () {
-       user.lockbutton = false;
-       return userFactory.query({lock: 'false'}).$promise
-       }
 
     }]);

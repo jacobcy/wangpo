@@ -41,17 +41,15 @@ angular.module('sbAdminApp')
         // 过滤数据（有冲突未生效，导致翻页时无法获得设置的URL）
 /*        .withColumnFilter({
           aoColumns: [
-            {
-              type: 'text'
-            }, {
-              type: 'text'
-            }]
-        })
+            {type: 'text'},
+            {type: 'number'}
+          ]
+        })*/
         //保持过滤状态
-        .withOption('stateSave', true)*/
+        //.withOption('stateSave', true)
 
         .withPaginationType('full')
-        .withDisplayLength(5);
+        //.withDisplayLength(10);
 
     dt.dtColumns = [
       DTColumnBuilder.newColumn('nickname').withTitle('昵称'),

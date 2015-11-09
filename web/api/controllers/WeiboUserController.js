@@ -24,19 +24,24 @@ module.exports = {
         return;
       }
 
-      var drawCounter = parseInt(req.param('draw') || '0');
+      //TODO：传统模式下服务器端分页采用sEcho、iDisplayStart、iDisplayLength参数，目前未增加过滤功能
+
+      var drawCounter = parseInt(req.param('sEcho') || '0');
+      //var drawCounter = parseInt(req.param('draw') || '0');
       if (isNaN(drawCounter)) {
         drawCounter = 0;
       }
 
-      var pageStart = parseInt(req.param('start') || '0');
+      var pageStart = parseInt(req.param('iDisplayStart') || '0');
+      //var pageStart = parseInt(req.param('start') || '0');
       if (isNaN(pageStart)) {
         pageStart = 1;
       }
 
-      var pageLength = parseInt(req.params.all()['length'] || '25');
+      var pageLength = parseInt(req.params.all()['iDisplayLength'] || '10');
+      //var pageLength = parseInt(req.params.all()['Length'] || '10');
       if (isNaN(pageLength)) {
-        pageLength = 25;
+        pageLength = 10;
       }
 
       WeiboUser.find({

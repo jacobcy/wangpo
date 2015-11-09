@@ -50,6 +50,7 @@ var jsFilesToInject = [
   // dataTables js
   'js/jquery.dataTables.js',
   'js/angular-datatables.js',
+  'js/select2.js',
   'js/jquery.dataTables.columnFilter.js',
   'js/angular-datatables.columnfilter.js',
   'js/dataTables.responsive.js',

@@ -107,8 +107,8 @@ angular.module('sbAdminApp')
       }
     }])
 
-  .controller('UserCtrl', ['DTOptionsBuilder', 'DTColumnBuilder', 'userFactory', 'utils', '$scope', '$compile', '$modal',
-    function (DTOptionsBuilder, DTColumnBuilder, userFactory, utils, $scope, $compile, $modal) {
+  .controller('UserCtrl', ['DTOptionsBuilder', 'DTColumnBuilder', 'userFactory', 'utils', '$scope', '$compile', '$uibModal',
+    function (DTOptionsBuilder, DTColumnBuilder, userFactory, utils, $scope, $compile, $uibModal) {
       var user = this;
       user.dtInstance = {};
 
@@ -121,7 +121,7 @@ angular.module('sbAdminApp')
 
       //弹出用户资料编辑页 user Form
       function openForm() {
-        var modalInstance = $modal.open({
+        var modalInstance = $uibModal.open({
           animation: true,
           templateUrl: 'scripts/templates/userform.html',
           controller: 'ModalInstanceCtrl',
@@ -187,27 +187,34 @@ angular.module('sbAdminApp')
       }
 
       //填入表格数据
-      user.dtOptions = DTOptionsBuilder
+      user.dtOptions = DTOptionsBuilder.newOptions()
 
-        //服务器端分页
-        .newOptions()
-        .withOption('ajax', {
+        //开启服务器端分页模式
+        .withOption('processing', true)
+        .withOption('serverSide', true)
+
+        //最新版本的服务器端分页设置
+/*        .withOption('ajax', {
           url: '/weibouser/list',
           type: 'POST',
           data: {
             lock: false
           }
         })
-        .withDataProp('data')
-        .withOption('processing', true)
-        .withOption('serverSide', true)
+          .withDataProp('data')*/
+
+        //早期版本服务器端分页设置
+        .withOption('sAjaxSource', "/weibouser/list")
+
+        //设置分页模式和数量
         .withPaginationType('full')
-        .withDisplayLength(5)
+        .withDisplayLength(10)
 
         // 展开、收起表格
         .withOption('responsive', true)
-        //过滤表格数据(服务器端分页模式下无效)
-        /* .withColumnFilter({
+
+        //过滤表格数据(传统服务器端分页模式下生效)
+         .withColumnFilter({
          aoColumns: [
          null, {
          type: 'text',
@@ -215,7 +222,6 @@ angular.module('sbAdminApp')
          bSmart: true
          }, {
          type: 'select',
-         bRegex: false,
          values: ['男', '女']
          }, {
          type: 'number-range'
@@ -224,9 +230,9 @@ angular.module('sbAdminApp')
          }, {
          type: 'text'
          }]
-         })*/
+         })
 
-        //绑定angular控件
+        //绑定angular控件，进行行操作
         .withOption('createdRow', createdRow);
 
       function createdRow(row, data, dataIndex) {

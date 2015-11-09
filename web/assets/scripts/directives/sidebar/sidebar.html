@@ -14,7 +14,7 @@
       <li ng-class="{active: collapseVar==1}">{{dropDown}}
         <a href="" ng-click="check(1)"><i class="fa fa-wrench fa-fw"></i>设计页面<span
           class="fa arrow"></span></a>
-        <ul class="nav nav-second-level" collapse="collapseVar!=1">
+        <ul class="nav nav-second-level" uib-collapse="collapseVar!=1">
           <li ui-sref-active="active">
             <a ui-sref="dashboard.panels-wells">Panels and Wells</a>
           </li>
@@ -40,7 +40,7 @@
       <li ng-class="{active: collapseVar==2}">
         <a href="" ng-click="check(2)"><i class="fa fa-sitemap fa-fw"></i>参考页面<span
           class="fa arrow"></span></a>
-        <ul class="nav nav-second-level" collapse="collapseVar!=2">
+        <ul class="nav nav-second-level" uib-collapse="collapseVar!=2">
           <li ng-class="{active: selectedMenu=='home'}">
             <a ui-sref="dashboard.home" ng-click="selectedMenu='home'"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
           </li>
@@ -60,7 +60,7 @@
       <li ng-class="{active:collapseVar==3}">
         <a href="" ng-click="check(3)"><i class="fa fa-files-o fa-fw"></i> 示例页面<span
           class="fa arrow"></span></a>
-        <ul class="nav nav-second-level" collapse="collapseVar!=3">
+        <ul class="nav nav-second-level" uib-collapse="collapseVar!=3">
           <li ng-class="{active: selectedMenu=='angularTable'}">
             <a ui-sref="dashboard.angularTable" ng-click="selectedMenu='angularTable'">AngularTable Page</a>
           </li>

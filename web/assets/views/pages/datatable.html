@@ -19,15 +19,23 @@
       <script>
         $(document).ready(function () {
           $('#example').dataTable({
+
             processing: true,
             serverSide: true,
+
+            //当前版本
+            /*
             ajax: {
               url: "/weibouser/list",
               type: "GET",
               data: {
                 lock: false
               }
-            },
+            },*/
+
+            // 早期版本
+             sAjaxSource: "/weibouser/list",
+
             columns: [
               {data: "nickname"},
               {data: "weiboId"}

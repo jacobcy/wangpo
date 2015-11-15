@@ -50,11 +50,15 @@ module.exports.policies = {
 	// }
 
  'main': {
-    'admin': ['passport', 'isAuthenticated']
+    'admin': ['passport','isAuthenticated']
   },
 
   'weibouser': {
-    '*': ['passport', 'isAuthenticated']
+    '*': ['passport','isAuthenticated']
+  },
+
+  'weibouser': {
+    '*': ['passport','bearerAuth']
   },
 
  'auth': {

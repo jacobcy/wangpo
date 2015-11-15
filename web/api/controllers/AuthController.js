@@ -38,12 +38,14 @@ var AuthController = {
     Object.keys(strategies).forEach(function (key) {
       if (key === 'local') {
         return;
+      } else if (key === 'bearer') {
+        return;
+      } else {
+        providers[key] = {
+          name: strategies[key].name
+          , slug: key
+        };
       }
-
-      providers[key] = {
-        name: strategies[key].name
-      , slug: key
-      };
     });
 
     // Render the `auth/login.ext` view
@@ -189,7 +191,12 @@ var AuthController = {
    */
   disconnect: function (req, res) {
     passport.disconnect(req, res);
+  },
+
+  signin: function (req, res){
+    return;
   }
 };
+
 
 module.exports = AuthController;

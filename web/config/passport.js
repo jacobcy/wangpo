@@ -17,5 +17,17 @@
 module.exports.passport = {
   local: {
     strategy: require('passport-local').Strategy
-  }
+  },
+  bearer: {
+    strategy: require('passport-http-bearer').Strategy
+  },
+/*  weibo: {
+    name: '微博',
+    protocol: 'oauth2.0',
+    strategy: require('passport-weibo').Strategy,
+    options: {
+      clientID: sails.config.weibo.appsecret,
+      clientSecret: sails.config.weibo.access_token
+    }
+  }*/
 };

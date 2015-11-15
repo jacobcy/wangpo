@@ -204,7 +204,22 @@ angular.module('sbAdminApp')
           .withDataProp('data')*/
 
         //早期版本服务器端分页设置
-        .withOption('sAjaxSource', "/weibouser/list")
+        .withOption('sAjaxSource', "http://www.iwangpo.com/weibouser/list")
+        .withFnServerData(function (sSource, aoData, fnCallback, oSettings) {
+          oSettings.jqXHR = $.ajax({
+            dataType: 'json',
+            type: "POST",
+            url: sSource,
+            data: aoData,
+            beforeSend: function(xhr){
+              xhr.setRequestHeader('Authorization', 'Bearer ' + sails.config.token)
+            },
+            success: fnCallback,
+            error: function(error){
+              console.log(error)
+            }
+          });
+        })
 
         //设置分页模式和数量
         .withPaginationType('full')

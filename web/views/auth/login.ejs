@@ -32,17 +32,22 @@
         </div>
 
       </div>
+
+      <% if ( Object.keys(providers).length ) {%>
+      <h4>You can also use one of these...</h4>
+
+      <% Object.keys(providers).forEach(function (key) { %>
+      <a href="/auth/<%= providers[key].slug %>" class="btn btn-primary"><%= providers[key].name %></a>
+      <% }) %>
+      <% } %>
+
     </div>
   </div>
 </div>
 
-<% if (providers.length) {%>
-<h4>You can also use one of these...</h4>
 
-<% Object.keys(providers).forEach(function (key) { %>
-<a href="/auth/<%= providers[key].slug %>" role="button"><%= providers[key].name %></a>
-<% }) %>
-<% } %>
+
+
 
 
 

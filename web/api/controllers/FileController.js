@@ -5,10 +5,11 @@
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
 
+var fs=require('fs');
+
+const UPLOAD_LIMIT_IN_MBYTES = sails.config.qiniu.uploadLimitInMbytes;
+
 module.exports = {
-
-
-
   /**
    * `FileController.uploadImage()`
    *
@@ -24,26 +25,33 @@ module.exports = {
     // Node defaults to 2 minutes.
     res.setTimeout(0);
 
-    var fileHash = req.param('hash');
-    if (!fileHash) {
-      res.json({
-        error: 'Hash不能为空'
-      });
-      return;
-    }
-
     req.file('image').upload({
       dirname: require('path').resolve('./upload/images'),
-      saveAs: fileHash,
       // You can apply a file upload limit (in bytes)
-      maxBytes: 2 * 1000 * 1000
+      maxBytes: UPLOAD_LIMIT_IN_MBYTES * 1000 * 1000
     }, function whenDone(err, uploadedFiles) {
       if (err) {
-        return res.serverError(err);
+        res.json({ error: err });
+        return;
       }
-      return res.json({
-        files: uploadedFiles,
-        textParams: req.params.all()
+      var file = uploadedFiles[0];
+      fs.readFile(file.fd, function(err, data) {
+        if (err) {
+          res.json({ error: err });
+          return;
+        }
+        sails.services.utils.saveCloudImage(data, file.type, function(err, result) {
+          if (err) {
+            res.json({ error: err });
+            return;
+          }
+          res.json({
+            hash: result.hash,
+            remoteUrl: result.url,
+            localPath: file.fd,
+            textParams: req.params.all()
+          });
+        });
       });
     });
   }

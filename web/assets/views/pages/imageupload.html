@@ -15,13 +15,9 @@
                       <div class="col-lg-6">
                           <form action="file/uploadImage" method="post" enctype="multipart/form-data">
                               <div class="form-group">
-                                  <label>服务器文件名</label>
-                                  <input class="form-control" type="text" name="hash">
-                                  <p>文件上传后保存在/upload/images目录下</p>
-                              </div>
-                              <div class="form-group">
                                   <label>文件</label>
                                   <input class="form-control" type="file" name="image" accept="image/png,image/gif,image/jpeg,image/jpg"/>
+                                  <p>文件上传后保存在 /upload/images/qiniu 目录下</p>
                               </div>
                               <button type="submit" class="btn btn-default">上传</button>
                           </form>

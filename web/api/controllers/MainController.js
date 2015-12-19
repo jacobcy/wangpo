@@ -23,7 +23,7 @@ module.exports = {
    * @param url 待存储图片的地址
    * @return 成功返回 {id: CloudImage ID}, 失败返回 {error: 错误信息}
    */
-  saveImage: function(req, res, body) {
+  saveImage: function(req, res) {
     var url = req.param('url') || '';
     if (!url) {
       return res.json({
@@ -36,6 +36,23 @@ module.exports = {
         return;
       }
       res.json({ id: record.id });
+    });
+  },
+
+  /**
+   * 通过id获取可显示的CloudImage URL.
+   * /main/cloudImage?id=[id]
+   * @param id CloudImage id
+   * @return 成功返回 {url: CloudImage URL}, 失败返回 {error: 错误信息}
+   */
+  cloudImage: function(req, res) {
+    var id = req.param('id');
+    CloudImage.findOne({ id: id }).exec(function(err, found) {
+      if (err) {
+        res.json({ error: err });
+        return;
+      }
+      res.json({ url: found.getDisplayableUrl() });
     });
   }
 };

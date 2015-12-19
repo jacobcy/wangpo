@@ -5,6 +5,8 @@
 * @docs        :: http://sailsjs.org/#!documentation/models
 */
 
+var path = require('path');
+
 module.exports = {
   schema: true,
 
@@ -65,7 +67,44 @@ module.exports = {
     retries: {
       type: 'integer',
       defaultsTo: 0
+    },
+
+    /**
+     * 获取可以显示的URL
+     * 优先使用remoteUrl, 然后是localPath, 最后是sourceUrl
+     */
+    getDisplayableUrl: function() {
+      if (!this.remoteUrl) {
+        return this.remoteUrl;
+      }
+      if (this.sourceUrl) {
+        return this.sourceUrl;
+      }
+      var base = path.resolve('./upload/images');
+      var local = this.localPath;
+      if (local.indexOf(base) === 0) {
+        local = local.substr(base.length);
+      }
+
+      return '/upload/images' + local;
     }
+  },
+
+  /**
+   * 批量获取可以显示的URL
+   */
+  getDisplayableUrls: function(ids, cb) {
+    CloudImage.find({ id: ids }).exec(function (err, records) {
+      if (err) {
+        cb(err);
+        return;
+      }
+      var urls = [];
+      for (var i = 0; i < records.length; i++) {
+        urls.push(records[i].getDisplayableUrl());
+      }
+      cb(null, urls);
+    });
   },
 
   /**

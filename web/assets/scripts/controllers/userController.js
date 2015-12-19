@@ -53,8 +53,8 @@ angular.module('sbAdminApp')
         }
         if (/https?:\/\/[^\s]+/.test(modal.photo)) {
           userPhoto.get({url: modal.photo}, function (data) {
-            if (data.url) {
-              modal.user.photos.push(data.url);
+            if (data.id) {
+              modal.user.photos.push(data.id);
               modal.photo = null;
               if (modal.user.photos.length >= 6) {
                 modal.photoLimit = true;

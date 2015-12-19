@@ -73,8 +73,8 @@ module.exports = {
    */
   addByUrl: function(url, cb) {
     CloudImage.findOrCreate(
-      { remoteUrl: url },
-      { remoteUrl: url, hash: '' }).exec(function (err, record) {
+      { sourceUrl: url },
+      { sourceUrl: url }).exec(function (err, record) {
       if (err) {
         cb(err);
         return;

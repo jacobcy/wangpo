@@ -1,0 +1,3 @@
+require('./cloudimage');
+
+module.exports = {};

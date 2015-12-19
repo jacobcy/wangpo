@@ -101,12 +101,12 @@ function handleTextMessage(sender_id, text, cb) {
 function handleImageMessage(sender_id, tovfid, cb) {
   var imageUrl = 'https://upload.api.weibo.com/2/mss/msget?access_token=' + sails.config.weibo.access_token +
                 '&fid=' + tovfid;
-  sails.services.utils.saveQiniuImageFromUrl(imageUrl, function(json) {
-    if (json.error) {
-      cb('图片保存失败:' + json.error);
+  CloudImage.addByUrl(imageUrl, function(err, record) {
+    if (err) {
+      cb('图片保存失败:' + err);
       return;
     }
-    ChatManager.process(sender_id, null, json.url, function(msg) {
+    ChatManager.process(sender_id, null, record.id, function(msg) {
       if (!msg) {
         // 默认情况显示帮助信息
         msg = ReplyMessages.help;

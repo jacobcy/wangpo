@@ -53,12 +53,12 @@ module.exports.policies = {
     'admin': ['passport','isAuthenticated']
   },
 
+  //todo:是否允许不同方式的认证？
   'weibouser': {
-    '*': ['passport','isAuthenticated']
-  },
-
-  'weibouser': {
-    '*': ['passport','bearerAuth']
+    '*': ['passport'
+      ,'isAuthenticated'
+      //,'bearerAuth'
+    ]
   },
 
  'auth': {

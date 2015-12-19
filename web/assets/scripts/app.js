@@ -19,10 +19,15 @@ angular
     'ngResource'
   ])
 
-  .config(['$stateProvider', '$urlRouterProvider', '$ocLazyLoadProvider', '$httpProvider',
-    function ($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, $httpProvider) {
+  .config(['$stateProvider', '$urlRouterProvider', '$ocLazyLoadProvider',
+    //'$httpProvider',
+    function ($stateProvider, $urlRouterProvider, $ocLazyLoadProvider
+      //, $httpProvider
+    ) {
 
-/*      $httpProvider.interceptors.push(['$q', '$location', function ($q, $location) {
+      // TODO：拦截器，user agent添加bearer token
+      /*
+      $httpProvider.interceptors.push(['$q', '$location', function ($q, $location) {
         return {
           request: function (config) {
             config.headers = config.headers || {};
@@ -36,8 +41,8 @@ angular
             return $q.reject(response);
           }
         };
-      }]);*/
-
+      }]);
+      */
 
       $ocLazyLoadProvider.config({
         debug: false,
@@ -126,9 +131,10 @@ angular
           controller: 'DataCtrl as dt',
           templateUrl: 'views/pages/angulartable.html'
         })
+        //todo: 尚未添加bearer login的controller和页面
         .state('dashboard.login', {
           url: '/login',
-          controller: 'LoginCtrl',
+          // controller: 'LoginCtrl',
           templateUrl: 'views/pages/login.html'
         })
     }]

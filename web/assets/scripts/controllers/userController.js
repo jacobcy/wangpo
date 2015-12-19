@@ -2,7 +2,8 @@
 
 angular.module('sbAdminApp')
 
-  .controller('ModalInstanceCtrl', ['$modalInstance', 'weiboUser', 'userFactory', 'userPhoto', 'items', 'msgs',
+  .controller('ModalInstanceCtrl',
+  ['$modalInstance', 'weiboUser', 'userFactory', 'userPhoto', 'items', 'msgs',
     function ($modalInstance, weiboUser, userFactory, userPhoto, items, msgs) {
       var modal = this;
       modal.user = items;
@@ -107,7 +108,8 @@ angular.module('sbAdminApp')
       }
     }])
 
-  .controller('UserCtrl', ['DTOptionsBuilder', 'DTColumnBuilder', 'userFactory', 'utils', '$scope', '$compile', '$uibModal',
+  .controller('UserCtrl',
+  ['DTOptionsBuilder', 'DTColumnBuilder', 'userFactory', 'utils', '$scope', '$compile', '$uibModal',
     function (DTOptionsBuilder, DTColumnBuilder, userFactory, utils, $scope, $compile, $uibModal) {
       var user = this;
       user.dtInstance = {};
@@ -211,9 +213,12 @@ angular.module('sbAdminApp')
             type: "POST",
             url: sSource,
             data: aoData,
+            // Todo:通过Bearer Token获取后台数据
+            /*
             beforeSend: function(xhr){
               xhr.setRequestHeader('Authorization', 'Bearer ' + sails.config.token)
             },
+            */
             success: fnCallback,
             error: function(error){
               console.log(error)

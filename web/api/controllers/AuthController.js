@@ -193,6 +193,7 @@ var AuthController = {
     passport.disconnect(req, res);
   },
 
+  //todo: 通过bearer方式获取user token
   signin: function (req, res){
     return;
   }

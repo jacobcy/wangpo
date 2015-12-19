@@ -37,7 +37,7 @@ var jsFilesToInject = [
   'js/dependencies/*.js',
 
   // All of the rest of importants js
-  'js/sails.io.js',
+  //'js/sails.io.js',
   'js/angular-ui-router.js',
   'js/angular-resource.js',
   'js/json3.js',

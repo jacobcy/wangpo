@@ -20,21 +20,14 @@ angular.module('sbAdminApp')
         //.fromSource( $resource('/weibouser').query)
 
         // Promise方式获取数据
-        /* .fromFnPromise(function () {
+/*         .fromFnPromise(function () {
          return $resource('/weibouser').query({lock: 'false'}).$promise
          })*/
 
+        // 服务器端分页
         .withOption('processing', true)
         .withOption('serverSide', true)
         .withOption('sAjaxSource', "/weibouser/list")
-
-        //服务器端分页
-        /*
-         .withOption('ajax', {
-         dataSrc: 'data',
-         url: '/weibouser/list',
-         type: 'GET'
-         })*/
 
         // 过滤数据
         .withColumnFilter({

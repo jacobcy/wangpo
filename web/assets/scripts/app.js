@@ -84,6 +84,11 @@ angular
           url: '/table',
           templateUrl: 'views/dashboard/table.html'
         })
+        .state('dashboard.imageUpload', {
+          url: '/imageupload',
+          //controller: 'imageUpload',
+          templateUrl: 'views/pages/imageupload.html'
+        })
 
         //UI设计参考页面
         .state('dashboard.panels-wells', {

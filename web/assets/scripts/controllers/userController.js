@@ -204,7 +204,7 @@ angular.module('sbAdminApp')
           .withDataProp('data')*/
 
         //早期版本服务器端分页设置
-        .withOption('sAjaxSource', "http://www.iwangpo.com/weibouser/list")
+        .withOption('sAjaxSource', "weibouser/list")
         .withFnServerData(function (sSource, aoData, fnCallback, oSettings) {
           oSettings.jqXHR = $.ajax({
             dataType: 'json',

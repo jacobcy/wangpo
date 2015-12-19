@@ -9,6 +9,13 @@ module.exports = {
   schema: true,
 
   attributes: {
+    id: {
+      type: 'integer',
+      unique: true,
+      primaryKey: true,
+      autoIncrement: true
+    },
+
     /*
      * 文件hash值
      * 按照七牛云存储方式计算hash值，详见 https://github.com/qiniu/qetag。
@@ -24,30 +31,73 @@ module.exports = {
      */
     hash: {
       type: 'string',
-      primaryKey: true,
-      unique: true,
-      size: 1024
+      defaultsTo: '',
+      size: 128
+    },
+
+    mimeType: {
+      type: 'string',
+      defaultsTo: 'image/jpg',
+      size: 16
     },
 
     // 原始图片URL
     sourceUrl: {
       type: 'string',
-      required: true,
-      unique: true,
+      defaultsTo: '',
       size: 1024
     },
 
-    // 本地保存地址
+    // 本地文件地址，不是文件备份地址
     localPath: {
       type: 'string',
+      defaultsTo: '',
       size: 1024
     },
 
     // 远程URL
     remoteUrl: {
       type: 'string',
+      defaultsTo: '',
       size: 1024
+    },
+
+    retries: {
+      type: 'integer',
+      defaultsTo: 0
     }
+  },
+
+  /**
+   * 通过URL备份和上传一个七牛云照片
+   */
+  addByUrl: function(url, cb) {
+    CloudImage.findOrCreate(
+      { remoteUrl: url },
+      { remoteUrl: url, hash: '' }).exec(function (err, record) {
+      if (err) {
+        cb(err);
+        return;
+      }
+
+      cb(null, record);
+    });
+  },
+
+  /**
+   * 备份一个本地图片文件，并上传至七牛云
+   */
+  addByLocalFile: function(localPath, mimeType, cb) {
+    CloudImage.findOrCreate(
+      { localPath: localPath },
+      { localPath: localPath, mimeType: mimeType }).exec(function (err, record) {
+      if (err) {
+        cb(err);
+        return;
+      }
+
+      cb(null, record);
+    });
   }
 };
 

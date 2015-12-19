@@ -35,23 +35,12 @@ module.exports = {
         return;
       }
       var file = uploadedFiles[0];
-      fs.readFile(file.fd, function(err, data) {
+      CloudImage.addByLocalFile(file.fd, file.type, function(err, record) {
         if (err) {
           res.json({ error: err });
           return;
         }
-        sails.services.utils.saveCloudImage(data, file.type, function(err, result) {
-          if (err) {
-            res.json({ error: err });
-            return;
-          }
-          res.json({
-            hash: result.hash,
-            remoteUrl: result.url,
-            localPath: file.fd,
-            textParams: req.params.all()
-          });
-        });
+        res.json({ id: record.id });
       });
     });
   }

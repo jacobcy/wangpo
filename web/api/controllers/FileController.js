@@ -28,7 +28,7 @@ module.exports = {
     req.file('image').upload({
       dirname: require('path').resolve('./upload/images'),
       // You can apply a file upload limit (in bytes)
-      maxBytes: UPLOAD_LIMIT_IN_MBYTES * 1000 * 1000
+      maxBytes: UPLOAD_LIMIT_IN_MBYTES * 1024 * 1024
     }, function whenDone(err, uploadedFiles) {
       if (err) {
         res.json({ error: err });

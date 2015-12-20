@@ -194,37 +194,40 @@ angular.module('sbAdminApp')
         //开启服务器端分页模式
         .withOption('processing', true)
         .withOption('serverSide', true)
-
-        //最新版本的服务器端分页设置
-/*        .withOption('ajax', {
-          url: '/weibouser/list',
-          type: 'POST',
-          data: {
-            lock: false
-          }
-        })
-          .withDataProp('data')*/
+        .withOption('sAjaxSource', "weibouser/list")
 
         //早期版本服务器端分页设置
-        .withOption('sAjaxSource', "weibouser/list")
-        .withFnServerData(function (sSource, aoData, fnCallback, oSettings) {
-          oSettings.jqXHR = $.ajax({
-            dataType: 'json',
-            type: "POST",
-            url: sSource,
-            data: aoData,
-            // Todo:通过Bearer Token获取后台数据
-            /*
-            beforeSend: function(xhr){
-              xhr.setRequestHeader('Authorization', 'Bearer ' + sails.config.token)
-            },
-            */
-            success: fnCallback,
-            error: function(error){
-              console.log(error)
-            }
-          });
-        })
+        /*
+         .withFnServerData(function (sSource, aoData, fnCallback, oSettings) {
+         oSettings.jqXHR = $.ajax({
+         dataType: 'json',
+         type: "POST",
+         url: sSource,
+         data: aoData,
+         // Todo:通过Bearer Token获取后台数据
+         // beforeSend: function(xhr){
+         // xhr.setRequestHeader('Authorization', 'Bearer ' + sails.config.token)},
+         success: fnCallback,
+         error: function (error) {
+         console.log(error)
+         }
+         });
+         })
+         */
+
+        //最新版本的服务器端分页设置
+        /*
+         .withOption('ajax', {
+         url: '/weibouser/list',
+         type: 'POST',
+         dataSrc: 'data',
+         sAjaxSource: '/weibouser/list',
+         data: {
+         lock: false
+         }
+         })
+         */
+        //.withDataProp('data')
 
         //设置分页模式和数量
         .withPaginationType('full')
@@ -234,23 +237,23 @@ angular.module('sbAdminApp')
         .withOption('responsive', true)
 
         //过滤表格数据(传统服务器端分页模式下生效)
-         .withColumnFilter({
-         aoColumns: [
-         null, {
-         type: 'text',
-         bRegex: true,
-         bSmart: true
-         }, {
-         type: 'select',
-         values: ['男', '女']
-         }, {
-         type: 'number-range'
-         }, {
-         type: 'number-range'
-         }, {
-         type: 'text'
-         }]
-         })
+        .withColumnFilter({
+          aoColumns: [
+            null, {
+              type: 'text',
+              bRegex: true,
+              bSmart: true
+            }, {
+              type: 'select',
+              values: ['男', '女']
+            }, {
+              type: 'number-range'
+            }, {
+              type: 'number-range'
+            }, {
+              type: 'text'
+            }]
+        })
 
         //绑定angular控件，进行行操作
         .withOption('createdRow', createdRow);

@@ -20,9 +20,11 @@ angular.module('sbAdminApp')
         //.fromSource( $resource('/weibouser').query)
 
         // Promise方式获取数据
-/*         .fromFnPromise(function () {
+        /*
+         .fromFnPromise(function () {
          return $resource('/weibouser').query({lock: 'false'}).$promise
-         })*/
+         })
+         */
 
         // 服务器端分页
         .withOption('processing', true)
@@ -31,16 +33,16 @@ angular.module('sbAdminApp')
 
         // 过滤数据
         .withColumnFilter({
-         aoColumns: [
-         {type: 'text'},
-         {type: 'number'}
-         ]
-         })
-        //保持过滤状态
-        //.withOption('stateSave', true)
+          aoColumns: [
+            {type: 'text'},
+            {type: 'number'}
+          ]
+        })
+      // 保持过滤状态
+      // .withOption('stateSave', true)
 
       // .withPaginationType('full')
-      //.withDisplayLength(10);
+      // .withDisplayLength(10);
 
       dt.dtColumns = [
         DTColumnBuilder.newColumn('nickname').withTitle('昵称'),

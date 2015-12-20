@@ -41,8 +41,8 @@ module.exports = {
   qiniu: {
     AccessKey: "",
     SecretKey : "",
-    bucket: "vq-script",
-    uploadLimitInMbytes: 3
+    bucket: "bucket4iwangpo",
+    uploadLimitInMbytes: 4
   },
 
   /***************************************************************************

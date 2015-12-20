@@ -91,7 +91,7 @@ angular
         })
         .state('dashboard.imageUpload', {
           url: '/imageupload',
-          //controller: 'imageUpload',
+          //controller: 'ImageUploadCtrl',
           templateUrl: 'views/pages/imageupload.html'
         })
 

@@ -53,9 +53,6 @@
           <li ng-class="{active: selectedMenu=='tables'}">
             <a ui-sref="dashboard.tables" ng-click="selectedMenu='tables'"><i class="fa fa-table fa-fw"></i> Tables</a>
           </li>
-          <li ng-class="{active: selectedMenu=='imageUpload'}">
-            <a ui-sref="dashboard.imageUpload" ng-click="selectedMenu='imageUpload'">Upload Image</a>
-          </li>
         </ul>
         <!-- /.nav-second-level -->
       </li>
@@ -64,6 +61,12 @@
         <a href="" ng-click="check(3)"><i class="fa fa-files-o fa-fw"></i> 示例页面<span
           class="fa arrow"></span></a>
         <ul class="nav nav-second-level" uib-collapse="collapseVar!=3">
+          <li ng-class="{active: selectedMenu=='login'}">
+            <a ui-sref="dashboard.login" ng-click="selectedMenu='login'">Login</a>
+          </li>
+          <li ng-class="{active: selectedMenu=='imageUpload'}">
+            <a ui-sref="dashboard.imageUpload" ng-click="selectedMenu='imageUpload'">Upload Image</a>
+          </li>
           <li ng-class="{active: selectedMenu=='angularTable'}">
             <a ui-sref="dashboard.angularTable" ng-click="selectedMenu='angularTable'">AngularTable Page</a>
           </li>

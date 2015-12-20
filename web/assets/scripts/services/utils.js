@@ -50,7 +50,7 @@ angular.module('sbAdminApp')
           if (angular.isDefined(data)) {
             var pics = new String;
             for (var i in data) {
-              var pic = '<div class="col-md-3"><img src="' + data[i] + '" class="user-photo" /></div>';
+              var pic = '<div class="col-md-3"><img src="' + data[i] + '!sample" class="user-photo" /></div>';
               pics = pics + pic;
             }
             pics = '<div class="row show-grid user-photos">' + pics + '</div>';

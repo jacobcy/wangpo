@@ -47,9 +47,10 @@ var WeiboUser = {
       type: 'string',
       size: 128
     },
-    // 用户照片url
+     // 用户照片url
     photos: {
-      type: 'array'
+      collection: 'CloudImage',
+      via: 'weiboUser'
     },
     // 用户描述
     description: {

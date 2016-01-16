@@ -11,6 +11,10 @@ module.exports = {
   schema: true,
 
   attributes: {
+    weiboUser: {
+      model: 'WeiboUser'
+    },
+
     id: {
       type: 'integer',
       unique: true,

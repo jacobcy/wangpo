@@ -29,24 +29,90 @@ module.exports = {
       //TODO：传统模式下服务器端分页采用sEcho、iDisplayStart、iDisplayLength参数，目前未增加过滤功能
 
       var drawCounter = parseInt(req.param('sEcho') || '0');
-      //var drawCounter = parseInt(req.param('draw') || '0');
       if (isNaN(drawCounter)) {
         drawCounter = 0;
       }
 
       var pageStart = parseInt(req.param('iDisplayStart') || '0');
-      //var pageStart = parseInt(req.param('start') || '0');
       if (isNaN(pageStart)) {
         pageStart = 1;
       }
 
       var pageLength = parseInt(req.params.all()['iDisplayLength'] || '10');
-      //var pageLength = parseInt(req.params.all()['Length'] || '10');
       if (isNaN(pageLength)) {
         pageLength = 10;
       }
 
+      var where = {};
+
+      // 全局搜索关键词
+      var search = req.param('sSearch');
+      if (search) {
+        where.nickname = { like: '%' + search + '%' };
+      }
+
+      // 性别筛选
+      var gender = req.param('sSearch_2');
+      if (gender) {
+        var genderVale = 0;
+        switch (gender) {
+          case '男':
+            genderVale = 1;
+            break;
+          case '女':
+            genderVale = 2;
+            break;
+        }
+        where.gender = genderVale;
+      }
+
+      // 年龄筛选
+      var age = req.param('sSearch_3');
+      if (age) {
+        var bounds = age.split('~');
+        var currentYear = new Date().getFullYear();
+
+        var year = parseInt(bounds[0]);
+        if (!isNaN(year)) {
+          if (!where.birthday) {
+            where.birthday = {};
+          }
+          where.birthday['<'] = new Date((currentYear - year + 1) + '/1/1');
+        }
+
+        year = parseInt(bounds[1])
+        if (!isNaN(year)) {
+          if (!where.birthday) {
+            where.birthday = {};
+          }
+          where.birthday['>='] = new Date((currentYear - year) + '/1/1');
+        }
+      }
+
+      // 身高筛选
+      var height = req.param('sSearch_4');
+      if (height) {
+        var bounds = height.split('~');
+
+        var h = parseInt(bounds[0]);
+        if (!isNaN(h)) {
+          if (!where.height) {
+            where.height = {};
+          }
+          where.height['>='] = h;
+        }
+
+        h = parseInt(bounds[1])
+        if (!isNaN(h)) {
+          if (!where.height) {
+            where.height = {};
+          }
+          where.height['<='] = h;
+        }
+      }
+
       WeiboUser.find({
+        where: where,
         skip: pageStart,
         sort: 'updatedAt DESC',
         limit: pageLength

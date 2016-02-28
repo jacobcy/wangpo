@@ -3,8 +3,8 @@
 angular.module('sbAdminApp')
 
   .controller('ModalInstanceCtrl',
-  ['$modalInstance', 'weiboUser', 'userFactory', 'userPhoto', 'items', 'msgs',
-    function ($modalInstance, weiboUser, userFactory, userPhoto, items, msgs) {
+  ['$modalInstance', 'weiboUser', 'userInfo', 'userPhoto', 'items', 'msgs',
+    function ($modalInstance, weiboUser, userInfo, userPhoto, items, msgs) {
       var modal = this;
       modal.user = items;
       modal.alert = msgs;
@@ -81,7 +81,7 @@ angular.module('sbAdminApp')
         if (angular.isString(modal.user.birthday)) {
           modal.user.birthday = new Date(modal.user.birthday);
         }
-        userFactory.save(modal.user, function () {
+        userInfo.save(modal.user, function () {
           modal.ok();
         }, function (error) {
           console.error(error);
@@ -90,7 +90,7 @@ angular.module('sbAdminApp')
 
       //删除用户数据
       modal.delete = function (id) {
-        userFactory.remove({id: id}, function () {
+        userInfo.remove({id: id}, function () {
           modal.ok();
         }, function (error) {
           console.error(error);
@@ -109,8 +109,8 @@ angular.module('sbAdminApp')
     }])
 
   .controller('UserCtrl',
-  ['DTOptionsBuilder', 'DTColumnBuilder', 'userFactory', 'utils', '$scope', '$compile', '$uibModal',
-    function (DTOptionsBuilder, DTColumnBuilder, userFactory, utils, $scope, $compile, $uibModal) {
+  ['DTOptionsBuilder', 'DTColumnBuilder', 'userList', 'userInfo', 'utils', '$scope', '$compile', '$uibModal',
+    function (DTOptionsBuilder, DTColumnBuilder, userList, userInfo, utils, $scope, $compile, $uibModal) {
       var user = this;
       user.dtInstance = {};
 
@@ -156,7 +156,7 @@ angular.module('sbAdminApp')
 
       //编辑用户数据
       user.edit = function (id) {
-        userFactory.get({id: id}, function (data) {
+        userInfo.get({id: id}, function (data) {
           user.detail = data;
           alert('编辑【' + data.nickname + '】的个人资料');
           openForm();
@@ -167,7 +167,7 @@ angular.module('sbAdminApp')
 
       //锁定用户数据
       user.lock = function (id) {
-        userFactory.save({id: id, lock: true}, function () {
+        userList.save({id: id, lock: true}, function () {
           user.dtInstance.reloadData()
         }, function (error) {
           console.error(error);
@@ -176,7 +176,7 @@ angular.module('sbAdminApp')
 
       //恢复用户数据
       user.unlock = function (id) {
-        userFactory.save({id: id, lock: false}, function () {
+        userList.save({id: id, lock: false}, function () {
           user.dtInstance.reloadData()
         }, function (error) {
           console.error(error);

@@ -68,7 +68,7 @@
 
       <div class="form-group input-group" ng-repeat="photo in modal.user.photos track by $index">
 
-        <input disabled class="form-control" type="url" ng-model="photo"/>
+        <input disabled class="form-control" type="url" ng-model="photo.image"/>
         <span class="input-group-btn">
           <button type="button" class="btn btn-danger" ng-click="modal.removePhoto($index)">
             <i class="fa fa-minus"></i>

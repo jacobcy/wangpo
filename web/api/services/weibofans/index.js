@@ -101,6 +101,14 @@ function handleTextMessage(sender_id, text, cb) {
 function handleImageMessage(sender_id, tovfid, cb) {
   var imageUrl = 'https://upload.api.weibo.com/2/mss/msget?access_token=' + sails.config.weibo.access_token +
                 '&fid=' + tovfid;
+  ChatManager.process(sender_id, null, imageUrl, function(msg) {
+    if (!msg) {
+      // 默认情况显示帮助信息
+      msg = ReplyMessages.help;
+    }
+    cb(msg);
+  });
+  /*
   CloudImage.addByUrl(imageUrl, function(err, record) {
     if (err) {
       cb('图片保存失败:' + err);
@@ -114,6 +122,7 @@ function handleImageMessage(sender_id, tovfid, cb) {
       cb(msg);
     });
   });
+  */
 }
 
 /**

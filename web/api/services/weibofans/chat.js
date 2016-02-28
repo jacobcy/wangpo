@@ -117,17 +117,21 @@ Chat.prototype = {
         this.save();
         break;
       case 'photos':
-        if (!user.photos && !image) {
+        if (user.photos.length === 0 && !image) {
           cb('请上传一张最近的照片');
           return;
         }
         if (image) {
-          if (!user.photos) {
-            user.photos = [];
-          }
           // 最多保存5张照片
           if (user.photos.length < 5) {
+              CloudImage.addByUrl(image, user.id, function(err, record) {
+                if (err) {
+                  cb('图片保存失败:' + err);
+                  return;
+                }
+            }.bind(this));
             user.photos.push(image);
+            return;
           }
           if (user.photos.length >= 5) {
             cb('简单描述一下自己或者自己喜欢的人');
@@ -170,7 +174,7 @@ Chat.prototype = {
     } else if (!user.location) {
       this.state = 'location';
       return '请回复您目前所在地的区号，例如：您在北京，回复010';
-    } else if (!user.photos) {
+    } else if (user.photos.length === 0) {
       this.state = 'photos';
       return '请上传一张最近的照片';
     }

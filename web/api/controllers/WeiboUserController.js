@@ -16,6 +16,8 @@ var WEIBO_USER_DOMAIN_URL = sails.config.weibo.domainUrl +
   sails.config.weibo.access_token +
   '&domain=';
 
+const WEIBO_USER_PROPERTIES = ['weiboId', 'gender', 'lock', 'hide', 'nickname', 'avatar', 'createdAt', 'updatedAt', 'id', 'birthday', 'height', 'location'];
+
 module.exports = {
   list: function (req, res) {
     WeiboUser.count().exec(function (err, count) {
@@ -48,7 +50,7 @@ module.exports = {
         skip: pageStart,
         sort: 'updatedAt DESC',
         limit: pageLength
-      }).exec(function (err, found) {
+      }).populate('photos').exec(function (err, found) {
         if (err) {
           res.json({
             draw: drawCounter,
@@ -57,13 +59,71 @@ module.exports = {
           return;
         }
 
+        var list = [];
+        for (var index = 0; index < found.length; index++) {
+          var user = found[index];
+          var item = {};
+          WEIBO_USER_PROPERTIES.forEach(function(p) {
+            item[p] = user[p];
+          });
+          item.photos = [];
+          var photos = user.photos;
+          for (var i = 0; i < photos.length; i++) {
+            item.photos.push({
+              id: photos[i].id,
+              image: photos[i].getDisplayableUrl()
+            });
+            // item.photos.push(photos[i].getDisplayableUrl());
+          }
+          list.push(item);
+        }
         res.json({
           draw: drawCounter,
           recordsTotal: count,
           recordsFiltered: count,
-          data: found
+          data: list
         });
       });
+    });
+  },
+
+  /*
+   * 通过weiboUserId获取一条WeiboUser数据
+   *
+   * @param id weboUserId
+   */
+  fetchOneById: function(req, res) {
+    var id = req.param('id');
+    if (!id) {
+      res.json(500, {
+        error: 'Invalid weiboUserId'
+      });
+
+      return;
+    }
+    WeiboUser.findOne({
+      id: id
+    }).populate('photos').exec(function (err, found) {
+      if (err) {
+        res.json(500, {
+          error: err
+        });
+        return;
+      }
+
+      var result = {};
+      WEIBO_USER_PROPERTIES.forEach(function(p) {
+        result[p] = found[p];
+      });
+      result.photos = [];
+      var photos = found.photos;
+      for (var i = 0; i < photos.length; i++) {
+        result.photos.push({
+          id: photos[i].id,
+          image: photos[i].getDisplayableUrl()
+        });
+      }
+      res.json(result);
     });
   },
 

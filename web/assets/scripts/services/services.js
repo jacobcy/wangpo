@@ -2,18 +2,23 @@
 
 angular.module('sbAdminApp')
 
-  //通过后台数据库获取用户资料
-  .factory('userFactory', ['$resource', function ($resource) {
+  //获取用户资料列表
+  .factory('userList', ['$resource', function ($resource) {
     return $resource('/weibouser/:id', {id: '@id'},{withCredentials : true})
   }])
+  
+  //获取单个用户资料
+  .factory('userInfo', ['$resource', function ($resource) {
+    return $resource('/weibouser/fetchOneById?id=:id', {id: '@id'},{withCredentials : true})
+  }])  
 
   .factory('userPhoto', ['$resource', function ($resource) {
     return $resource('/main/saveImage/',{withCredentials : true})
   }])
 
   //通过微博用户ID或者用户主页URL查询用户资料
-  .service('weiboUser', ['$q', '$resource', 'userFactory', 'utils',
-    function ($q, $resource, userFactory, utils) {
+  .service('weiboUser', ['$q', '$resource', 'userList', 'utils',
+    function ($q, $resource, userList, utils) {
 
       //根据微博用户ID，从微博后台获取用户资料
       //Todo:调试结束，替换为相对地址
@@ -42,7 +47,7 @@ angular.module('sbAdminApp')
 
         //如果可以获得微博ID，查询数据库是否存在此用户
         if (angular.isDefined(id)) {
-          userFactory.query({weiboId: id}, function (data) {
+          userList.query({weiboId: id}, function (data) {
             // 如果存在2个或以上的微博ID，报错
             if (data.length > 1) {
               deferred.reject('存在' + data.length + '个重复的账号：' + id);

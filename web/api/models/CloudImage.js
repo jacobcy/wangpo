@@ -78,7 +78,7 @@ module.exports = {
      * 优先使用remoteUrl, 然后是localPath, 最后是sourceUrl
      */
     getDisplayableUrl: function() {
-      if (!this.remoteUrl) {
+      if (this.remoteUrl) {
         return this.remoteUrl;
       }
       if (this.sourceUrl) {
@@ -114,10 +114,10 @@ module.exports = {
   /**
    * 通过URL备份和上传一个七牛云照片
    */
-  addByUrl: function(url, cb) {
+  addByUrl: function(url, weiboUserId, cb) {
     CloudImage.findOrCreate(
-      { sourceUrl: url },
-      { sourceUrl: url }).exec(function (err, record) {
+      { sourceUrl: url, weiboUser: weiboUserId },
+      { sourceUrl: url, weiboUser: weiboUserId }).exec(function (err, record) {
       if (err) {
         cb(err);
         return;

@@ -79,7 +79,8 @@ module.exports = {
      */
     getDisplayableUrl: function() {
       if (this.remoteUrl) {
-        return this.remoteUrl;
+        // 添加'!sample'后缀使用压缩过的图片
+        return this.remoteUrl + '!sample';
       }
       if (this.sourceUrl) {
         return this.sourceUrl;

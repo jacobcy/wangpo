@@ -128,6 +128,69 @@ module.exports = {
   },
 
   /*
+   * 通过cloudImageId删除一条CloudImage数据
+   * TODO 同时删除云服务器数据
+   *
+   * @param id cloudImageId
+   */
+  removePhotoById: function(req, res) {
+    var id = req.param('id');
+    if (!id) {
+      res.json(500, {
+        error: 'Invalid cloudImageId'
+      });
+
+      return;
+    }
+    CloudImage.destroy({ id: id }).exec(function(err) {
+      if (err) {
+        res.json(500, {
+          error: err
+        });
+        return;
+      }
+      res.json({ error: '' });
+    });
+  },
+
+  /*
+   * 为微博用户添加一个照片
+   *
+   * @param weiboUserId
+   * @param url 照片URL
+   */
+  addPhoto: function(req, res) {
+    var weiboUserId = req.param('weiboUserId');
+    if (!weiboUserId) {
+      res.json(500, {
+        error: 'Invalid weiboUserId'
+      });
+
+      return;
+    }
+
+    var url = req.param('url');
+    if (!url) {
+      res.json(500, {
+        error: 'Invalid photo URL'
+      });
+
+      return;
+    }
+
+    CloudImage.addByUrl(url, weiboUserId, function(err, record) {
+      if (err) {
+        res.json(500, {
+          error: '图片保存失败:' + err
+        });
+        return;
+      }
+
+      res.json({ error: '' });
+    });
+  },
+
+  /*
    * 访问方式 http://iwangpo.com/weibouser/userInfo?weiboId=1430236477
    *
    * 输入微博ID，通过 https://api.weibo.com/2/eps/user/info.json

@@ -124,12 +124,12 @@ Chat.prototype = {
         if (image) {
           // 最多保存5张照片
           if (user.photos.length < 5) {
-              CloudImage.addByUrl(image, user.id, function(err, record) {
-                if (err) {
-                  cb('图片保存失败:' + err);
-                  return;
-                }
-            }.bind(this));
+            CloudImage.addByUrl(image, user.id, function(err, record) {
+              if (err) {
+                cb('图片保存失败:' + err);
+                return;
+              }
+            });
             user.photos.push(image);
             return;
           }

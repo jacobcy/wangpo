@@ -4,13 +4,13 @@ angular.module('sbAdminApp')
 
   //获取用户资料列表
   .factory('userList', ['$resource', function ($resource) {
-    return $resource('/weibouser/:id', {id: '@id'},{withCredentials : true})
+    return $resource('http://iwangpo.com/weibouser/:id', {id: '@id'},{withCredentials : true})
   }])
-  
+
   //获取单个用户资料
   .factory('userInfo', ['$resource', function ($resource) {
-    return $resource('/weibouser/fetchOneById?id=:id', {id: '@id'},{withCredentials : true})
-  }])  
+    return $resource('http://iwangpo.com/weibouser/fetchOneById?id=:id', {id: '@id'},{withCredentials : true})
+  }])
 
   .factory('userPhoto', ['$resource', function ($resource) {
     return $resource('/main/saveImage/',{withCredentials : true})

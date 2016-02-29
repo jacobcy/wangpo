@@ -29,7 +29,7 @@
         <span ng-show="modal.user.birthday">当前年龄为{{modal.user.birthday | age }}</span></label>
 
       <div class="form-group input-group">
-        <input class="form-control" type="date" id="birthday" name="birthday" ng-model="modal.user.birthday" datepicker-popup="yyyyMMdd" is-open="modal.opened"/>
+        <input class="form-control" type="text" id="birthday" name="birthday" ng-model="modal.user.birthday" uib-datepicker-popup="yyyyMMdd" is-open="modal.opened"/>
         <span class="input-group-btn">
           <button type="button" class="btn btn-primary" ng-click="modal.openDatePicker($event)">
             <i class="fa fa-calendar"></i>

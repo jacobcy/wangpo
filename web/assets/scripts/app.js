@@ -16,22 +16,24 @@ angular
     'chart.js',
     'datatables',
     'datatables.columnfilter',
-    'ngResource'
+    'ngResource',
+    'ngCookies'
   ])
 
-  .config(['$stateProvider', '$urlRouterProvider', '$ocLazyLoadProvider',
+  .config(['$stateProvider', '$urlRouterProvider', '$ocLazyLoadProvider','$httpProvider',
     //'$httpProvider',
-    function ($stateProvider, $urlRouterProvider, $ocLazyLoadProvider
+    function ($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, $httpProvider
       //, $httpProvider
     ) {
 
       // TODO：拦截器，user agent添加bearer token
-      /*
-      $httpProvider.interceptors.push(['$q', '$location', function ($q, $location) {
+      $httpProvider.interceptors.push(['$q', '$location','$cookieStore', function ($q, $location, $cookieStore) {
         return {
           request: function (config) {
+            // Todo 修改获取Token的方式
+            $cookieStore.put("token","myAccessToken");
             config.headers = config.headers || {};
-            config.headers.Authorization = 'Bearer '+ sails.config.token;
+            config.headers.Authorization = 'Bearer '+ $cookieStore.get("token");
             return config;
           },
           responseError: function (response) {
@@ -42,7 +44,6 @@ angular
           }
         };
       }]);
-      */
 
       $ocLazyLoadProvider.config({
         debug: false,

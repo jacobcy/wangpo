@@ -40,6 +40,7 @@ var jsFilesToInject = [
   //'js/sails.io.js',
   'js/angular-ui-router.js',
   'js/angular-resource.js',
+  'js/angular-cookies.js',
   'js/json3.js',
   'js/ocLazyLoad.js',
   'js/loading-bar.js',

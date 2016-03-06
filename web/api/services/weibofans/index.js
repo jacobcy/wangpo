@@ -108,21 +108,6 @@ function handleImageMessage(sender_id, tovfid, cb) {
     }
     cb(msg);
   });
-  /*
-  CloudImage.addByUrl(imageUrl, function(err, record) {
-    if (err) {
-      cb('图片保存失败:' + err);
-      return;
-    }
-    ChatManager.process(sender_id, null, record.id, function(msg) {
-      if (!msg) {
-        // 默认情况显示帮助信息
-        msg = ReplyMessages.help;
-      }
-      cb(msg);
-    });
-  });
-  */
 }
 
 /**

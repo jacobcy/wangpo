@@ -48,7 +48,7 @@ Chat.prototype = {
   init: function(cb) {
     this.state = 'start';
     console.log('chat init with weiboId ' + this.id);
-    WeiboUser.findOne({ weiboId: this.id }).exec(function(err, found) {
+    WeiboUser.findOne({ weiboId: this.id }).populate('photos').exec(function(err, found) {
       if (err) {
         console.log(err);
         cb(Chat.ERROR_MESSAGE);
@@ -131,7 +131,7 @@ Chat.prototype = {
               }
             });
             user.photos.push(image);
-            return;
+            break;
           }
           if (user.photos.length >= 5) {
             cb('简单描述一下自己或者自己喜欢的人');
@@ -158,7 +158,21 @@ Chat.prototype = {
    * @param {Function} cb function(replyMessage: String) 通过callback返回回复用户的消息内容。
    */
   handleMatch:function(cb) {
-    cb('感谢您提供资料，王婆正在线下帮您牵线...');
+    WeiboUser.getMatchedUser(this.weiboUser, function(matched) {
+      if (!matched) {
+        cb('感谢您提供资料，王婆正在线下帮您牵线...');
+        return;
+      }
+      cb({
+        'display_name': matched.nickname,
+        'summary': '生日：' + (util.toBirthdayString(matched.birthday)) +
+                   '；身高：' + matched.height + '公分' +
+                   '；所在地：' + util.areaCodeToCity(matched.location) +
+                   (matched.description ? '；个人介绍：' + matched.description : ''),
+        'image': matched.photo + '?facecrop/560x310',
+        'url': matched.photo
+      });
+    });
   },
 
   checkUser: function(user) {

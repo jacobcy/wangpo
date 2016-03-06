@@ -46,9 +46,18 @@ module.exports = {
         result: true,
         receiver_id: sender_id.toString(),
         sender_id: receiver_id.toString(),
-        type: 'text',
-        data: encodeURI(JSON.stringify({ text: replyMessage }))
       };
+      var data = null;
+      if (typeof replyMessage === 'string') {
+        msg.type = 'text';
+        data = { text: replyMessage };
+      }
+      // 回复图文
+      else {
+        msg.type = 'articles';
+        data = { articles: [replyMessage] };
+      }
+      msg.data = encodeURI(JSON.stringify(data));
       return res.send(JSON.stringify(msg));
     });
   }

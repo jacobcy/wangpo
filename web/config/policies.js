@@ -50,7 +50,7 @@ module.exports.policies = {
 	// }
 
  'main': {
-    //'admin': ['passport', 'isAuthenticated']
+    'admin': ['passport', 'isAuthenticated']
   },
 
   //todo:是否允许不同方式的认证？

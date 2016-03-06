@@ -6,7 +6,10 @@ var WEIBO_USER_INFO_URL = sails.config.weibo.infoUrl +
   sails.config.weibo.access_token +
   '&uid=';
 
-var WeiboUser = {
+const WEIBO_USER_PROPERTIES = ['weiboId', 'gender', 'nickname', 'avatar', 'id', 'birthday', 'height', 'location'];
+
+module.exports = {
+  schema: true,
 
   attributes: {
     // e.g. "0001"，必须，唯一
@@ -90,7 +93,43 @@ var WeiboUser = {
       }
       next();
     });
+  },
+
+  /**
+   * 匹配用户
+   */
+  getMatchedUser: function(user, cb) {
+    // 只匹配异性
+    var gender = user.gender === 1 ? 2 : 1;
+    WeiboUser.find({
+      where: {
+        gender: gender,
+        lock: false
+      }
+    }).populate('photos').exec(function (err, found) {
+      if (err) {
+        console.error('getMatchedUser: ' + err);
+        cb(null);
+        return;
+      }
+      if (found.length == 0) {
+        console.error('getMatchedUser: not found.');
+        cb(null);
+        return;
+      }
+      // 随机取一个用户
+      var matched = found[Math.floor(Math.random() * found.length)];
+      var result = {};
+      WEIBO_USER_PROPERTIES.forEach(function(p) {
+        result[p] = matched[p];
+      });
+      // 返回一张照片，如果用户没有上传照片，用头像作为照片
+      if (matched.photos.length > 0) {
+        result.photo = matched.photos[0].getDisplayableUrl();
+      } else {
+        result.photo = result.avatar;
+      }
+      cb(result);
+    });
   }
 };
-
-module.exports = WeiboUser;

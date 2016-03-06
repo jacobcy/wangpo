@@ -13,6 +13,40 @@ module.exports = {
     });
   },
 
+  latestPhotos: function(req, res) {
+    var limit = req.param('limit') || 20;
+    WeiboUser.find({
+      sort: 'updatedAt DESC',
+      limit: limit
+    }).populate('photos').exec(function (err, found) {
+      if (err) {
+        res.json({
+          error: err
+        });
+        return;
+      }
+
+      var list = [];
+      for (var index = 0; index < found.length; index++) {
+        var user = found[index];
+        var photo;
+        // 返回一张照片，如果用户没有上传照片，用头像作为照片
+        if (user.photos.length > 0) {
+          photo = user.photos[0].getDisplayableUrl();
+        } else {
+          photo = user.avatar;
+        }
+        list.push({
+          photo: photo,
+          nickname: user.nickname
+        })
+      }
+      res.json({
+        data: list
+      });
+    });
+  },
+
   admin: function(req, res) {
     return res.view('angular', {
       layout: 'main-layout'

@@ -1,3 +1,5 @@
+var validator = require('validator');
+
 /**
  * MainControllerController
  *
@@ -16,6 +18,80 @@ module.exports = {
       layout: 'main-layout'
     });
   },
+
+  /**
+   * Get bearer access token.
+   *
+   * Looks up a user using the supplied identifier (email or username) and then
+   * attempts to find a local Passport associated with the user. If a Passport is
+   * found, its password is checked against the password.
+   *
+   * @param {string}   identifier
+   * @param {string}   password
+   */
+  accessToken: function (req, res) {
+    var identifier = req.param('identifier');
+    if (!identifier) {
+      res.json({ error: 'Identifier is required.' });
+      return;
+    }
+
+    var password = req.param('password');
+    if (!password) {
+      res.json({ error: 'Password is required.' });
+      return;
+    }
+
+    var isEmail = validator.isEmail(identifier)
+      , query   = {};
+
+    if (isEmail) {
+      query.email = identifier;
+    }
+    else {
+      query.username = identifier;
+    }
+
+    User.findOne(query, function (err, user) {
+      if (err) {
+        res.json({ error: err });
+        return;
+      }
+
+      if (!user) {
+        if (isEmail) {
+          res.json({ error: 'Error.Passport.Email.NotFound' });
+        } else {
+          res.json({ error: 'Error.Passport.Username.NotFound' });
+        }
+
+        return;
+      }
+
+      Passport.findOne({
+        protocol : 'local'
+      , user     : user.id
+      }, function (err, passport) {
+        if (!passport) {
+          res.json({ error: 'Error.Passport.Password.NotSet' });
+          return;
+        }
+        passport.validatePassword(password, function (err, result) {
+          if (err) {
+            res.json({ error: err });
+            return;
+          }
+
+          if (!result) {
+            res.json({ error: 'Error.Passport.Password.Wrong' });
+            return;
+          }
+
+          res.json({ token: passport.accessToken });
+        });
+      });
+    });
+   },
 
   /**
    * 转存网络图片到七牛服务器接口

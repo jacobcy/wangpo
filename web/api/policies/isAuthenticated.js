@@ -8,6 +8,9 @@
  *
  */
 module.exports = function(req, res, next) {
+  if (req.param('access_token')) {
+    return passport.authenticate('bearer', { session: false })(req, res, next);
+  }
 
   // User is allowed, proceed to the next policy, 
   // or if this is the last policy, the controller

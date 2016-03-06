@@ -103,8 +103,7 @@ module.exports = {
     var gender = user.gender === 1 ? 2 : 1;
     WeiboUser.find({
       where: {
-        gender: gender,
-        lock: false
+        gender: gender
       }
     }).populate('photos').exec(function (err, found) {
       if (err) {

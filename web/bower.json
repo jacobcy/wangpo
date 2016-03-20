@@ -51,5 +51,8 @@
     "angular-scenario": "~1.4.7"
   },
   "appPath": "assets",
-  "private": true
+  "private": true,
+  "resolutions": {
+    "datatables": ">=1.10.9"
+  }
 }

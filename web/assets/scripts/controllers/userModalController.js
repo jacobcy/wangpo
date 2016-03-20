@@ -3,12 +3,13 @@
 angular.module('sbAdminApp')
 
   .controller('ModalInstanceCtrl',
-  ['$uibModalInstance', 'weiboUser', 'userInfo', 'userPhoto', 'items', 'msgs',
-    function ($uibModalInstance, weiboUser, userInfo, userPhoto, items, msgs) {
+  ['$uibModalInstance', 'weiboUser', 'userList', 'userPhoto', 'items', 'msgs',
+    function ($uibModalInstance, weiboUser, userList, userPhoto, items, msgs) {
       var modal = this;
       modal.user = items;
-      if (!modal.user.birthday.isDate) {
-        modal.user.birthday = new Date(modal.user.birthday)
+      modal.user.birthday = modal.user.birthday || null;
+      if (modal.user.birthday && !modal.user.birthday.isDate) {
+       modal.user.birthday = new Date(modal.user.birthday)
       }
       modal.alert = msgs;
 
@@ -84,7 +85,7 @@ angular.module('sbAdminApp')
         if (angular.isString(modal.user.birthday)) {
           modal.user.birthday = new Date(modal.user.birthday);
         }
-        userInfo.save(modal.user, function () {
+        userList.save(modal.user, function () {
           modal.ok();
         }, function (error) {
           console.error(error);
@@ -93,7 +94,7 @@ angular.module('sbAdminApp')
 
       //删除用户数据
       modal.delete = function (id) {
-        userInfo.remove({id: id}, function () {
+        userList.remove({id: id}, function () {
           modal.ok();
         }, function (error) {
           console.error(error);

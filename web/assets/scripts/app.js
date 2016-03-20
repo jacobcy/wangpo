@@ -26,6 +26,7 @@ angular
       //, $httpProvider
     ) {
 
+/**
       // TODO：拦截器，user agent添加bearer token
       $httpProvider.interceptors.push(['$q', '$location','$cookieStore', function ($q, $location, $cookieStore) {
         return {
@@ -44,6 +45,7 @@ angular
           }
         };
       }]);
+**/
 
       $ocLazyLoadProvider.config({
         debug: false,

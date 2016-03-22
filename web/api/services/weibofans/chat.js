@@ -96,7 +96,7 @@ Chat.prototype = {
         break;
       case 'height':
         var height = parseInt(text);
-        if (isNaN(height) || height < 100 || height > 200) {
+        if (isNaN(height) || height < 100 || height > 250) {
           cb('您您输入的身高数据有误，请重新输入');
           return;
         }
@@ -118,12 +118,20 @@ Chat.prototype = {
         break;
       case 'photos':
         if (user.photos.length === 0 && !image) {
-          cb('请上传一张最近的照片');
+          cb('您需要发送一张图片，保存到您的个人相册');
           return;
+        }
+        if (user.photos.length >= 1 && text){
+          if (text == '0') {
+            break;
+          }
         }
         if (image) {
           // 最多保存5张照片
           if (user.photos.length < 5) {
+            if (user.photos.length === 1) {
+              cb('您最多可上传五张照片，回复0结束上传');
+            }
             CloudImage.addByUrl(image, user.id, function(err, record) {
               if (err) {
                 cb('图片保存失败:' + err);
@@ -131,16 +139,25 @@ Chat.prototype = {
               }
             });
             user.photos.push(image);
-            break;
-          }
-          if (user.photos.length >= 5) {
-            cb('简单描述一下自己或者自己喜欢的人');
             return;
           }
+          if (user.photos.length >= 5) {
+            break;
+          }
         }
-        if (text) {
-          user.description = text;
-          this.state = 'description';
+      case 'description':
+        console.log("description!");
+        if (text === null) {
+          cb ('请用文字描述一下自己或者自己喜欢的人');
+          return;
+        } else {
+          console.log('text='&&text);
+          if (text.length < 10) {
+            cb ('您的描述过于简单，请您再想想');
+            return;
+          } else {
+            user.description = text;
+          }
         }
         this.save();
         break;
@@ -190,10 +207,10 @@ Chat.prototype = {
       return '请回复您目前所在地的区号，例如：您在北京，回复010';
     } else if (user.photos.length === 0) {
       this.state = 'photos';
-      return '请上传一张最近的照片';
-    }
-    if (this.state == 'photos') {
-      return '您可以继续上传照片，也可以简单描述一下自己或者自己喜欢的人';
+      return '请上传一张最近的照片，您上传的第一张照片将作为您的默认头像';
+    } else if (this.state == 'photos') {
+      this.state = 'description';
+      return '照片上传结束，请简单描述一下自己或者自己喜欢的人，让朋友们了解你';
     }
     if (this.state != 'start') {
       this.state = 'start';
@@ -206,9 +223,9 @@ Chat.prototype = {
              '；所在地：' + util.areaCodeToCity(user.location) +
              (user.description ? '；个人介绍：' + user.description : '') +
              '。如果您需要修改资料，请私信婆婆。回复date开始速配。';
+    } else {
+      return null;
     }
-    this.state = 'checked';
-    return null;
   },
 
   save: function() {

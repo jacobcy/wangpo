@@ -97,7 +97,7 @@ Chat.prototype = {
       case 'height':
         var height = parseInt(text);
         if (isNaN(height) || height < 100 || height > 250) {
-          cb('您您输入的身高数据有误，请重新输入');
+          cb('您输入的身高数据有误，请重新输入');
           return;
         }
         user.height = height;
@@ -121,37 +121,38 @@ Chat.prototype = {
           cb('您需要发送一张图片，保存到您的个人相册');
           return;
         }
-        if (user.photos.length >= 1 && text){
-          if (text == '0') {
+        if (user.photos.length >= 1 && !image){
+          if (text === '0') {
             break;
           }
+          cb('您需要发送一张图片，保存到您的个人相册');
+          return;
         }
         if (image) {
           // 最多保存5张照片
-          if (user.photos.length < 5) {
-            if (user.photos.length === 1) {
-              cb('您最多可上传五张照片，回复0结束上传');
+          CloudImage.addByUrl(image, user.id, function(err, record) {
+            if (err) {
+              cb('图片保存失败:' + err);
+              return;
             }
-            CloudImage.addByUrl(image, user.id, function(err, record) {
-              if (err) {
-                cb('图片保存失败:' + err);
-                return;
-              }
-            });
-            user.photos.push(image);
-            return;
+          });
+          user.photos.push(image);
+          if (user.photos.length === 1) {
+            cb('您最多可上传五张照片，回复0结束上传');
+          } else if (user.photos.length <= 4) {
+            //必须要回复空串，否则服务器会重新尝试发送消息
+            cb(' ');
           }
-          if (user.photos.length >= 5) {
+          if (user.photos.length === 5) {
             break;
           }
+          return;
         }
       case 'description':
-        console.log("description!");
         if (text === null) {
           cb ('请用文字描述一下自己或者自己喜欢的人');
           return;
         } else {
-          console.log('text='&&text);
           if (text.length < 10) {
             cb ('您的描述过于简单，请您再想想');
             return;
@@ -160,7 +161,49 @@ Chat.prototype = {
           }
         }
         this.save();
-        break;
+        // 用户修改过资料，让用户确认最终资料
+        cb ('您的资料如下。' +
+            '性别: ' + (user.gender == 1 ? '男' : '女') +
+            ';' + '生日：' + (util.toBirthdayString(user.birthday)) +
+            '；身高：' + user.height + '公分' +
+            '；所在地：' + util.areaCodeToCity(user.location) +
+            (user.description ? '；个人介绍：' + user.description : '') +
+            '回复1，确认个人资料；' + 
+            '回复2，重新上传个人照片；' +
+            '回复3，修改个人介绍；' +
+            '回复4，重新输入全部个人资料。');
+        this.state = 'confirm';
+        return;
+      case 'confirm':
+        if (text) {
+          if (text === '1') {
+            cb ('您的个人资料已确认，回复date开始速配， 回复me查看个人资料');
+            this.state = 'start';
+            return;
+          }
+          //用户可以重新上传照片
+          if (text === '2') {
+            user.photos = null;
+            user.photos.length = 0;
+            break;
+          }
+          //用户可以重新输入个人介绍
+          if (text === '3') {
+            user.description = null;
+            break;
+          }
+          //用户重新进行个人资料录入流程
+          if (text === '4') {
+            user.gender = null;
+            user.birthday = null;
+            user.height = null;
+            user.location = null;
+            user.photos = null;
+            user.photos.length = 0;
+            user.description = null;
+            break;
+          }
+        }
     }
     var msg = this.checkUser(user);
     if (msg) {
@@ -186,6 +229,7 @@ Chat.prototype = {
                    '；身高：' + matched.height + '公分' +
                    '；所在地：' + util.areaCodeToCity(matched.location) +
                    (matched.description ? '；个人介绍：' + matched.description : ''),
+        //Ques:需要弄清楚下面的photo是不是不带s
         'image': matched.photo + '?facecrop/560x310',
         'url': matched.photo
       });
@@ -214,15 +258,6 @@ Chat.prototype = {
     }
     if (this.state != 'start') {
       this.state = 'start';
-
-      // 用户修改过资料，让用户确认最终资料
-      return '您的资料如下。' +
-             '性别: ' + (user.gender == 1 ? '男' : '女') +
-             '；生日：' + (util.toBirthdayString(user.birthday)) +
-             '；身高：' + user.height + '公分' +
-             '；所在地：' + util.areaCodeToCity(user.location) +
-             (user.description ? '；个人介绍：' + user.description : '') +
-             '。如果您需要修改资料，请私信婆婆。回复date开始速配。';
     } else {
       return null;
     }

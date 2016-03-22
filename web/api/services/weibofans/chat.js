@@ -123,6 +123,7 @@ Chat.prototype = {
         }
         if (user.photos.length >= 1 && !image){
           if (text === '0') {
+            this.state = 'photodescription';
             break;
           }
           cb('您需要发送一张图片，保存到您的个人相册');
@@ -144,6 +145,7 @@ Chat.prototype = {
             cb(' ');
           }
           if (user.photos.length === 5) {
+            this.state = 'photodescription';
             break;
           }
           return;
@@ -189,7 +191,7 @@ Chat.prototype = {
           }
           //用户可以重新输入个人介绍
           if (text === '3') {
-            user.description = null;
+            this.state = 'description';
             break;
           }
           //用户重新进行个人资料录入流程
@@ -201,6 +203,9 @@ Chat.prototype = {
             user.photos = null;
             user.photos.length = 0;
             user.description = null;
+            console.log('user.photos.length = ' + user.photos.length);
+            console.log('user.photos = ' + user.photos);
+            console.log('user.photos == null ? ' + (user.photos == null));
             break;
           }
         }
@@ -248,13 +253,20 @@ Chat.prototype = {
       return '请回复您的身高，如果您的身高为176公分，回复176';
     } else if (!user.location) {
       this.state = 'location';
+      console.log('Line 256 : ' + 'user.photos.length = ' + user.photos.length);
       return '请回复您目前所在地的区号，例如：您在北京，回复010';
     } else if (user.photos.length === 0) {
       this.state = 'photos';
       return '请上传一张最近的照片，您上传的第一张照片将作为您的默认头像';
-    } else if (this.state == 'photos') {
+    } else if (this.state === 'photodescription') {
+      //如果user.description存在，那么证明此处修改照片是由confirm进入的
+      if (user.description) {
+        return '您的个人资料已确认，回复date开始速配， 回复me查看个人资料';
+      }
       this.state = 'description';
       return '照片上传结束，请简单描述一下自己或者自己喜欢的人，让朋友们了解你';
+    } else if (this.state === 'description') {
+      return '请简单描述一下自己或者自己喜欢的人，让朋友们了解你';
     }
     if (this.state != 'start') {
       this.state = 'start';

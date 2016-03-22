@@ -40,8 +40,6 @@ var WeiboFans = {
    * @param {Function} cb function(replyMessage: String)
    */
   onReceiveMessage: function(type, sender_id, created_at, text, data, cb) {
-    console.log('type = ' + type);
-    console.log('text = ' + text);
     switch(type) {
       case 'text':
         handleTextMessage(sender_id, text, cb);

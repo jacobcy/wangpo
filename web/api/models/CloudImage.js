@@ -127,7 +127,16 @@ module.exports = {
       cb(null, record);
     });
   },
-
+  //删除user_id对应的图片
+  deleteImage : function (user_id) {
+    CloudImage.destroy({weiboUser: user_id}).exec(function (err) {
+      if (err) {
+        return;
+      }
+        sails.log('user.photos is destroyed.');
+    });
+  },
+  
   /**
    * 备份一个本地图片文件，并上传至七牛云
    */

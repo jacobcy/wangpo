@@ -95,7 +95,8 @@ Chat.prototype = {
         this.save();
         break;
       case 'height':
-        var height = parseInt(text);
+        //去掉了数字以外的字符
+        var height = parseInt(text.replace(/[^0-9]/ig,""));
         if (isNaN(height)) {
           cb('您输入的身高数据有误，请重新输入');
           return;

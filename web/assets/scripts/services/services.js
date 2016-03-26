@@ -4,7 +4,7 @@ angular.module('sbAdminApp')
 
   //获取用户资料列表
   .factory('userList', ['$resource', function ($resource) {
-    return $resource('/weibouser/:id', {id: '@id'},{withCredentials : true})
+    return $resource('/weibouser/:id/', {id: '@id'},{withCredentials : true})
   }])
 
   //获取单个用户资料

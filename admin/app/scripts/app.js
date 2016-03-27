@@ -58,6 +58,7 @@ angular
                                 {
                                     name: 'sbAdminApp',
                                     files: [
+                                        'scripts/services/services.js',
                                         'scripts/directives/header/header.js',
                                         'scripts/directives/header/header-notification/header-notification.js',
                                         'scripts/directives/sidebar/sidebar.js',
@@ -76,8 +77,9 @@ angular
                                         name: 'datatables',
                                         files: ["bower_components/datatables/media/js/jquery.dataTables.min.js",
                                             "bower_components/datatables/media/css/jquery.dataTables.min.css",
-                                            //"bower_components/datatables-responsive/js/dataTables.responsive.js",
-                                            "bower_components/angular-datatables/dist/angular-datatables.min.js",
+                                            "bower_components/datatables-responsive/js/dataTables.responsive.js",
+                                            "bower_components/datatables-responsive/css/dataTables.responsive.css",
+                                            "bower_components/angular-datatables/dist/angular-datatables.min.js"
                                         ]
                                     }),
                                 $ocLazyLoad.load(
@@ -129,7 +131,6 @@ angular
                                     'scripts/controllers/userModalController.js',
                                     'scripts/directives/directives.js',
                                     'scripts/filters/filters.js',
-                                    'scripts/services/services.js',
                                     'scripts/services/cities.js',
                                     'scripts/services/utils.js'
                                 ]

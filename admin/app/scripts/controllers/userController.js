@@ -3,8 +3,8 @@
 angular.module('sbAdminApp')
 
     .controller('UserCtrl',
-    ['DTOptionsBuilder', 'DTColumnBuilder', 'userList', 'userInfo', 'utils', '$scope', '$compile', '$uibModal',
-        function (DTOptionsBuilder, DTColumnBuilder, userList, userInfo, utils, $scope, $compile, $uibModal) {
+    ['DTOptionsBuilder', 'DTColumnBuilder', 'userList', 'userInfo', 'utils', '$scope', '$compile', '$uibModal', '$cookieStore',
+        function (DTOptionsBuilder, DTColumnBuilder, userList, userInfo, utils, $scope, $compile, $uibModal, $cookieStore) {
             var user = this;
             user.dtInstance = {};
 
@@ -88,7 +88,7 @@ angular.module('sbAdminApp')
                 //开启服务器端分页模式
                 .withOption('processing', true)
                 .withOption('serverSide', true)
-                .withOption('sAjaxSource', "weibouser/list")
+                .withOption('sAjaxSource', "http://api.iwangpo.com/weibouser/list?access_token=" + $cookieStore.get('Bearer').token)
 
                 //早期版本服务器端分页设置
                 /*

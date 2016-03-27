@@ -2,18 +2,31 @@
 
 angular.module('sbAdminApp')
 
+    //获取accessToken
+    .service('BearerToken', ['$cookieStore', '$state', function ($cookieStore, $state) {
+        this.get = function () {
+            var bearer = $cookieStore.get('Bearer')
+            if (!bearer) {
+                $state.go('dashboard.login')
+            } else {
+                return '?access_token=' + bearer.token
+            }
+        }
+    }])
+
+
     //获取用户资料列表
-    .factory('userList', ['$resource', '$cookieStore', function ($resource, $cookieStore) {
-        return $resource('http://api.iwangpo.com/weibouser/:id?access_token=' + $cookieStore.get('token').token, {id: '@id'}, {withCredentials: true})
+    .factory('userList', ['$resource', 'BearerToken', function ($resource, $cookieStore) {
+        return $resource('http://api.iwangpo.com/weibouser/:id' + BearerToken.get(), {id: '@id'}, {withCredentials: true})
     }])
 
     //获取单个用户资料
-    .factory('userInfo', ['$resource', '$cookieStore', function ($resource, $cookieStore) {
-        return $resource('http://api.iwangpo.com/weibouser/fetchOneById/:id?access_token=' + $cookieStore.get('token').token, {id: '@id'}, {withCredentials: true})
+    .factory('userInfo', ['$resource', 'BearerToken', function ($resource, $cookieStore) {
+        return $resource('http://api.iwangpo.com/weibouser/fetchOneById/:id' + BearerToken.get(), {id: '@id'}, {withCredentials: true})
     }])
 
     .factory('userPhoto', ['$resource', '$cookieStore', function ($resource, $cookieStore) {
-        return $resource('http://api.iwangpo.com/main/saveImage?access_token=' + $cookieStore.get('token').token, {withCredentials: true})
+        return $resource('http://api.iwangpo.com/main/saveImage' + BearerToken.get(), {withCredentials: true})
     }])
 
     //通过微博用户ID或者用户主页URL查询用户资料
@@ -22,9 +35,9 @@ angular.module('sbAdminApp')
 
             //根据微博用户ID，从微博后台获取用户资料
             //Todo:调试结束，替换为相对地址
-            var searchId = $resource('http://api.iwangpo.com/weibouser/userInfo?access_token=' + $cookieStore.get('token').token, {withCredentials: true});
+            var searchId = $resource('http://api.iwangpo.com/weibouser/userInfo' + BearerToken.get(), {withCredentials: true});
             //根据微博用户个性化域名，从微博后台获取用户资料
-            var searchUrl = $resource('http://api.iwangpo.com/weibouser/userByUrl?access_token=' + $cookieStore.get('token').token, {withCredentials: true});
+            var searchUrl = $resource('http://api.iwangpo.com/weibouser/userByUrl' + BearerToken.get(), {withCredentials: true});
             var user = {};
 
             //根据微博数据结构，返回用户性别

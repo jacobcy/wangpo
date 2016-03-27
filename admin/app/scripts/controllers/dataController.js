@@ -7,12 +7,12 @@
  * Controller of the sbAdminApp
  */
 angular.module('sbAdminApp', ['datatables'])
-    .controller('DataCtrl', ['$resource', 'DTOptionsBuilder', 'DTColumnBuilder', '$cookieStore',
-        function ($resource, DTOptionsBuilder, DTColumnBuilder, $cookieStore) {
+    .controller('DataCtrl', ['$resource', 'DTOptionsBuilder', 'DTColumnBuilder', 'BearerToken',
+        function ($resource, DTOptionsBuilder, DTColumnBuilder, BearerToken) {
 
-            var dt = this
+            var dt = this;
 
-            dt.dtInstance = {}
+            dt.dtInstance = {};
 
             dt.dtOptions = DTOptionsBuilder.newOptions()
 
@@ -29,7 +29,7 @@ angular.module('sbAdminApp', ['datatables'])
                 // 服务器端分页
                 .withOption('processing', true)
                 .withOption('serverSide', true)
-                .withOption('sAjaxSource', "http://api.iwangpo.com/weibouser/list?access_token=" + $cookieStore.get('token').token)
+                .withOption('sAjaxSource', "http://api.iwangpo.com/weibouser/list" + BearerToken.get())
 
             /**
              // 过滤数据

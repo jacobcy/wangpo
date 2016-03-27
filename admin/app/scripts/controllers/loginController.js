@@ -9,14 +9,12 @@
 angular.module('sbAdminApp')
     .controller('LoginCtrl', ['$scope', '$resource', '$cookieStore',
         function ($scope, $resource, $cookieStore) {
-            var login = $resource('http://api.iwangpo.com/main/accessToken', {withCredentials: true});
-
             $scope.submit = function (id, pw) {
-                login.get({
+                $resource('http://api.iwangpo.com/main/accessToken').get({
                     identifier: id,
                     password: pw
                 }, function (data) {
-                    $cookieStore.put('token', data)
+                    $cookieStore.put('Bearer', data)
                 }, function (error) {
                     $scope.error = error;
                     console.log(error)

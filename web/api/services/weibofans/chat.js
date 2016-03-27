@@ -186,8 +186,9 @@ Chat.prototype = {
       case 'confirm':
         if (text) {
           if (text === '1') {
-            this.state = 'updated';
-            break;
+            cb('您的个人资料已确认，现在回复date，可以开始速配');
+            this.state = 'start';
+            return;
           }
           //用户可以重新上传照片
           if (text === '2') {
@@ -217,8 +218,8 @@ Chat.prototype = {
           return;
         }
       case 'updated':
-        console.log("text = " + text + '  ' + 'text == date ? ' + (text == 'date'));
-        if (text == 'date') {
+        console.log("text = " + text + '  ' + 'text == null ? ' + (text == 'null'));
+        if (text == 'null') {
           this.state = 'start';
           console.log('I\'m line 219');
           break;

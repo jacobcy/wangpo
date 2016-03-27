@@ -76,6 +76,9 @@ Chat.prototype = {
    */
   handleMessage: function(text, image, cb) {
     var user = this.weiboUser;
+    if (text == 'me') {
+      this.state = 'verify';
+    }
     switch (this.state) {
       case 'gender':
         if (text !== '1' && text !== '2') {
@@ -134,7 +137,7 @@ Chat.prototype = {
         if (user.photos.length >= 1 && !image){
           if (text === '0') {
             if (user.description) {
-              this.state = 'verify';
+              this.state = 'updated';
             }
             break;
           }
@@ -159,7 +162,7 @@ Chat.prototype = {
           }
           if (user.photos.length === 5) {
             if (user.description) {
-              this.state = 'verify';
+              this.state = 'updated';
             }
             break;
           }
@@ -178,16 +181,12 @@ Chat.prototype = {
           }
         }
         this.save();
-        this.state = 'verify';
+        this.state = 'updated';
         break;
       case 'confirm':
-        if (!text) {
-          cb ('请输入正确的序号');
-          return;
-        }
         if (text) {
           if (text === '1') {
-            this.state = 'start';
+            this.state = 'updated';
             break;
           }
           //用户可以重新上传照片
@@ -214,11 +213,24 @@ Chat.prototype = {
             user.photos.length = 0;
             break;
           }
-          else {
-            cb('请输入正确的序号');
-            return;
-          }
+          cb('请输入正确的序号');
+          return;
         }
+      case 'updated':
+        console.log("text = " + text + '  ' + 'text == date ? ' + (text == 'date'));
+        if (text == 'date') {
+          this.state = 'start';
+          console.log('I\'m line 219');
+          break;
+        } else if (text === 'me') {
+          this.state = 'verify';
+          break;
+        } else {
+          cb ('您的个人资料已更新，回复date开始速配， 回复me查看个人资料');
+          return;
+        }
+      case 'verify':
+        break;
     }
     var msg = this.checkUser(user);
     if (msg) {
@@ -252,10 +264,12 @@ Chat.prototype = {
   },
 
   checkUser: function(user) {
-    console.log("Line 242 : this.state = " + this.state);
+    console.log("Line 261 : this.state = " + this.state);
     // 用户修改过资料，让用户确认最终资料
-    if (this.state == 'verify') {
-      console.log("Hi, I'm verified!");
+    if (this.state == 'updated') {
+      return ('您的个人资料已更新，回复date开始速配， 回复me查看个人资料');
+    }
+    if (this.state === 'verify') {
       this.state = 'confirm';
       return ('您的资料如下。' +
             '性别: ' + (user.gender == 1 ? '男' : '女') +
@@ -288,6 +302,7 @@ Chat.prototype = {
       return '请简单描述一下自己或者自己喜欢的人，让朋友们了解你';
     } else if (this.state != 'start') {
       this.state = 'start';
+      return;
     } else {
       return null;
     }
@@ -316,7 +331,7 @@ var ChatManager = {
       chat.init(cb);
       return;
     }
-    chat.handleMessage(null, null, cb);
+    chat.handleMessage('date', null, cb);
   },
 
   /**

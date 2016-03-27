@@ -83,6 +83,8 @@ function handleTextMessage(sender_id, text, cb) {
     case 'date':
       ChatManager.create(sender_id, cb);
       return;
+    case 'me':
+      break;
   }
   ChatManager.process(sender_id, text, null, function(msg) {
     if (!msg) {

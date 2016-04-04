@@ -1,17 +1,15 @@
-
-
 /* dataTables 调整 */
 .table-header {
-  height:92px;
-  padding-top: 20px;
+    height: 92px;
+    padding-top: 20px;
 }
 
 tfoot {
-  margin-top: 30px;
+    margin-top: 30px;
 }
 
 .dataTable thead th {
-  background-image:none !important;
+    background-image: none !important;
 }
 
 /*
@@ -24,36 +22,36 @@ tr.child {
 }*/
 
 /* dataTables Filters number-range 调整 */
-span.filter_number_range{
-  border:0px;
-  border-radius: 0px;
-  box-shadow: 0px 0px 0px;
-  padding-top: 0px;
+span.filter_number_range {
+    border: 0px;
+    border-radius: 0px;
+    box-shadow: 0px 0px 0px;
+    padding-top: 0px;
 }
 
 /* 用户头像 */
 .avatar-grid {
-  padding:5px;
-  text-align: center;
+    padding: 5px;
+    text-align: center;
 }
 
 .user-avatar {
-  width: 50px;
-  height: 50px;
+    width: 50px;
+    height: 50px;
 }
 
 /* 用户照片 */
 ul[data-dtr-index] {
-  width: 100%;
+    width: 100%;
 }
 
 .user-photo {
-  width:100%;
+    width: 100%;
 }
 
 /* userForm 错误栏样式*/
 input.ng-invalid {
-  border-color:#A94442;
+    border-color: #A94442;
 }
 
 

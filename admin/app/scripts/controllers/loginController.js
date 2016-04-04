@@ -7,17 +7,17 @@
  * Controller of the sbAdminApp
  */
 angular.module('sbAdminApp')
-    .controller('LoginCtrl', ['$scope', '$resource', '$cookieStore',
-        function ($scope, $resource, $cookieStore) {
+    .controller('LoginCtrl', ['$scope', '$state', 'dataServer', '$cookieStore',
+        function ($scope, $state, dataServer, $cookieStore) {
             $scope.submit = function (id, pw) {
-                $resource('http://api.iwangpo.com/main/accessToken').get({
+                dataServer.login().get({
                     identifier: id,
                     password: pw
                 }, function (data) {
-                    $cookieStore.put('Bearer', data)
+                    $cookieStore.put('Bearer', data);
+                    $state.go('dashboard.welcome')
                 }, function (error) {
-                    $scope.error = error;
-                    console.log(error)
+                    $scope.error = '无法访问后台服务器，请咨询管理员'
                 })
             }
-        }]);
+        }])

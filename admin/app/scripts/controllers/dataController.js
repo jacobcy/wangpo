@@ -6,50 +6,64 @@
  * # DataCtrl
  * Controller of the sbAdminApp
  */
-angular.module('sbAdminApp', ['datatables'])
-    .controller('DataCtrl', ['$resource', 'DTOptionsBuilder', 'DTColumnBuilder', 'BearerToken',
-        function ($resource, DTOptionsBuilder, DTColumnBuilder, BearerToken) {
+angular.module('sbAdminApp')
+    .controller('DataCtrl', ['$resource', 'DTOptionsBuilder', 'DTColumnBuilder', 'dataServer', '$state',
+        function ($resource, DTOptionsBuilder, DTColumnBuilder, dataServer, $state) {
 
-            var dt = this;
+            if (dataServer.token()) {
 
-            dt.dtInstance = {};
+                var url = dataServer.url + '/main/latestPhotos';
+                var dt = this;
+                dt.dtInstance = {};
 
-            dt.dtOptions = DTOptionsBuilder.newOptions()
+                dt.refresh = function () {
+                    var resetPaging = false;
+                    user.dtInstance.reloadData(false);
+                }
 
-                // json方式获取数据
-                //.fromSource( $resource('/weibouser').query)
+                dt.dtOptions = DTOptionsBuilder
 
-                // Promise方式获取数据
-                /*
-                 .fromFnPromise(function () {
-                 return $resource('/weibouser').query({lock: 'false'}).$promise
-                 })
-                 */
+                    // Promise方式获取数据
+                    //.fromFnPromise(function () {
+                    //    return $resource(url).query().$promise
+                    //})
 
-                // 服务器端分页
-                .withOption('processing', true)
-                .withOption('serverSide', true)
-                .withOption('sAjaxSource', "http://api.iwangpo.com/weibouser/list" + BearerToken.get())
+                    // Ajax方式获取数据
+                    //.fromSource( url)
+                    //.withDataProp('data')
 
-            /**
-             // 过滤数据
-             .withColumnFilter({
-          aoColumns: [
-            {type: 'text'},
-            {type: 'number'}
-          ]
-        })
-             **/
+                    //server Side方式获取数据
+                    .newOptions()
+                    .withOption('processing', true)
+                    .withOption('serverSide', true)
+                    .withFnServerData(function (sSource, aoData, fnCallback, oSettings) {
+                        oSettings.jqXHR = $.ajax({
+                            'dataType': 'json',
+                            'type': 'POST',
+                            'url': url,
+                            'data': aoData,
+                            'success': fnCallback
+                        })
+                    })
 
-                // 保持过滤状态
-                // .withOption('stateSave', true)
-
-                // .withPaginationType('full')
-                // .withDisplayLength(10);
-
-            dt.dtColumns = [
-                DTColumnBuilder.newColumn('nickname').withTitle('昵称'),
-                DTColumnBuilder.newColumn('height').withTitle('身高')
-            ];
-
+                    .withDisplayLength(10)
+                    .withPaginationType('full')
+                    .withOption('autoWidth', true)
+                    .withOption('stateSave', true)
+                /**
+                 // 过滤数据
+                 .withColumnFilter({
+                        aoColumns: [
+                            {type: 'text'},
+                            {type: 'text'}
+                        ]
+                    })
+                 **/
+                dt.dtColumns = [
+                    DTColumnBuilder.newColumn('nickname').withTitle('昵称'),
+                    DTColumnBuilder.newColumn('photo').withTitle('照片地址').withOption('defaultContent', '-'),
+                ]
+            } else {
+                $state.go('dashboard.login')
+            }
         }]);

@@ -3,41 +3,57 @@
 angular.module('sbAdminApp')
 
     //获取accessToken
-    .service('BearerToken', ['$cookieStore', '$state', function ($cookieStore, $state) {
-        this.get = function () {
-            var bearer = $cookieStore.get('Bearer')
-            if (!bearer) {
-                $state.go('dashboard.login')
-            } else {
-                return '?access_token=' + bearer.token
-            }
+    .service('dataServer', ['$q', '$cookieStore', '$state', '$resource',
+        function ($q, $cookieStore, $state, $resource) {
+            this.token = function () {
+                var bearer = $cookieStore.get('Bearer');
+                if (angular.isDefined(bearer.token)) {
+                    return bearer.token
+                } else {
+                    console.error('找不到服务器的token值');
+                    $state.go('dashboard.login')
+                }
+            };
+            this.login = function () {
+                return $resource(this.url + '/main/accessToken')
+            };
+            this.url = "http://api.iwangpo.com";
+        }])
+
+    //获取用户资料列表
+    .factory('userList', ['$resource', 'dataServer',
+        function ($resource, dataServer) {
+            //return $resource(dataServer.url + '/weibouser/:id', {id: '@id'}, {find: {method: 'POST'}})
+            return $resource(dataServer.url + '/weibouser/:id?access_token=' + encodeURIComponent(dataServer.token()), {
+                id: '@id'
+            }, {
+                update: {method: 'PUT'}
+            })
+        }])
+
+    //获取单个用户资料
+    .factory('userFetch', ['$resource', 'dataServer', function ($resource, dataServer) {
+        return $resource(dataServer.url + '/weibouser/fetchOneById', {
+            access_token: dataServer.token(),
+            withCredentials: true
+        })
+    }])
+
+    .factory('userPhoto', ['$resource', 'dataServer', function ($resource, dataServer) {
+        return {
+            add: $resource(dataServer.url + '/weibouser/addPhoto'),
+            delete: $resource(dataServer.url + '/weibouser/removePhotoById')
         }
     }])
 
-
-    //获取用户资料列表
-    .factory('userList', ['$resource', 'BearerToken', function ($resource, $cookieStore) {
-        return $resource('http://api.iwangpo.com/weibouser/:id' + BearerToken.get(), {id: '@id'}, {withCredentials: true})
-    }])
-
-    //获取单个用户资料
-    .factory('userInfo', ['$resource', 'BearerToken', function ($resource, $cookieStore) {
-        return $resource('http://api.iwangpo.com/weibouser/fetchOneById/:id' + BearerToken.get(), {id: '@id'}, {withCredentials: true})
-    }])
-
-    .factory('userPhoto', ['$resource', '$cookieStore', function ($resource, $cookieStore) {
-        return $resource('http://api.iwangpo.com/main/saveImage' + BearerToken.get(), {withCredentials: true})
-    }])
-
     //通过微博用户ID或者用户主页URL查询用户资料
-    .service('weiboUser', ['$q', '$resource', 'userList', 'utils', '$cookieStore',
-        function ($q, $resource, userList, utils, $cookieStore) {
+    .service('weiboUser', ['$q', '$resource', 'userList', 'utils', 'dataServer',
+        function ($q, $resource, userList, utils, dataServer) {
 
             //根据微博用户ID，从微博后台获取用户资料
-            //Todo:调试结束，替换为相对地址
-            var searchId = $resource('http://api.iwangpo.com/weibouser/userInfo' + BearerToken.get(), {withCredentials: true});
+            var searchId = $resource(dataServer.url + '/weibouser/userInfo', {access_token: dataServer.token()});
             //根据微博用户个性化域名，从微博后台获取用户资料
-            var searchUrl = $resource('http://api.iwangpo.com/weibouser/userByUrl' + BearerToken.get(), {withCredentials: true});
+            var searchUrl = $resource(dataServer.url + '/weibouser/userByUrl', {access_token: dataServer.token()});
             var user = {};
 
             //根据微博数据结构，返回用户性别
@@ -86,7 +102,7 @@ angular.module('sbAdminApp')
                 var user = {};
 
                 if (angular.isDefined(data)) {
-                    // Todo:通过个性化域名获得用户资料
+                    // 通过个性化域名获得用户资料
                     var regName = /weibo\.com\/(\w*?)[\/\?]?/i;
                     var regId = /^.*?weibo\.com\/u\/(\d*?)[\/\?]?.*$'/i;
 

@@ -1,105 +1,112 @@
 <form role="form" name="userForm">
 
-  <div class="modal-header">
-    <button type="button" class="close" ng-click="modal.cancel()">&times;</button>
-    <h3 class="modal-title">{{modal.alert.message}}</h3>
-  </div>
-
-  <div class="modal-body">
-    <div class="form-group" ng-class="{'has-error' :modal.errorInfo}">
-      <label class="control-label" for="weiboId">微博ID：{{modal.errorInfo}}</label>
-
-      <div class="form-group input-group">
-        <input class="form-control" type="text" id="weiboId" name="weiboId" required autofocus ng-model="modal.user.weiboId"/>
-        <span class="input-group-btn">
-          <button type="button" class="btn btn-info" ng-click="modal.getUserInfo()">
-            <i class="fa fa-magic"></i>
-          </button>
-        </span>
-      </div>
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="modal.cancel()">&times;</button>
+        <h3 class="modal-title">{{modal.alert.message}}</h3>
     </div>
 
-    <div class="form-group">
-      <label class="control-label" for="nickname">微博账号：</label>
-      <input class="form-control" type="text" id="nickname" name="nickname" ng-model="modal.user.nickname"/>
+    <div class="modal-body">
+        <div class="form-group" ng-class="{'has-error' :modal.errorInfo}">
+            <label class="control-label" for="weiboId">微博ID：{{modal.errorInfo}}</label>
+
+            <div class="form-group input-group">
+                <input class="form-control" type="text" id="weiboId" name="weiboId" required autofocus
+                       ng-model="modal.user.weiboId"/>
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-info" ng-click="modal.getUserInfo()">
+                  <i class="fa fa-magic"></i>
+              </button>
+            </span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label" for="nickname">微博账号：</label>
+            <input class="form-control" type="text" id="nickname" name="nickname" ng-model="modal.user.nickname"/>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label" for="birthday">出生日期(格式：yyyyMMdd)：
+                <span ng-show="modal.user.birthday">当前年龄为{{modal.user.birthday | age }}</span></label>
+
+            <div class="form-group input-group">
+                <input class="form-control" type="text" id="birthday" name="birthday" ng-model="modal.user.birthday"
+                       uib-datepicker-popup="yyyyMMdd" is-open="modal.opened"/>
+                <span class="input-group-btn">
+                  <button type="button" class="btn btn-primary" ng-click="modal.openDatePicker($event)">
+                      <i class="fa fa-calendar"></i>
+                  </button>
+                </span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label" for="gender">性别：</label>
+            <select class="form-control" type="text" id="gender" name="gender" ng-model="modal.user.gender"
+                    ng-options="o.value as o.title for o in modal.sex">
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label" for="height">身高：</label>
+            <input class="form-control" type="number" min="100" max="250" id="height" name="height"
+                   ng-model="modal.user.height"/>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label" for="location">城市区号：<span ng-show="modal.user.location">当前城市为【{{modal.user.location | city}}】</span></label>
+            <input class="form-control" type="text" pattern="0\d{2,3}" id="location" name="location"
+                   ng-model="modal.user.location"/>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label" for="description">个人描述：</label>
+            <textarea class="form-control" rows="3" id="description" name="description"
+                      ng-model="modal.user.description"></textarea>
+        </div>
+
+        <div class="form-group" ng-class="{'has-error' :modal.photoInfo}">
+            <label class="control-label">照片：{{modal.photoInfo}}</label>
+
+            <div class="form-group input-group" ng-repeat="photo in modal.user.photos track by $index">
+
+                <input disabled class="form-control" type="url" ng-model="photo.sourceUrl"/>
+                <span class="input-group-btn">
+                  <button type="button" class="btn btn-danger" ng-click="modal.removePhoto($index)">
+                      <i class="fa fa-minus"></i>
+                  </button>
+                </span>
+            </div>
+
+            <div class="form-group input-group" ng-hide="modal.photoLimit">
+                <input class="form-control" type="url" name="photo" ng-model="modal.photo"/>
+                <span class="input-group-btn">
+                  <button type="button" class="btn btn-success" ng-click="modal.addPhoto()">
+                      <i class="fa fa-plus"></i>
+                  </button>
+                </span>
+            </div>
+
+        </div>
+
     </div>
 
-    <div class="form-group">
-      <label class="control-label" for="birthday">出生日期(格式：yyyyMMdd)：
-        <span ng-show="modal.user.birthday">当前年龄为{{modal.user.birthday | age }}</span></label>
-
-      <div class="form-group input-group">
-        <input class="form-control" type="text" id="birthday" name="birthday" ng-model="modal.user.birthday" uib-datepicker-popup="yyyyMMdd" is-open="modal.opened"/>
-        <span class="input-group-btn">
-          <button type="button" class="btn btn-primary" ng-click="modal.openDatePicker($event)">
-            <i class="fa fa-calendar"></i>
-          </button>
-        </span>
-      </div>
+    <div class="modal-footer">
+        <button ng-click="modal.delete(modal.user.id)" ng-show="modal.user.id" data-dismiss="modal"
+                class="btn btn-danger btn-delete"
+                type="button" style="margin-left: 10px; float: left;">
+            <i class="fa fa-trash"></i>&nbsp;删除
+        </button>
+        <button ng-click="modal.cancel()" class="btn btn-default" type="button">取消</button>
+        <button ng-show="modal.alert.create" ng-click="modal.save()" class="btn btn-success" ng-class="{disabled:userForm.$invalid}" type="button"
+                style="margin-right: 10px;">
+            <i class="fa fa-check"></i>&nbsp;添加
+        </button>
+        <button ng-hide="modal.alert.create" ng-click="modal.update()" class="btn btn-primary" ng-class="{disabled:userForm.$invalid}" type="button"
+                style="margin-right: 10px;">
+            <i class="fa fa-check"></i>&nbsp;修改
+        </button>
     </div>
-
-    <div class="form-group">
-      <label class="control-label" for="gender">性别：</label>
-      <select class="form-control" type="text" id="gender" name="gender" ng-model="modal.user.gender"
-              ng-options="o.value as o.title for o in modal.sex">
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label class="control-label" for="height">身高：</label>
-      <input class="form-control" type="number" min="100" max="250" id="height" name="height"
-             ng-model="modal.user.height"/>
-    </div>
-
-    <div class="form-group">
-      <label class="control-label" for="location">城市区号：<span ng-show="modal.user.location">当前城市为【{{modal.user.location | city}}】</span></label>
-      <input class="form-control" type="text" pattern="0\d{2,3}" id="location" name="location"
-             ng-model="modal.user.location"/>
-    </div>
-
-    <div class="form-group">
-      <label class="control-label" for="description">个人描述：</label>
-      <textarea class="form-control" rows="3" id="description" name="description"
-                ng-model="modal.user.description"></textarea>
-    </div>
-
-    <div class="form-group" ng-class="{'has-error' :modal.photoInfo}">
-      <label class="control-label">照片：{{modal.photoInfo}}</label>
-
-      <div class="form-group input-group" ng-repeat="photo in modal.user.photos track by $index">
-
-        <input disabled class="form-control" type="url" ng-model="photo.image"/>
-        <span class="input-group-btn">
-          <button type="button" class="btn btn-danger" ng-click="modal.removePhoto($index)">
-            <i class="fa fa-minus"></i>
-          </button>
-        </span>
-      </div>
-
-      <div class="form-group input-group" ng-hide="modal.photoLimit">
-        <input class="form-control" type="url" name="photo" ng-model="modal.photo"/>
-        <span class="input-group-btn">
-          <button type="button" class="btn btn-success" ng-click="modal.addPhoto()">
-            <i class="fa fa-plus"></i>
-          </button>
-        </span>
-      </div>
-
-    </div>
-
-  </div>
-
-  <div class="modal-footer">
-    <button ng-click="modal.delete(modal.user.id)" ng-show="modal.user.id" data-dismiss="modal"
-            class="btn btn-danger btn-delete"
-            type="button" style="margin-left: 10px; float: left;">
-      <i class="fa fa-trash"></i>&nbsp;删除
-    </button>
-    <button ng-click="modal.cancel()" class="btn btn-default" type="button">取消</button>
-    <button ng-click="modal.save()" class="btn btn-primary" ng-class="{disabled:userForm.$invalid}" type="button" style="margin-right: 10px;">
-      <i class="fa fa-check"></i>&nbsp;确认
-    </button>
-  </div>
 </form>
 
 

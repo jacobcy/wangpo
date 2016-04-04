@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html class="no-js">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>王婆速配</title>
+    <meta name="description" content="京城约会专家，五百年江湖美名，赐你绝世好姻缘">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/normalize.css">
+    <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/main.css">
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="app.css">
+    <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
+</head>
+
+<body ng-app="flowGrid">
+
+<!--[if lt IE 7]>
+<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
+    your browser</a> to improve your experience.</p>
+<![endif]-->
+
+<div ng-controller="appCtrl">
+
+    <header>
+        <div class="container">
+            <br>
+            <h1>王婆速配</h1>
+            <p>京城约会专家，五百年江湖美名，赐你绝世好姻缘</p>
+            <br>
+            <p>
+                <button class="btn btn-default btn" ng-click="addItem()">Add item</button>
+                <button class="btn btn-success btn" ng-click="changeWidth(50)">Increase itemWidth</button>
+                <button class="btn btn-warning btn" ng-click="changeWidth(-50)">Decrease itemWidth</button>
+            </p>
+            <p>resize window to see auto update</p>
+        </div>
+    </header>
+
+    <section>
+        <div class="container">
+            <ul class="flowGrid" ng-flow-grid="demoGird" min-item-width="200">
+                <li class="flowGridItem" ng-repeat="item in items">
+                    <a href=""><img ng-src="{{item.photo}}"></a>
+                    <p>{{item.nickname}}</p>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+</div>
+
+<!-- In production use:
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
+-->
+<script src="bower_components/angular/angular.min.js"></script>
+<script src="bower_components/angular-route/angular-route.min.js"></script>
+<script src="bower_components/angular-resource/angular-resource.min.js"></script>
+<script src="bower_components/ngFlowGrid/src/ngFlowGrid.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

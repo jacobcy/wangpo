@@ -1,0 +1,48 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Table example</h1>
+            <table id="example" class="display" cellspacing="0" width="100%">
+                <thead>
+                <tr>
+                    <th>Nick name</th>
+                    <th>Photo</th>
+                </tr>
+                </thead>
+                <tfoot>
+                <tr>
+                    <th>Nick name</th>
+                    <th>Photo</th>
+                </tr>
+                </tfoot>
+            </table>
+            <script>
+                $(document).ready(function () {
+                    $('#example').dataTable({
+
+                        //sAjaxSource: "http://api.iwangpo.com/main/latestPhotos",
+                        serverSide: true,
+                        ajax: {
+                            url: 'http://api.iwangpo.com/main/latestPhotos',
+                            type: 'POST'
+                        },
+
+                        columns: [
+                            {data: "nickname"},
+                            {data: "photo"}
+                        ]
+                    })
+
+                            .columnFilter({
+                                aoColumns: [
+                                    {type: "text"},
+                                    {type: "text"}
+                                ]
+                            })
+                })
+            </script>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+</div>

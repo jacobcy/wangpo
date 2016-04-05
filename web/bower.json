@@ -1,0 +1,32 @@
+{
+  "name": "Wangpo-App",
+  "version": "0.2.0",
+  "authors": [
+    "wangpo"
+  ],
+  "description": "application for wangpo",
+  "main": "app.js",
+  "moduleType": [
+    "node"
+  ],
+  "keywords": [
+    "sails"
+  ],
+  "license": "MIT",
+  "homepage": "http://www.iwangpo.com",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "upload",
+    "public",
+    ".tmp",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+  },
+  "devDependencies": {},
+  "appPath": "assets",
+  "private": true
+}
